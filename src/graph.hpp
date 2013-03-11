@@ -34,10 +34,10 @@ namespace saedb
 	    class local_edge_type;
 
 	    struct vertex_type {
-		  sae_graph& graph_ref;
+		  graph_type& graph_ref;
 		  lvid_type lvid;
-
-		  vertex_type(sae_graph& graph_ref, lvid_type lvid):
+		  
+		  vertex_type(graph_type& graph_ref, lvid_type lvid):
 			graph_ref(graph_ref), lvid(lvid) { }
 
 		  bool operator==(vertex_type& v) const {
@@ -74,11 +74,11 @@ namespace saedb
 
 	    class edge_type {
 	    private:
-		  sae_graph& graph_ref;
+		  graph_type& graph_ref;
 		  
 		  typename local_graph_type::edge_type edge;
 
-		  edge_type(sae_graph& graph_ref,
+		  edge_type(graph_type& graph_ref,
 			    typename local_graph_type::edge_type edge):
 			graph_ref(graph_ref), edge(edge) { }
 		  friend class sae_graph;
@@ -125,13 +125,106 @@ namespace saedb
 	    int num_local_vertices () {
 	    }
 
-	    int num_local_vertices () {
-	    }
-
 	    vertex_type vertex(vertex_id_type vid){
 	    }
 
       };
+
+      struct local_vertex_type {
+	    sae_graph& graph_ref;
+	    lvid_type lvid;
+
+	    local_vertex_type(sae_graph& graph_ref, lvid_type lvid):
+		  graph_ref(graph_ref), lvid(lvid) { }
+
+	    explicit local_vertex_type(vertex_type v) :graph_ref(v.graph_ref),lvid(v.lvid) { }
+
+	    operator vertex_type() const {
+		  return vertex_type(graph_ref, lvid);
+	    }
+
+	    bool operator==(local_vertex_type& v) const {
+		  return lvid == v.lvid;
+	    }
+      
+	    const vertex_data_type& data() const {
+		  return graph_ref.get_local_graph().vertex_data(lvid);
+	    }
+
+	    vertex_data_type& data() {
+		  return graph_ref.get_local_graph().vertex_data(lvid);
+	    }
+
+	    size_t num_in_edges() const {
+		  return graph_ref.get_local_graph().num_in_edges(lvid);
+	    }
+
+	    size_t num_out_edges() const {
+		  return graph_ref.get_local_graph().num_out_edges(lvid);
+	    }
+
+	    lvid_type id() const {
+		  return lvid;
+	    }
+
+	    vertex_id_type global_id() const {
+		  return graph_ref.global_vid(lvid);
+	    }
+
+	    local_edge_list_type in_edges() {
+		  return graph_ref.l_in_edges(lvid);
+	    }
+
+	    local_edge_list_type out_edges() {
+		  return graph_ref.l_out_edges(lvid);
+	    }
+
+	    size_t global_num_in_edges() const {
+		  return graph_ref.l_get_vertex_record(lvid).num_in_edges;
+	    }
+
+
+	    size_t global_num_out_edges() const {
+		  return graph_ref.l_get_vertex_record(lvid).num_out_edges;
+	    }
+
+
+	    vertex_record& get_vertex_record() {
+		  return graph_ref.l_get_vertex_record(lvid);
+	    }
+      };
+
+      class local_edge_type {
+      private:
+	    sae_graph& graph_ref;
+	    typename local_graph_type::edge_type e;
+      public:
+	    local_edge_type(sae_graph& graph_ref,
+			    typename local_graph_type::edge_type e):
+		  graph_ref(graph_ref), e(e) { }
+                      
+	    explicit local_edge_type(edge_type ge) :graph_ref(ge.graph_ref),e(ge.e) { }
+
+	    operator edge_type() const {
+		  return edge_type(graph_ref, e);
+	    }
+
+	    local_vertex_type source() { return local_vertex_type(graph_ref, e.source().id()); }
+      
+	    local_vertex_type target() { return local_vertex_type(graph_ref, e.target().id()); }
+
+	    const edge_data_type& data() const { return e.data(); }
+
+	    edge_data_type& data() { return e.data(); }
+      
+	    edge_id_type id() const { return e.id(); }
+      }; 
+
+      struct local_edge_list_type {
+	    // a list of edge in local graph, implement iterator using c++11
+      }; 
+
+
 }
 
 #endif

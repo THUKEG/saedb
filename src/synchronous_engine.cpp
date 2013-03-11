@@ -23,6 +23,7 @@ namespace saedb
 
 	    typedef typename graph_type::lvid_type            lvid_type;
 	    typedef context<sae_synchronous_engine> context_type;
+	    friend class context<sae_synchronous_engine>;
 
       private:
 	    graph_type& graph;
@@ -83,18 +84,22 @@ namespace saedb
 		  bool accum_is_set = false;
 		  gather_type accum = gather_type();
 		  if (gather_dir == IN_EDGES || gather_dir == ALL_EDGES){
-			for(edge_type& local_edge : vertex.in_edges()){
+			for(edge_type local_edge : vertex.in_edges()){
 			      edge_type edge(local_edge);
+			      /*
 			      if(accum_is_set) {
 				    accum += vprog.gather(context, vertex, edge);
 			      } else {
 				    accum = vprog.gather(context, vertex, edge); 
 				    accum_is_set = true;
 			      }
+			      */
 			}
+
 		  }
 		  
 		  if (gather_dir == OUT_EDGES || gather_dir == ALL_EDGES){
+			/*
 			for(edge_type& local_edge : vertex.out_edges()){
 			      edge_type edge(local_edge);
 			      if(accum_is_set) {
@@ -104,6 +109,7 @@ namespace saedb
 				    accum_is_set = true;
 			      }
 			}
+			*/
 		  }
 		  gather_accum[vid] = accum;
 	    }	    
@@ -120,6 +126,7 @@ namespace saedb
 		  
 		  bool accum_is_set = false;
 		  gather_type accum = gather_type();
+		  /*
 		  if (gather_dir == IN_EDGES || gather_dir == ALL_EDGES){
 			for(edge_type& local_edge : vertex.in_edges()){
 			      edge_type edge(local_edge);
@@ -133,6 +140,7 @@ namespace saedb
 			      vprog.gather(context, vertex, edge);
 			}
 		  }
+		  */
 	    }	    
       }
       
@@ -140,6 +148,7 @@ namespace saedb
       void sae_synchronous_engine<VertexProgram>::execute_applys (){
 	    context_type context(*this, graph);
 	    auto vetex_ids = vector<lvid_type>();
+	    /*
 	    for(lvid_type vid: vetex_ids){
 		  const vertex_type vertex {graph.vertex(vid)};
 		  const gather_type& accum = gather_accum[vid];
@@ -147,6 +156,7 @@ namespace saedb
 		  // clear gather accum array
 		  gather_accum[vid] = gather_type();
 	    }
+	    */
       }
 }
 #endif

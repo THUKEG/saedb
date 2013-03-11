@@ -57,39 +57,36 @@ namespace saedb {
 	    //  */
 	    // size_t num_updates() const { return engine.num_updates(); }
 
-	    size_t procid() const { return graph.procid(); }
+	    size_t procid() const {  }
       
-	    size_t num_procs() const { return graph.numprocs(); }
+	    size_t num_procs() const {  }
 
 	    std::ostream& cout() const {
-		  return graph.dc().cout();
 	    }
 
 	    std::ostream& cerr() const {
-		  return graph.dc().cerr();
 	    }
 
 	    /**
 	     * Get the elapsed time in seconds
 	     */
-	    float elapsed_seconds() const { return engine.elapsed_seconds(); }
+	    float elapsed_seconds() const {  }
 
 	    /**
 	     * Return the current interation number (if supported).
 	     */
-	    int iteration() const { return engine.iteration(); }
+	    int iteration() const { }
 
 	    /**
 	     * Force the engine to stop executing additional update functions.
 	     */
-	    void stop() { engine.internal_stop(); }
+	    void stop() { }
 
 	    /**
 	     * Send a message to a vertex.
 	     */
 	    void signal(const vertex_type& vertex, 
 			const message_type& message = message_type()) {
-		  engine.internal_signal(vertex, message);
 	    }
 
 	    /**
@@ -101,7 +98,6 @@ namespace saedb {
 	     */
 	    void signal_vid(vertex_id_type vid, 
 			    const message_type& message = message_type()) {
-		  engine.internal_signal_broadcast(vid, message);
 	    }
 
 
@@ -110,14 +106,12 @@ namespace saedb {
 	     */
 	    void post_delta(const vertex_type& vertex, 
 			    const gather_type& delta) {
-		  engine.internal_post_delta(vertex, delta);
 	    }
 
 	    /**
 	     * Invalidate the cached gather on the vertex.
 	     */
 	    virtual void clear_gather_cache(const vertex_type& vertex) { 
-		  engine.internal_clear_gather_cache(vertex);      
 	    }
 
 
