@@ -2,6 +2,7 @@
 #define SAE_ALGORITHM_HPP
 
 #include "graph_basic_types.cpp"
+#include "icontext.hpp"
 
 namespace saedb
 {
@@ -15,6 +16,7 @@ namespace saedb
 	    typedef typename Graph::edge_data_type edge_data_type;
 	    typedef GatherType gather_type;
 	    typedef Graph graph_type;
+	    typedef MessageType message_type;
 	    typedef typename graph_type::vertex_id_type vertex_id_type;
 	    typedef typename graph_type::vertex_type vertex_type;
 	    typedef typename graph_type::edge_type edge_type;

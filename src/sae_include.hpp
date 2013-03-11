@@ -1,8 +1,9 @@
 #ifndef SAE_INCLUDE_ALL
 #define SAE_INCLUDE_ALL
 
-#include "Graph.hpp"
-#include "Engine.hpp"
-#include "VertexAlgorithm.hpp"
+#include "graph.hpp"
+#include "engine.hpp"
+#include "vertex_program.hpp"
+#include "synchronous_engine.cpp"
 
 #endif

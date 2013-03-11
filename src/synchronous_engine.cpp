@@ -2,12 +2,13 @@
 #define SAE_SYNCHRONOUS_EGINE
 #include <vector>
 #include <iostream>
-#include "Engine.hpp"
+#include "engine.hpp"
+#include "context.hpp"
 
 namespace saedb
 {
       template <typename VertexProgram>
-      class sae_synchronou_engine :
+      class sae_synchronous_engine :
 	    public sae_engine<VertexProgram>
       {
       public:
@@ -20,6 +21,9 @@ namespace saedb
 	    typedef typename graph_type::vertex_type          vertex_type;
 	    typedef typename graph_type::edge_type            edge_type;
 
+	    typedef typename graph_type::lvid_type            lvid_type;
+	    typedef context<sae_synchronous_engine> context_type;
+
       private:
 	    graph_type& graph;
 	    size_t max_iterations;
@@ -28,7 +32,7 @@ namespace saedb
 	    std::vector<gather_type>  gather_accum;
 
       public:
-	    sae_synchronou_engine(graph_type& graph);
+	    sae_synchronous_engine(graph_type& graph);
 	    void start();
 
       private:
@@ -48,28 +52,30 @@ namespace saedb
       /*
        * Implementation of syn_engine
        **/
-      template <VertexProgram>
-      sae_synchronou_engine<VertexProgram>::sae_synchronou_engine(graph_type& graph):
-      iteration_counter(0), max_iterations(10) {
+      template <typename VertexProgram>
+      sae_synchronous_engine<VertexProgram>::sae_synchronous_engine(graph_type& graph):
+      iteration_counter(0), max_iterations(10), graph(graph) {
 	    vertex_programs.resize(graph.num_local_vertices());
 	    gather_accum.resize(graph.num_local_vertices());
       }
 
-      template <VertexProgram>
-      void sae_synchronou_engine<VertexProgram>::start(){
+      template <typename VertexProgram>
+      void sae_synchronous_engine<VertexProgram>::start(){
 	    while ( iteration_counter < max_iterations ){
 		  std::cout << "Iteration " << iteration_counter << std::endl;
-		  run_synchronous( &sae_synchronou_engine::execute_gathers);
-		  run_synchronous( &sae_synchronou_engine::execute_applys);
-		  run_synchronous( &sae_synchronou_engine::execute_scatters);
+		  run_synchronous( &sae_synchronous_engine::execute_gathers);
+		  run_synchronous( &sae_synchronous_engine::execute_applys);
+		  run_synchronous( &sae_synchronous_engine::execute_scatters);
 		  ++iteration_counter;
 	    }
       }
-      
-      template <VertexProgram>
-      void sae_synchronou_engine<VertexProgram>::execute_gathers{
+
+      template <typename VertexProgram>
+      void sae_synchronous_engine<VertexProgram>::execute_gathers (){
 	    // todo, how to get list of vertex ids to iterate?
-	    for(vid_type& vid: vetex_ids){
+	    context_type context(*this, graph);
+	    vector<lvid_type> vetex_ids = vector<lvid_type>();
+	    for(lvid_type vid : vetex_ids){
 		  const vertex_program_type& vprog = vertex_programs[vid];
 		  const vertex_type vertex {graph.vertex(vid)};
 		  const edge_dir_type gather_dir = vprog.gather_edges(context, vertex);
@@ -103,9 +109,11 @@ namespace saedb
 	    }	    
       }
       
-      template <VertexProgram>
-      void sae_synchronou_engine<VertexProgram>::execute_scatters{
-	    for(vid_type& vid: vetex_ids){
+      template <typename VertexProgram>
+      void sae_synchronous_engine<VertexProgram>::execute_scatters (){
+	    context_type context(*this, graph);
+	    auto vetex_ids = vector<lvid_type>();
+	    for(lvid_type vid: vetex_ids){
 		  const vertex_program_type& vprog = vertex_programs[vid];
 		  const vertex_type vertex {graph.vertex(vid)};
 		  const edge_dir_type gather_dir = vprog.scatter_edges(context, vertex);
@@ -128,9 +136,11 @@ namespace saedb
 	    }	    
       }
       
-      template <VertexProgram>
-      void sae_synchronou_engine<VertexProgram>::execute_applys{
-	    for(vid_type& vid: vetex_ids){
+      template <typename VertexProgram>
+      void sae_synchronous_engine<VertexProgram>::execute_applys (){
+	    context_type context(*this, graph);
+	    auto vetex_ids = vector<lvid_type>();
+	    for(lvid_type vid: vetex_ids){
 		  const vertex_type vertex {graph.vertex(vid)};
 		  const gather_type& accum = gather_accum[vid];
 		  vertex_programs[vid].apply(context, vertex, accum);
