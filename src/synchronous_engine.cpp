@@ -62,45 +62,53 @@ namespace saedb
 
       template <typename VertexProgram>
       void sae_synchronous_engine<VertexProgram>::start(){
+	    std::cout << "Before running..." << std::endl;
+	    graph.display();
 	    while ( iteration_counter < max_iterations ){
 		  std::cout << "Iteration " << iteration_counter << std::endl;
 		  run_synchronous( &sae_synchronous_engine::execute_gathers);
 		  run_synchronous( &sae_synchronous_engine::execute_applys);
 		  run_synchronous( &sae_synchronous_engine::execute_scatters);
 		  ++iteration_counter;
+		  graph.display();
 	    }
       }
 
+      // tmp function
+      template <typename to>
+      void log(to t){
+	    std::cout << t << std::endl;
+      }
+      
       template <typename VertexProgram>
       void sae_synchronous_engine<VertexProgram>::execute_gathers (){
 	    // todo, how to get list of vertex ids to iterate?
 	    context_type context(*this, graph);
-	    vector<lvid_type> vetex_ids = vector<lvid_type>();
+	    auto vetex_ids = graph.vertex_ids;
 	    for(lvid_type vid : vetex_ids){
-		  const vertex_program_type& vprog = vertex_programs[vid];
-		  const vertex_type vertex {graph.vertex(vid)};
+		  // vertex is the same, hack
+//		  const vertex_program_type& vprog = vertex_programs[vid];
+		  const vertex_program_type& vprog = vertex_program_type();		  
+		  vertex_type vertex(graph.vertex(vid));
 		  const edge_dir_type gather_dir = vprog.gather_edges(context, vertex);
 
 		  bool accum_is_set = false;
 		  gather_type accum = gather_type();
 		  if (gather_dir == IN_EDGES || gather_dir == ALL_EDGES){
 			for(edge_type local_edge : vertex.in_edges()){
+			      std::cout << "hi" << std::endl;
 			      edge_type edge(local_edge);
-			      /*
 			      if(accum_is_set) {
 				    accum += vprog.gather(context, vertex, edge);
 			      } else {
 				    accum = vprog.gather(context, vertex, edge); 
 				    accum_is_set = true;
 			      }
-			      */
 			}
-
 		  }
 		  
 		  if (gather_dir == OUT_EDGES || gather_dir == ALL_EDGES){
-			/*
-			for(edge_type& local_edge : vertex.out_edges()){
+			for(edge_type local_edge : vertex.out_edges()){
 			      edge_type edge(local_edge);
 			      if(accum_is_set) {
 				    accum += vprog.gather(context, vertex, edge);
@@ -109,7 +117,6 @@ namespace saedb
 				    accum_is_set = true;
 			      }
 			}
-			*/
 		  }
 		  gather_accum[vid] = accum;
 	    }	    
@@ -118,45 +125,43 @@ namespace saedb
       template <typename VertexProgram>
       void sae_synchronous_engine<VertexProgram>::execute_scatters (){
 	    context_type context(*this, graph);
-	    auto vetex_ids = vector<lvid_type>();
+	    auto vetex_ids = graph.vertex_ids;	    
 	    for(lvid_type vid: vetex_ids){
-		  const vertex_program_type& vprog = vertex_programs[vid];
-		  const vertex_type vertex {graph.vertex(vid)};
+//		  const vertex_program_type& vprog = vertex_programs[vid];// no used here
+		  const vertex_program_type& vprog = vertex_program_type();		  		  
+		  vertex_type vertex {graph.vertex(vid)};
 		  const edge_dir_type gather_dir = vprog.scatter_edges(context, vertex);
 		  
 		  bool accum_is_set = false;
 		  gather_type accum = gather_type();
-		  /*
 		  if (gather_dir == IN_EDGES || gather_dir == ALL_EDGES){
-			for(edge_type& local_edge : vertex.in_edges()){
+			for(edge_type local_edge : vertex.in_edges()){
 			      edge_type edge(local_edge);
 			      vprog.scatter(context, vertex, edge);
 			}
 		  }
 		  
 		  if (gather_dir == OUT_EDGES || gather_dir == ALL_EDGES){
-			for(edge_type& local_edge : vertex.out_edges()){
+			for(edge_type local_edge : vertex.out_edges()){
 			      edge_type edge(local_edge);
 			      vprog.gather(context, vertex, edge);
 			}
 		  }
-		  */
 	    }	    
       }
       
       template <typename VertexProgram>
       void sae_synchronous_engine<VertexProgram>::execute_applys (){
 	    context_type context(*this, graph);
-	    auto vetex_ids = vector<lvid_type>();
-	    /*
+	    auto vetex_ids = graph.vertex_ids;	    
 	    for(lvid_type vid: vetex_ids){
-		  const vertex_type vertex {graph.vertex(vid)};
+		  vertex_type vertex(graph.vertex(vid));
 		  const gather_type& accum = gather_accum[vid];
-		  vertex_programs[vid].apply(context, vertex, accum);
+		  vertex_program_type vprog = vertex_program_type();
+		  vprog.apply(context, vertex, accum);
 		  // clear gather accum array
 		  gather_accum[vid] = gather_type();
 	    }
-	    */
       }
 }
 #endif
