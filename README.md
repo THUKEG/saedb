@@ -33,3 +33,8 @@ To build the project, go to the root of this project, execute the following comm
 	make
 
 And sample applications should appear in the `build` directory.
+
+Developer's Guide
+=================
+
+To develop and cotribute to this project, please follow the [Developer's Guide](https://github.com/THUKEG/saedb/wiki/Developer's-Guide).
