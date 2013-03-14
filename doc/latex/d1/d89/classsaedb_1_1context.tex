@@ -1,0 +1,344 @@
+\hypertarget{classsaedb_1_1context}{\section{saedb\-:\-:context$<$ Engine $>$ Class Template Reference}
+\label{d1/d89/classsaedb_1_1context}\index{saedb\-::context$<$ Engine $>$@{saedb\-::context$<$ Engine $>$}}
+}
+
+
+{\ttfamily \#include $<$context.\-hpp$>$}
+
+Inheritance diagram for saedb\-:\-:context$<$ Engine $>$\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{d1/d89/classsaedb_1_1context}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Engine \hyperlink{classsaedb_1_1context_a10f237a9463e78f60b333d7017cbf948}{engine\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1icontext}{icontext}$<$ typename \\*
+\hyperlink{demo_2pagerank_2pagerank_8cpp_afa42a4da0de8450a5bb4145aa06ee689}{Engine\-::graph\-\_\-type}, typename \\*
+Engine\-::gather\-\_\-type, typename \\*
+Engine\-::message\-\_\-type $>$ \hyperlink{classsaedb_1_1context_ae9df8581f3061e5caa9272039d969b18}{icontext\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1icontext_a8eeb99ff6eb90e3f096a2895f9b92653}{icontext\-\_\-type\-::graph\-\_\-type} \hyperlink{classsaedb_1_1context_af74463841aa837f915f43fce2ca64dca}{graph\-\_\-type}
+\item 
+typedef \\*
+\hyperlink{classsaedb_1_1icontext_ac130cf374063f27748e4770617971660}{icontext\-\_\-type\-::vertex\-\_\-id\-\_\-type} \hyperlink{classsaedb_1_1context_aba9540d1189edf19f3d1cb7363b5c40b}{vertex\-\_\-id\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1icontext_ab83a38ba860cb2101b499ae60675e4e5}{icontext\-\_\-type\-::vertex\-\_\-type} \hyperlink{classsaedb_1_1context_a62f418b2b73082cd65a88feb604bab9f}{vertex\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1icontext_a7bd82d8486ab08dc1adf49dd6d659059}{icontext\-\_\-type\-::message\-\_\-type} \hyperlink{classsaedb_1_1context_ad29784e44db80b03b0adab9a2d8f2c72}{message\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1icontext_a7c3ae1019b418faf3de68ab9396f867b}{icontext\-\_\-type\-::gather\-\_\-type} \hyperlink{classsaedb_1_1context_acce022e81537ee830f3df623f4f9e0d4}{gather\-\_\-type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsaedb_1_1context_ac2248694285b99cf6fa359bf4a7ddb28}{context} (\hyperlink{classsaedb_1_1context_a10f237a9463e78f60b333d7017cbf948}{engine\-\_\-type} \&engine, \hyperlink{classsaedb_1_1context_af74463841aa837f915f43fce2ca64dca}{graph\-\_\-type} \&graph)
+\begin{DoxyCompactList}\small\item\em Construct a context for a particular engine and graph pair. \end{DoxyCompactList}\item 
+size\-\_\-t \hyperlink{classsaedb_1_1context_a19833a898006e8618b5f1a449569e64b}{num\-\_\-vertices} () const 
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1context_aa33ef2cb3e708b0eca6b502f3c962897}{num\-\_\-edges} () const 
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1context_a09b1e692a0b01ffb61e6abf6f5ba3c5d}{procid} () const 
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1context_aaa4630b0aca2bbde0167428cff7ab7e6}{num\-\_\-procs} () const 
+\item 
+std\-::ostream \& \hyperlink{classsaedb_1_1context_a66c19922ee1b6f5bd61ab022f2f4622a}{cout} () const 
+\item 
+std\-::ostream \& \hyperlink{classsaedb_1_1context_ab01112333512c57d6dc0156b6c807b99}{cerr} () const 
+\item 
+float \hyperlink{classsaedb_1_1context_a582c3612423e18a6891e78d96e1cc5cb}{elapsed\-\_\-seconds} () const 
+\item 
+int \hyperlink{classsaedb_1_1context_a0c6faad7f4c09a5a90acd58b6a413f97}{iteration} () const 
+\item 
+void \hyperlink{classsaedb_1_1context_a6337795d74509e592457f5d4f992573b}{stop} ()
+\item 
+void \hyperlink{classsaedb_1_1context_a86002f3e0ce79e720421575847cf00ac}{signal} (const \hyperlink{classsaedb_1_1context_a62f418b2b73082cd65a88feb604bab9f}{vertex\-\_\-type} \&vertex, const \hyperlink{classsaedb_1_1context_ad29784e44db80b03b0adab9a2d8f2c72}{message\-\_\-type} \&message=\hyperlink{classsaedb_1_1context_ad29784e44db80b03b0adab9a2d8f2c72}{message\-\_\-type}())
+\item 
+void \hyperlink{classsaedb_1_1context_a64e80cac06f3df77ca818d760c05d6c6}{signal\-\_\-vid} (\hyperlink{classsaedb_1_1context_aba9540d1189edf19f3d1cb7363b5c40b}{vertex\-\_\-id\-\_\-type} vid, const \hyperlink{classsaedb_1_1context_ad29784e44db80b03b0adab9a2d8f2c72}{message\-\_\-type} \&message=\hyperlink{classsaedb_1_1context_ad29784e44db80b03b0adab9a2d8f2c72}{message\-\_\-type}())
+\item 
+void \hyperlink{classsaedb_1_1context_aa623eb9e9aa1fc82ff0dbffbfc80619f}{post\-\_\-delta} (const \hyperlink{classsaedb_1_1context_a62f418b2b73082cd65a88feb604bab9f}{vertex\-\_\-type} \&vertex, const \hyperlink{classsaedb_1_1context_acce022e81537ee830f3df623f4f9e0d4}{gather\-\_\-type} \&delta)
+\item 
+virtual void \hyperlink{classsaedb_1_1context_a1654f9e7e61601ebe886c760d4170c59}{clear\-\_\-gather\-\_\-cache} (const \hyperlink{classsaedb_1_1context_a62f418b2b73082cd65a88feb604bab9f}{vertex\-\_\-type} \&vertex)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Engine$>$class saedb\-::context$<$ Engine $>$}
+
+
+
+Definition at line 13 of file context.\-hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classsaedb_1_1context_a10f237a9463e78f60b333d7017cbf948}{\index{saedb\-::context@{saedb\-::context}!engine\-\_\-type@{engine\-\_\-type}}
+\index{engine\-\_\-type@{engine\-\_\-type}!saedb::context@{saedb\-::context}}
+\subsubsection[{engine\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ typedef Engine {\bf saedb\-::context}$<$ Engine $>$\-::{\bf engine\-\_\-type}}}\label{d1/d89/classsaedb_1_1context_a10f237a9463e78f60b333d7017cbf948}
+The engine that created this context object 
+
+Definition at line 20 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_acce022e81537ee830f3df623f4f9e0d4}{\index{saedb\-::context@{saedb\-::context}!gather\-\_\-type@{gather\-\_\-type}}
+\index{gather\-\_\-type@{gather\-\_\-type}!saedb::context@{saedb\-::context}}
+\subsubsection[{gather\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ typedef {\bf icontext\-\_\-type\-::gather\-\_\-type} {\bf saedb\-::context}$<$ Engine $>$\-::{\bf gather\-\_\-type}}}\label{d1/d89/classsaedb_1_1context_acce022e81537ee830f3df623f4f9e0d4}
+
+
+Definition at line 30 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_af74463841aa837f915f43fce2ca64dca}{\index{saedb\-::context@{saedb\-::context}!graph\-\_\-type@{graph\-\_\-type}}
+\index{graph\-\_\-type@{graph\-\_\-type}!saedb::context@{saedb\-::context}}
+\subsubsection[{graph\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ typedef {\bf icontext\-\_\-type\-::graph\-\_\-type} {\bf saedb\-::context}$<$ Engine $>$\-::{\bf graph\-\_\-type}}}\label{d1/d89/classsaedb_1_1context_af74463841aa837f915f43fce2ca64dca}
+
+
+Definition at line 26 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_ae9df8581f3061e5caa9272039d969b18}{\index{saedb\-::context@{saedb\-::context}!icontext\-\_\-type@{icontext\-\_\-type}}
+\index{icontext\-\_\-type@{icontext\-\_\-type}!saedb::context@{saedb\-::context}}
+\subsubsection[{icontext\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ typedef {\bf icontext}$<$typename {\bf Engine\-::graph\-\_\-type}, typename Engine\-::gather\-\_\-type, typename Engine\-::message\-\_\-type$>$ {\bf saedb\-::context}$<$ Engine $>$\-::{\bf icontext\-\_\-type}}}\label{d1/d89/classsaedb_1_1context_ae9df8581f3061e5caa9272039d969b18}
+The parent type 
+
+Definition at line 25 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_ad29784e44db80b03b0adab9a2d8f2c72}{\index{saedb\-::context@{saedb\-::context}!message\-\_\-type@{message\-\_\-type}}
+\index{message\-\_\-type@{message\-\_\-type}!saedb::context@{saedb\-::context}}
+\subsubsection[{message\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ typedef {\bf icontext\-\_\-type\-::message\-\_\-type} {\bf saedb\-::context}$<$ Engine $>$\-::{\bf message\-\_\-type}}}\label{d1/d89/classsaedb_1_1context_ad29784e44db80b03b0adab9a2d8f2c72}
+
+
+Definition at line 29 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_aba9540d1189edf19f3d1cb7363b5c40b}{\index{saedb\-::context@{saedb\-::context}!vertex\-\_\-id\-\_\-type@{vertex\-\_\-id\-\_\-type}}
+\index{vertex\-\_\-id\-\_\-type@{vertex\-\_\-id\-\_\-type}!saedb::context@{saedb\-::context}}
+\subsubsection[{vertex\-\_\-id\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ typedef {\bf icontext\-\_\-type\-::vertex\-\_\-id\-\_\-type} {\bf saedb\-::context}$<$ Engine $>$\-::{\bf vertex\-\_\-id\-\_\-type}}}\label{d1/d89/classsaedb_1_1context_aba9540d1189edf19f3d1cb7363b5c40b}
+
+
+Definition at line 27 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a62f418b2b73082cd65a88feb604bab9f}{\index{saedb\-::context@{saedb\-::context}!vertex\-\_\-type@{vertex\-\_\-type}}
+\index{vertex\-\_\-type@{vertex\-\_\-type}!saedb::context@{saedb\-::context}}
+\subsubsection[{vertex\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ typedef {\bf icontext\-\_\-type\-::vertex\-\_\-type} {\bf saedb\-::context}$<$ Engine $>$\-::{\bf vertex\-\_\-type}}}\label{d1/d89/classsaedb_1_1context_a62f418b2b73082cd65a88feb604bab9f}
+
+
+Definition at line 28 of file context.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsaedb_1_1context_ac2248694285b99cf6fa359bf4a7ddb28}{\index{saedb\-::context@{saedb\-::context}!context@{context}}
+\index{context@{context}!saedb::context@{saedb\-::context}}
+\subsubsection[{context}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ {\bf saedb\-::context}$<$ Engine $>$\-::{\bf context} (
+\begin{DoxyParamCaption}
+\item[{{\bf engine\-\_\-type} \&}]{engine, }
+\item[{{\bf graph\-\_\-type} \&}]{graph}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d1/d89/classsaedb_1_1context_ac2248694285b99cf6fa359bf4a7ddb28}
+
+
+Construct a context for a particular engine and graph pair. 
+
+
+
+Definition at line 44 of file context.\-hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsaedb_1_1context_ab01112333512c57d6dc0156b6c807b99}{\index{saedb\-::context@{saedb\-::context}!cerr@{cerr}}
+\index{cerr@{cerr}!saedb::context@{saedb\-::context}}
+\subsubsection[{cerr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ std\-::ostream\& {\bf saedb\-::context}$<$ Engine $>$\-::cerr (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_ab01112333512c57d6dc0156b6c807b99}
+
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_a056142a0edfabcdcd0254a7003dcfd84}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 67 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a1654f9e7e61601ebe886c760d4170c59}{\index{saedb\-::context@{saedb\-::context}!clear\-\_\-gather\-\_\-cache@{clear\-\_\-gather\-\_\-cache}}
+\index{clear\-\_\-gather\-\_\-cache@{clear\-\_\-gather\-\_\-cache}!saedb::context@{saedb\-::context}}
+\subsubsection[{clear\-\_\-gather\-\_\-cache}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ virtual void {\bf saedb\-::context}$<$ Engine $>$\-::clear\-\_\-gather\-\_\-cache (
+\begin{DoxyParamCaption}
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_a1654f9e7e61601ebe886c760d4170c59}
+Invalidate the cached gather on the vertex. 
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_a327a0e7c8b3b040abb577715e1844c14}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 114 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a66c19922ee1b6f5bd61ab022f2f4622a}{\index{saedb\-::context@{saedb\-::context}!cout@{cout}}
+\index{cout@{cout}!saedb::context@{saedb\-::context}}
+\subsubsection[{cout}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ std\-::ostream\& {\bf saedb\-::context}$<$ Engine $>$\-::cout (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_a66c19922ee1b6f5bd61ab022f2f4622a}
+
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_aebcd170e0a7f73c5c23ccc2c5109c8ad}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 64 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a582c3612423e18a6891e78d96e1cc5cb}{\index{saedb\-::context@{saedb\-::context}!elapsed\-\_\-seconds@{elapsed\-\_\-seconds}}
+\index{elapsed\-\_\-seconds@{elapsed\-\_\-seconds}!saedb::context@{saedb\-::context}}
+\subsubsection[{elapsed\-\_\-seconds}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ float {\bf saedb\-::context}$<$ Engine $>$\-::elapsed\-\_\-seconds (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_a582c3612423e18a6891e78d96e1cc5cb}
+Get the elapsed time in seconds 
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_a4c8cc12932257edf89e97ec3e462c113}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 73 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a0c6faad7f4c09a5a90acd58b6a413f97}{\index{saedb\-::context@{saedb\-::context}!iteration@{iteration}}
+\index{iteration@{iteration}!saedb::context@{saedb\-::context}}
+\subsubsection[{iteration}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ int {\bf saedb\-::context}$<$ Engine $>$\-::iteration (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_a0c6faad7f4c09a5a90acd58b6a413f97}
+Return the current interation number (if supported). 
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_a3d56a20cb9b5e48a76a1cdaba0b0f944}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 78 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_aa33ef2cb3e708b0eca6b502f3c962897}{\index{saedb\-::context@{saedb\-::context}!num\-\_\-edges@{num\-\_\-edges}}
+\index{num\-\_\-edges@{num\-\_\-edges}!saedb::context@{saedb\-::context}}
+\subsubsection[{num\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ size\-\_\-t {\bf saedb\-::context}$<$ Engine $>$\-::num\-\_\-edges (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_aa33ef2cb3e708b0eca6b502f3c962897}
+Get the number of edges in the graph 
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_aa0ea9bf7ccdbd58a7fec6fe6b124f14b}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 52 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_aaa4630b0aca2bbde0167428cff7ab7e6}{\index{saedb\-::context@{saedb\-::context}!num\-\_\-procs@{num\-\_\-procs}}
+\index{num\-\_\-procs@{num\-\_\-procs}!saedb::context@{saedb\-::context}}
+\subsubsection[{num\-\_\-procs}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ size\-\_\-t {\bf saedb\-::context}$<$ Engine $>$\-::num\-\_\-procs (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_aaa4630b0aca2bbde0167428cff7ab7e6}
+
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_a7ae74263673ec0aeda4765a936ca20ad}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 62 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a19833a898006e8618b5f1a449569e64b}{\index{saedb\-::context@{saedb\-::context}!num\-\_\-vertices@{num\-\_\-vertices}}
+\index{num\-\_\-vertices@{num\-\_\-vertices}!saedb::context@{saedb\-::context}}
+\subsubsection[{num\-\_\-vertices}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ size\-\_\-t {\bf saedb\-::context}$<$ Engine $>$\-::num\-\_\-vertices (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_a19833a898006e8618b5f1a449569e64b}
+
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_ad40db46945f6dfbd6e738d0206298b76}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 47 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_aa623eb9e9aa1fc82ff0dbffbfc80619f}{\index{saedb\-::context@{saedb\-::context}!post\-\_\-delta@{post\-\_\-delta}}
+\index{post\-\_\-delta@{post\-\_\-delta}!saedb::context@{saedb\-::context}}
+\subsubsection[{post\-\_\-delta}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ void {\bf saedb\-::context}$<$ Engine $>$\-::post\-\_\-delta (
+\begin{DoxyParamCaption}
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex, }
+\item[{const {\bf gather\-\_\-type} \&}]{delta}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d1/d89/classsaedb_1_1context_aa623eb9e9aa1fc82ff0dbffbfc80619f}
+Post a change to the cached sum for the vertex 
+
+Definition at line 107 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a09b1e692a0b01ffb61e6abf6f5ba3c5d}{\index{saedb\-::context@{saedb\-::context}!procid@{procid}}
+\index{procid@{procid}!saedb::context@{saedb\-::context}}
+\subsubsection[{procid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ size\-\_\-t {\bf saedb\-::context}$<$ Engine $>$\-::procid (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_a09b1e692a0b01ffb61e6abf6f5ba3c5d}
+Get an estimate of the number of update functions executed up to this point. 
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_a806cf7e2a500cde5c58c9b35d3614e02}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 60 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a86002f3e0ce79e720421575847cf00ac}{\index{saedb\-::context@{saedb\-::context}!signal@{signal}}
+\index{signal@{signal}!saedb::context@{saedb\-::context}}
+\subsubsection[{signal}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ void {\bf saedb\-::context}$<$ Engine $>$\-::signal (
+\begin{DoxyParamCaption}
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex, }
+\item[{const {\bf message\-\_\-type} \&}]{message = {\ttfamily {\bf message\-\_\-type}()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d1/d89/classsaedb_1_1context_a86002f3e0ce79e720421575847cf00ac}
+Send a message to a vertex. 
+
+Definition at line 88 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a64e80cac06f3df77ca818d760c05d6c6}{\index{saedb\-::context@{saedb\-::context}!signal\-\_\-vid@{signal\-\_\-vid}}
+\index{signal\-\_\-vid@{signal\-\_\-vid}!saedb::context@{saedb\-::context}}
+\subsubsection[{signal\-\_\-vid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ void {\bf saedb\-::context}$<$ Engine $>$\-::signal\-\_\-vid (
+\begin{DoxyParamCaption}
+\item[{{\bf vertex\-\_\-id\-\_\-type}}]{vid, }
+\item[{const {\bf message\-\_\-type} \&}]{message = {\ttfamily {\bf message\-\_\-type}()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d1/d89/classsaedb_1_1context_a64e80cac06f3df77ca818d760c05d6c6}
+Send a message to a vertex I\-D. \begin{DoxyWarning}{Warning}
+This function will be slow since the current machine do not know the location of the vertex I\-D. 
+
+This may be unreliable. signals issued near to engine termination may be lost. 
+\end{DoxyWarning}
+
+
+Definition at line 99 of file context.\-hpp.
+
+\hypertarget{classsaedb_1_1context_a6337795d74509e592457f5d4f992573b}{\index{saedb\-::context@{saedb\-::context}!stop@{stop}}
+\index{stop@{stop}!saedb::context@{saedb\-::context}}
+\subsubsection[{stop}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Engine $>$ void {\bf saedb\-::context}$<$ Engine $>$\-::stop (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d1/d89/classsaedb_1_1context_a6337795d74509e592457f5d4f992573b}
+Force the engine to stop executing additional update functions. 
+
+Reimplemented from \hyperlink{classsaedb_1_1icontext_a82762c9c2b4ffc8c5d15245d1af7933a}{saedb\-::icontext$<$ Engine\-::graph\-\_\-type, Engine\-::gather\-\_\-type, Engine\-::message\-\_\-type $>$}.
+
+
+
+Definition at line 83 of file context.\-hpp.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/saedb/\hyperlink{context_8hpp}{context.\-hpp}\end{DoxyCompactItemize}

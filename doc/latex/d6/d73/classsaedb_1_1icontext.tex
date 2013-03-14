@@ -1,0 +1,306 @@
+\hypertarget{classsaedb_1_1icontext}{\section{saedb\-:\-:icontext$<$ Graph\-Type, Gather\-Type, Message\-Type $>$ Class Template Reference}
+\label{d6/d73/classsaedb_1_1icontext}\index{saedb\-::icontext$<$ Graph\-Type, Gather\-Type, Message\-Type $>$@{saedb\-::icontext$<$ Graph\-Type, Gather\-Type, Message\-Type $>$}}
+}
+
+
+{\ttfamily \#include $<$icontext.\-hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Graph\-Type \hyperlink{classsaedb_1_1icontext_a8eeb99ff6eb90e3f096a2895f9b92653}{graph\-\_\-type}
+\item 
+typedef \hyperlink{structsaedb_1_1sae__graph_1_1vertex__type}{graph\-\_\-type\-::vertex\-\_\-type} \hyperlink{classsaedb_1_1icontext_ab83a38ba860cb2101b499ae60675e4e5}{vertex\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{graph\-\_\-type\-::vertex\-\_\-id\-\_\-type} \hyperlink{classsaedb_1_1icontext_ac130cf374063f27748e4770617971660}{vertex\-\_\-id\-\_\-type}
+\item 
+typedef Message\-Type \hyperlink{classsaedb_1_1icontext_a7bd82d8486ab08dc1adf49dd6d659059}{message\-\_\-type}
+\item 
+typedef Gather\-Type \hyperlink{classsaedb_1_1icontext_a7c3ae1019b418faf3de68ab9396f867b}{gather\-\_\-type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classsaedb_1_1icontext_a1486dc63f9d7198f6f364e9feae3dfc7}{$\sim$icontext} ()
+\item 
+virtual size\-\_\-t \hyperlink{classsaedb_1_1icontext_ad40db46945f6dfbd6e738d0206298b76}{num\-\_\-vertices} () const 
+\item 
+virtual size\-\_\-t \hyperlink{classsaedb_1_1icontext_aa0ea9bf7ccdbd58a7fec6fe6b124f14b}{num\-\_\-edges} () const 
+\item 
+virtual size\-\_\-t \hyperlink{classsaedb_1_1icontext_a806cf7e2a500cde5c58c9b35d3614e02}{procid} () const 
+\item 
+virtual std\-::ostream \& \hyperlink{classsaedb_1_1icontext_aebcd170e0a7f73c5c23ccc2c5109c8ad}{cout} () const 
+\item 
+virtual std\-::ostream \& \hyperlink{classsaedb_1_1icontext_a056142a0edfabcdcd0254a7003dcfd84}{cerr} () const 
+\item 
+virtual size\-\_\-t \hyperlink{classsaedb_1_1icontext_a7ae74263673ec0aeda4765a936ca20ad}{num\-\_\-procs} () const 
+\item 
+virtual float \hyperlink{classsaedb_1_1icontext_a4c8cc12932257edf89e97ec3e462c113}{elapsed\-\_\-seconds} () const 
+\item 
+virtual int \hyperlink{classsaedb_1_1icontext_a3d56a20cb9b5e48a76a1cdaba0b0f944}{iteration} () const 
+\item 
+virtual void \hyperlink{classsaedb_1_1icontext_a82762c9c2b4ffc8c5d15245d1af7933a}{stop} ()
+\item 
+virtual void \hyperlink{classsaedb_1_1icontext_a8f567cb4de0027708b081985916f8464}{signal} (const \hyperlink{classsaedb_1_1icontext_ab83a38ba860cb2101b499ae60675e4e5}{vertex\-\_\-type} \&vertex, const \hyperlink{classsaedb_1_1icontext_a7bd82d8486ab08dc1adf49dd6d659059}{message\-\_\-type} \&message=\hyperlink{classsaedb_1_1icontext_a7bd82d8486ab08dc1adf49dd6d659059}{message\-\_\-type}())
+\item 
+virtual void \hyperlink{classsaedb_1_1icontext_a4d9539e7488703a7c0548d54668c58aa}{signal\-\_\-vid} (\hyperlink{classsaedb_1_1icontext_ac130cf374063f27748e4770617971660}{vertex\-\_\-id\-\_\-type} gvid, const \hyperlink{classsaedb_1_1icontext_a7bd82d8486ab08dc1adf49dd6d659059}{message\-\_\-type} \&message=\hyperlink{classsaedb_1_1icontext_a7bd82d8486ab08dc1adf49dd6d659059}{message\-\_\-type}())
+\item 
+virtual void \hyperlink{classsaedb_1_1icontext_a6a962eb1911f3e35f6f843213dfdc857}{post\-\_\-delta} (const \hyperlink{classsaedb_1_1icontext_ab83a38ba860cb2101b499ae60675e4e5}{vertex\-\_\-type} \&vertex, const \hyperlink{classsaedb_1_1icontext_a7c3ae1019b418faf3de68ab9396f867b}{gather\-\_\-type} \&delta)
+\item 
+virtual void \hyperlink{classsaedb_1_1icontext_a327a0e7c8b3b040abb577715e1844c14}{clear\-\_\-gather\-\_\-cache} (const \hyperlink{classsaedb_1_1icontext_ab83a38ba860cb2101b499ae60675e4e5}{vertex\-\_\-type} \&vertex)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$class saedb\-::icontext$<$ Graph\-Type, Gather\-Type, Message\-Type $>$}
+
+
+
+Definition at line 11 of file icontext.\-hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classsaedb_1_1icontext_a7c3ae1019b418faf3de68ab9396f867b}{\index{saedb\-::icontext@{saedb\-::icontext}!gather\-\_\-type@{gather\-\_\-type}}
+\index{gather\-\_\-type@{gather\-\_\-type}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{gather\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ typedef Gather\-Type {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::{\bf gather\-\_\-type}}}\label{d6/d73/classsaedb_1_1icontext_a7c3ae1019b418faf3de68ab9396f867b}
+
+
+Definition at line 21 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a8eeb99ff6eb90e3f096a2895f9b92653}{\index{saedb\-::icontext@{saedb\-::icontext}!graph\-\_\-type@{graph\-\_\-type}}
+\index{graph\-\_\-type@{graph\-\_\-type}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{graph\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ typedef Graph\-Type {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::{\bf graph\-\_\-type}}}\label{d6/d73/classsaedb_1_1icontext_a8eeb99ff6eb90e3f096a2895f9b92653}
+
+
+Definition at line 13 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a7bd82d8486ab08dc1adf49dd6d659059}{\index{saedb\-::icontext@{saedb\-::icontext}!message\-\_\-type@{message\-\_\-type}}
+\index{message\-\_\-type@{message\-\_\-type}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{message\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ typedef Message\-Type {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::{\bf message\-\_\-type}}}\label{d6/d73/classsaedb_1_1icontext_a7bd82d8486ab08dc1adf49dd6d659059}
+
+
+Definition at line 19 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_ac130cf374063f27748e4770617971660}{\index{saedb\-::icontext@{saedb\-::icontext}!vertex\-\_\-id\-\_\-type@{vertex\-\_\-id\-\_\-type}}
+\index{vertex\-\_\-id\-\_\-type@{vertex\-\_\-id\-\_\-type}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{vertex\-\_\-id\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ typedef {\bf graph\-\_\-type\-::vertex\-\_\-id\-\_\-type} {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::{\bf vertex\-\_\-id\-\_\-type}}}\label{d6/d73/classsaedb_1_1icontext_ac130cf374063f27748e4770617971660}
+
+
+Definition at line 17 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_ab83a38ba860cb2101b499ae60675e4e5}{\index{saedb\-::icontext@{saedb\-::icontext}!vertex\-\_\-type@{vertex\-\_\-type}}
+\index{vertex\-\_\-type@{vertex\-\_\-type}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{vertex\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ typedef {\bf graph\-\_\-type\-::vertex\-\_\-type} {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::{\bf vertex\-\_\-type}}}\label{d6/d73/classsaedb_1_1icontext_ab83a38ba860cb2101b499ae60675e4e5}
+
+
+Definition at line 15 of file icontext.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsaedb_1_1icontext_a1486dc63f9d7198f6f364e9feae3dfc7}{\index{saedb\-::icontext@{saedb\-::icontext}!$\sim$icontext@{$\sim$icontext}}
+\index{$\sim$icontext@{$\sim$icontext}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{$\sim$icontext}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::$\sim${\bf icontext} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a1486dc63f9d7198f6f364e9feae3dfc7}
+
+
+Definition at line 24 of file icontext.\-hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsaedb_1_1icontext_a056142a0edfabcdcd0254a7003dcfd84}{\index{saedb\-::icontext@{saedb\-::icontext}!cerr@{cerr}}
+\index{cerr@{cerr}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{cerr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual std\-::ostream\& {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::cerr (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a056142a0edfabcdcd0254a7003dcfd84}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_ab01112333512c57d6dc0156b6c807b99}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 34 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a327a0e7c8b3b040abb577715e1844c14}{\index{saedb\-::icontext@{saedb\-::icontext}!clear\-\_\-gather\-\_\-cache@{clear\-\_\-gather\-\_\-cache}}
+\index{clear\-\_\-gather\-\_\-cache@{clear\-\_\-gather\-\_\-cache}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{clear\-\_\-gather\-\_\-cache}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual void {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::clear\-\_\-gather\-\_\-cache (
+\begin{DoxyParamCaption}
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a327a0e7c8b3b040abb577715e1844c14}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_a1654f9e7e61601ebe886c760d4170c59}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 53 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_aebcd170e0a7f73c5c23ccc2c5109c8ad}{\index{saedb\-::icontext@{saedb\-::icontext}!cout@{cout}}
+\index{cout@{cout}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{cout}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual std\-::ostream\& {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::cout (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_aebcd170e0a7f73c5c23ccc2c5109c8ad}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_a66c19922ee1b6f5bd61ab022f2f4622a}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 32 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a4c8cc12932257edf89e97ec3e462c113}{\index{saedb\-::icontext@{saedb\-::icontext}!elapsed\-\_\-seconds@{elapsed\-\_\-seconds}}
+\index{elapsed\-\_\-seconds@{elapsed\-\_\-seconds}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{elapsed\-\_\-seconds}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual float {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::elapsed\-\_\-seconds (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a4c8cc12932257edf89e97ec3e462c113}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_a582c3612423e18a6891e78d96e1cc5cb}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 38 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a3d56a20cb9b5e48a76a1cdaba0b0f944}{\index{saedb\-::icontext@{saedb\-::icontext}!iteration@{iteration}}
+\index{iteration@{iteration}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{iteration}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual int {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::iteration (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a3d56a20cb9b5e48a76a1cdaba0b0f944}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_a0c6faad7f4c09a5a90acd58b6a413f97}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 40 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_aa0ea9bf7ccdbd58a7fec6fe6b124f14b}{\index{saedb\-::icontext@{saedb\-::icontext}!num\-\_\-edges@{num\-\_\-edges}}
+\index{num\-\_\-edges@{num\-\_\-edges}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{num\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual size\-\_\-t {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::num\-\_\-edges (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_aa0ea9bf7ccdbd58a7fec6fe6b124f14b}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_aa33ef2cb3e708b0eca6b502f3c962897}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 28 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a7ae74263673ec0aeda4765a936ca20ad}{\index{saedb\-::icontext@{saedb\-::icontext}!num\-\_\-procs@{num\-\_\-procs}}
+\index{num\-\_\-procs@{num\-\_\-procs}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{num\-\_\-procs}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual size\-\_\-t {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::num\-\_\-procs (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a7ae74263673ec0aeda4765a936ca20ad}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_aaa4630b0aca2bbde0167428cff7ab7e6}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 36 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_ad40db46945f6dfbd6e738d0206298b76}{\index{saedb\-::icontext@{saedb\-::icontext}!num\-\_\-vertices@{num\-\_\-vertices}}
+\index{num\-\_\-vertices@{num\-\_\-vertices}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{num\-\_\-vertices}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual size\-\_\-t {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::num\-\_\-vertices (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_ad40db46945f6dfbd6e738d0206298b76}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_a19833a898006e8618b5f1a449569e64b}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 26 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a6a962eb1911f3e35f6f843213dfdc857}{\index{saedb\-::icontext@{saedb\-::icontext}!post\-\_\-delta@{post\-\_\-delta}}
+\index{post\-\_\-delta@{post\-\_\-delta}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{post\-\_\-delta}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual void {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::post\-\_\-delta (
+\begin{DoxyParamCaption}
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex, }
+\item[{const {\bf gather\-\_\-type} \&}]{delta}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a6a962eb1911f3e35f6f843213dfdc857}
+
+
+Definition at line 50 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a806cf7e2a500cde5c58c9b35d3614e02}{\index{saedb\-::icontext@{saedb\-::icontext}!procid@{procid}}
+\index{procid@{procid}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{procid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual size\-\_\-t {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::procid (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a806cf7e2a500cde5c58c9b35d3614e02}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_a09b1e692a0b01ffb61e6abf6f5ba3c5d}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 30 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a8f567cb4de0027708b081985916f8464}{\index{saedb\-::icontext@{saedb\-::icontext}!signal@{signal}}
+\index{signal@{signal}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{signal}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual void {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::signal (
+\begin{DoxyParamCaption}
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex, }
+\item[{const {\bf message\-\_\-type} \&}]{message = {\ttfamily {\bf message\-\_\-type}()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a8f567cb4de0027708b081985916f8464}
+
+
+Definition at line 44 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a4d9539e7488703a7c0548d54668c58aa}{\index{saedb\-::icontext@{saedb\-::icontext}!signal\-\_\-vid@{signal\-\_\-vid}}
+\index{signal\-\_\-vid@{signal\-\_\-vid}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{signal\-\_\-vid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual void {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::signal\-\_\-vid (
+\begin{DoxyParamCaption}
+\item[{{\bf vertex\-\_\-id\-\_\-type}}]{gvid, }
+\item[{const {\bf message\-\_\-type} \&}]{message = {\ttfamily {\bf message\-\_\-type}()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a4d9539e7488703a7c0548d54668c58aa}
+
+
+Definition at line 47 of file icontext.\-hpp.
+
+\hypertarget{classsaedb_1_1icontext_a82762c9c2b4ffc8c5d15245d1af7933a}{\index{saedb\-::icontext@{saedb\-::icontext}!stop@{stop}}
+\index{stop@{stop}!saedb::icontext@{saedb\-::icontext}}
+\subsubsection[{stop}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph\-Type, typename Gather\-Type, typename Message\-Type$>$ virtual void {\bf saedb\-::icontext}$<$ Graph\-Type, Gather\-Type, Message\-Type $>$\-::stop (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d6/d73/classsaedb_1_1icontext_a82762c9c2b4ffc8c5d15245d1af7933a}
+
+
+Reimplemented in \hyperlink{classsaedb_1_1context_a6337795d74509e592457f5d4f992573b}{saedb\-::context$<$ Engine $>$}.
+
+
+
+Definition at line 42 of file icontext.\-hpp.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/saedb/\hyperlink{icontext_8hpp}{icontext.\-hpp}\end{DoxyCompactItemize}

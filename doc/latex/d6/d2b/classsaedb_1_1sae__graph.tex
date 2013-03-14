@@ -1,0 +1,389 @@
+\hypertarget{classsaedb_1_1sae__graph}{\section{saedb\-:\-:sae\-\_\-graph$<$ Vertex\-Data, Edge\-Data $>$ Class Template Reference}
+\label{d6/d2b/classsaedb_1_1sae__graph}\index{saedb\-::sae\-\_\-graph$<$ Vertex\-Data, Edge\-Data $>$@{saedb\-::sae\-\_\-graph$<$ Vertex\-Data, Edge\-Data $>$}}
+}
+
+
+{\ttfamily \#include $<$graph.\-hpp$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classsaedb_1_1sae__graph_1_1edge__type}{edge\-\_\-type}
+\item 
+struct \hyperlink{structsaedb_1_1sae__graph_1_1local__edge__list__type}{local\-\_\-edge\-\_\-list\-\_\-type}
+\item 
+class \hyperlink{classsaedb_1_1sae__graph_1_1local__edge__type}{local\-\_\-edge\-\_\-type}
+\item 
+struct \hyperlink{structsaedb_1_1sae__graph_1_1local__vertex__type}{local\-\_\-vertex\-\_\-type}
+\item 
+struct \hyperlink{structsaedb_1_1sae__graph_1_1vertex__type}{vertex\-\_\-type}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Vertex\-Data \hyperlink{classsaedb_1_1sae__graph_a8e9dfeb979f49c35d427f364fb3f69f5}{vertex\-\_\-data\-\_\-type}
+\item 
+typedef Edge\-Data \hyperlink{classsaedb_1_1sae__graph_a3f786e0be3d855a988333235a6b50d02}{edge\-\_\-data\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1local__graph}{saedb\-::local\-\_\-graph}\\*
+$<$ Vertex\-Data, Edge\-Data $>$ \hyperlink{classsaedb_1_1sae__graph_a71b3f3108c15bb3af8362ba078d4cb06}{local\-\_\-graph\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1sae__graph}{saedb\-::sae\-\_\-graph}\\*
+$<$ Vertex\-Data, Edge\-Data $>$ \hyperlink{classsaedb_1_1sae__graph_a23007633d4d5ca206b659fd585777848}{graph\-\_\-type}
+\item 
+typedef \hyperlink{namespacesaedb_a502e07e24003e811ae3bd73514c2798a}{saedb\-::vertex\-\_\-id\-\_\-type} \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type}
+\item 
+typedef \hyperlink{namespacesaedb_ae0f2df508bdfd29505d57534c8ed4a65}{saedb\-::lvid\-\_\-type} \hyperlink{classsaedb_1_1sae__graph_afcd2ad6444e374e40a7a5ee4c46be052}{lvid\-\_\-type}
+\item 
+typedef \hyperlink{namespacesaedb_af76c9a21f199f95828dd18699754cad1}{saedb\-::edge\-\_\-id\-\_\-type} \hyperlink{classsaedb_1_1sae__graph_a5f39a5f8d12ae17fd09fad90004229d7}{edge\-\_\-id\-\_\-type}
+\item 
+typedef bool \hyperlink{classsaedb_1_1sae__graph_a5801338c962bef55a7bd3a18ebff8e9c}{edge\-\_\-list\-\_\-type}
+\item 
+typedef vector$<$ \hyperlink{classsaedb_1_1sae__graph_1_1edge__type}{edge\-\_\-type} $>$ \hyperlink{classsaedb_1_1sae__graph_aabe2a7d32910210e6b72c35412adbd1e}{vertex\-\_\-neighbours}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsaedb_1_1sae__graph_a80136881b21db9545e5fcc895d0ecaca}{sae\-\_\-graph} ()
+\item 
+void \hyperlink{classsaedb_1_1sae__graph_acfc9edefe65c3a157535d501561b5773}{finalize} ()
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1sae__graph_a0f7e9e6918243d61e43da07170585fbb}{num\-\_\-in\-\_\-edges} (const \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type} vid) const 
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1sae__graph_acb15e3f2edb026396ebfde5cb0b6062e}{num\-\_\-out\-\_\-edges} (const \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type} vid) const 
+\item 
+void \hyperlink{classsaedb_1_1sae__graph_aa5684a61093a0df5c31526110ed7814a}{load} ()
+\item 
+void \hyperlink{classsaedb_1_1sae__graph_a63d32eec005ca0781bc929e3228bdbcb}{loadformat} (string filename)
+\item 
+void \hyperlink{classsaedb_1_1sae__graph_ad7cf419a735a156a86891c9324825848}{save} () const 
+\item 
+void \hyperlink{classsaedb_1_1sae__graph_a88ff888e84af7136075d6d2203b9acb2}{display} ()
+\item 
+void \hyperlink{classsaedb_1_1sae__graph_acb0d2162f660d8e842e6e0561fcdc067}{add\-\_\-vertex} (\hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type} id, \hyperlink{classsaedb_1_1sae__graph_a8e9dfeb979f49c35d427f364fb3f69f5}{vertex\-\_\-data\-\_\-type} data)
+\item 
+void \hyperlink{classsaedb_1_1sae__graph_af319091f0fa0aad465016dee985e74c6}{add\-\_\-edge} (\hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type} source, \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type} target, \hyperlink{classsaedb_1_1sae__graph_a3f786e0be3d855a988333235a6b50d02}{edge\-\_\-data\-\_\-type} data)
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1sae__graph_a78a18f7cb3910f97e055cee6e0425929}{num\-\_\-vertices} ()
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1sae__graph_ad5beeb00439d98cfecaf09085caa5f8a}{num\-\_\-edges} ()
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1sae__graph_a0b8e3cf5e27545d0f77dd8e856a57af8}{num\-\_\-local\-\_\-vertices} ()
+\item 
+\hyperlink{structsaedb_1_1sae__graph_1_1vertex__type}{vertex\-\_\-type} \hyperlink{classsaedb_1_1sae__graph_ad669c708cd89709cb522dc79e5f8e797}{vertex} (\hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type} vid)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+set$<$ \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type} $>$ \hyperlink{classsaedb_1_1sae__graph_a2ccc2ab5b2a101c3a1c323d24ebc8575}{vertex\-\_\-ids}
+\item 
+map$<$ \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type}, \hyperlink{structsaedb_1_1sae__graph_1_1vertex__type}{vertex\-\_\-type} $>$ \hyperlink{classsaedb_1_1sae__graph_a48eea89cb33990272507f967d5116216}{vertex\-\_\-id\-\_\-2\-\_\-vertex}
+\item 
+map$<$ \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type}, \\*
+\hyperlink{classsaedb_1_1sae__graph_aabe2a7d32910210e6b72c35412adbd1e}{vertex\-\_\-neighbours} $>$ \hyperlink{classsaedb_1_1sae__graph_a29465e678178961ca52a3887cec29062}{vertex\-\_\-id\-\_\-2\-\_\-in\-\_\-edges}
+\item 
+map$<$ \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type}, \\*
+\hyperlink{classsaedb_1_1sae__graph_aabe2a7d32910210e6b72c35412adbd1e}{vertex\-\_\-neighbours} $>$ \hyperlink{classsaedb_1_1sae__graph_ad04eb3952dbc00e6cbe3f2638eb2c2bf}{vertex\-\_\-id\-\_\-2\-\_\-out\-\_\-edges}
+\item 
+map$<$ \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{vertex\-\_\-id\-\_\-type}, \\*
+\hyperlink{classsaedb_1_1sae__graph_a8e9dfeb979f49c35d427f364fb3f69f5}{vertex\-\_\-data\-\_\-type} $>$ \hyperlink{classsaedb_1_1sae__graph_a62ce6b48cf14e233f705b232b374fe27}{vertex\-\_\-id\-\_\-2\-\_\-data}
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1sae__graph_a06ee4411cd8c4c9352bbe111526e23bc}{nvertex}
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1sae__graph_a0f438dbda72b5762b72c444c5655e9e2}{nedge}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Vertex\-Data, typename Edge\-Data$>$class saedb\-::sae\-\_\-graph$<$ Vertex\-Data, Edge\-Data $>$}
+
+
+
+Definition at line 21 of file graph.\-hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classsaedb_1_1sae__graph_a3f786e0be3d855a988333235a6b50d02}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!edge\-\_\-data\-\_\-type@{edge\-\_\-data\-\_\-type}}
+\index{edge\-\_\-data\-\_\-type@{edge\-\_\-data\-\_\-type}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{edge\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef Edge\-Data {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf edge\-\_\-data\-\_\-type}}}\label{d6/d2b/classsaedb_1_1sae__graph_a3f786e0be3d855a988333235a6b50d02}
+
+
+Definition at line 25 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a5f39a5f8d12ae17fd09fad90004229d7}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!edge\-\_\-id\-\_\-type@{edge\-\_\-id\-\_\-type}}
+\index{edge\-\_\-id\-\_\-type@{edge\-\_\-id\-\_\-type}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{edge\-\_\-id\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef {\bf saedb\-::edge\-\_\-id\-\_\-type} {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf edge\-\_\-id\-\_\-type}}}\label{d6/d2b/classsaedb_1_1sae__graph_a5f39a5f8d12ae17fd09fad90004229d7}
+
+
+Definition at line 30 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a5801338c962bef55a7bd3a18ebff8e9c}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!edge\-\_\-list\-\_\-type@{edge\-\_\-list\-\_\-type}}
+\index{edge\-\_\-list\-\_\-type@{edge\-\_\-list\-\_\-type}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{edge\-\_\-list\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef bool {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf edge\-\_\-list\-\_\-type}}}\label{d6/d2b/classsaedb_1_1sae__graph_a5801338c962bef55a7bd3a18ebff8e9c}
+
+
+Definition at line 32 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a23007633d4d5ca206b659fd585777848}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!graph\-\_\-type@{graph\-\_\-type}}
+\index{graph\-\_\-type@{graph\-\_\-type}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{graph\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef {\bf saedb\-::sae\-\_\-graph}$<$Vertex\-Data, Edge\-Data$>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf graph\-\_\-type}}}\label{d6/d2b/classsaedb_1_1sae__graph_a23007633d4d5ca206b659fd585777848}
+
+
+Definition at line 27 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a71b3f3108c15bb3af8362ba078d4cb06}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!local\-\_\-graph\-\_\-type@{local\-\_\-graph\-\_\-type}}
+\index{local\-\_\-graph\-\_\-type@{local\-\_\-graph\-\_\-type}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{local\-\_\-graph\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef {\bf saedb\-::local\-\_\-graph}$<$Vertex\-Data, Edge\-Data$>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf local\-\_\-graph\-\_\-type}}}\label{d6/d2b/classsaedb_1_1sae__graph_a71b3f3108c15bb3af8362ba078d4cb06}
+
+
+Definition at line 26 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_afcd2ad6444e374e40a7a5ee4c46be052}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!lvid\-\_\-type@{lvid\-\_\-type}}
+\index{lvid\-\_\-type@{lvid\-\_\-type}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{lvid\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef {\bf saedb\-::lvid\-\_\-type} {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf lvid\-\_\-type}}}\label{d6/d2b/classsaedb_1_1sae__graph_afcd2ad6444e374e40a7a5ee4c46be052}
+
+
+Definition at line 29 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a8e9dfeb979f49c35d427f364fb3f69f5}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex\-\_\-data\-\_\-type@{vertex\-\_\-data\-\_\-type}}
+\index{vertex\-\_\-data\-\_\-type@{vertex\-\_\-data\-\_\-type}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef Vertex\-Data {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf vertex\-\_\-data\-\_\-type}}}\label{d6/d2b/classsaedb_1_1sae__graph_a8e9dfeb979f49c35d427f364fb3f69f5}
+
+
+Definition at line 24 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex\-\_\-id\-\_\-type@{vertex\-\_\-id\-\_\-type}}
+\index{vertex\-\_\-id\-\_\-type@{vertex\-\_\-id\-\_\-type}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex\-\_\-id\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef {\bf saedb\-::vertex\-\_\-id\-\_\-type} {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf vertex\-\_\-id\-\_\-type}}}\label{d6/d2b/classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}
+
+
+Definition at line 28 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_aabe2a7d32910210e6b72c35412adbd1e}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex\-\_\-neighbours@{vertex\-\_\-neighbours}}
+\index{vertex\-\_\-neighbours@{vertex\-\_\-neighbours}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex\-\_\-neighbours}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef vector$<${\bf edge\-\_\-type}$>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf vertex\-\_\-neighbours}}}\label{d6/d2b/classsaedb_1_1sae__graph_aabe2a7d32910210e6b72c35412adbd1e}
+
+
+Definition at line 38 of file graph.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsaedb_1_1sae__graph_a80136881b21db9545e5fcc895d0ecaca}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!sae\-\_\-graph@{sae\-\_\-graph}}
+\index{sae\-\_\-graph@{sae\-\_\-graph}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{sae\-\_\-graph}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf sae\-\_\-graph} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_a80136881b21db9545e5fcc895d0ecaca}
+
+
+Definition at line 52 of file graph.\-hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsaedb_1_1sae__graph_af319091f0fa0aad465016dee985e74c6}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!add\-\_\-edge@{add\-\_\-edge}}
+\index{add\-\_\-edge@{add\-\_\-edge}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{add\-\_\-edge}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::add\-\_\-edge (
+\begin{DoxyParamCaption}
+\item[{{\bf vertex\-\_\-id\-\_\-type}}]{source, }
+\item[{{\bf vertex\-\_\-id\-\_\-type}}]{target, }
+\item[{{\bf edge\-\_\-data\-\_\-type}}]{data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_af319091f0fa0aad465016dee985e74c6}
+
+
+Definition at line 95 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_acb0d2162f660d8e842e6e0561fcdc067}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!add\-\_\-vertex@{add\-\_\-vertex}}
+\index{add\-\_\-vertex@{add\-\_\-vertex}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{add\-\_\-vertex}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::add\-\_\-vertex (
+\begin{DoxyParamCaption}
+\item[{{\bf vertex\-\_\-id\-\_\-type}}]{id, }
+\item[{{\bf vertex\-\_\-data\-\_\-type}}]{data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_acb0d2162f660d8e842e6e0561fcdc067}
+
+
+Definition at line 83 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a88ff888e84af7136075d6d2203b9acb2}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!display@{display}}
+\index{display@{display}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{display}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::display (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_a88ff888e84af7136075d6d2203b9acb2}
+
+
+Definition at line 76 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_acfc9edefe65c3a157535d501561b5773}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!finalize@{finalize}}
+\index{finalize@{finalize}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{finalize}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::finalize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_acfc9edefe65c3a157535d501561b5773}
+
+
+Definition at line 55 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_aa5684a61093a0df5c31526110ed7814a}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!load@{load}}
+\index{load@{load}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{load}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::load (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_aa5684a61093a0df5c31526110ed7814a}
+
+
+Definition at line 67 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a63d32eec005ca0781bc929e3228bdbcb}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!loadformat@{loadformat}}
+\index{loadformat@{loadformat}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{loadformat}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::loadformat (
+\begin{DoxyParamCaption}
+\item[{string}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_a63d32eec005ca0781bc929e3228bdbcb}
+
+
+Definition at line 70 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_ad5beeb00439d98cfecaf09085caa5f8a}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!num\-\_\-edges@{num\-\_\-edges}}
+\index{num\-\_\-edges@{num\-\_\-edges}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{num\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::num\-\_\-edges (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_ad5beeb00439d98cfecaf09085caa5f8a}
+
+
+Definition at line 108 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a0f7e9e6918243d61e43da07170585fbb}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!num\-\_\-in\-\_\-edges@{num\-\_\-in\-\_\-edges}}
+\index{num\-\_\-in\-\_\-edges@{num\-\_\-in\-\_\-edges}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{num\-\_\-in\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::num\-\_\-in\-\_\-edges (
+\begin{DoxyParamCaption}
+\item[{const {\bf vertex\-\_\-id\-\_\-type}}]{vid}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_a0f7e9e6918243d61e43da07170585fbb}
+
+
+Definition at line 57 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a0b8e3cf5e27545d0f77dd8e856a57af8}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!num\-\_\-local\-\_\-vertices@{num\-\_\-local\-\_\-vertices}}
+\index{num\-\_\-local\-\_\-vertices@{num\-\_\-local\-\_\-vertices}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{num\-\_\-local\-\_\-vertices}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::num\-\_\-local\-\_\-vertices (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_a0b8e3cf5e27545d0f77dd8e856a57af8}
+
+
+Definition at line 112 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_acb15e3f2edb026396ebfde5cb0b6062e}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!num\-\_\-out\-\_\-edges@{num\-\_\-out\-\_\-edges}}
+\index{num\-\_\-out\-\_\-edges@{num\-\_\-out\-\_\-edges}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{num\-\_\-out\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::num\-\_\-out\-\_\-edges (
+\begin{DoxyParamCaption}
+\item[{const {\bf vertex\-\_\-id\-\_\-type}}]{vid}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_acb15e3f2edb026396ebfde5cb0b6062e}
+
+
+Definition at line 62 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a78a18f7cb3910f97e055cee6e0425929}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!num\-\_\-vertices@{num\-\_\-vertices}}
+\index{num\-\_\-vertices@{num\-\_\-vertices}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{num\-\_\-vertices}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::num\-\_\-vertices (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_a78a18f7cb3910f97e055cee6e0425929}
+
+
+Definition at line 104 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_ad7cf419a735a156a86891c9324825848}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!save@{save}}
+\index{save@{save}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{save}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::save (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_ad7cf419a735a156a86891c9324825848}
+
+
+Definition at line 73 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_ad669c708cd89709cb522dc79e5f8e797}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex@{vertex}}
+\index{vertex@{vertex}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf vertex\-\_\-type} {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::vertex (
+\begin{DoxyParamCaption}
+\item[{{\bf vertex\-\_\-id\-\_\-type}}]{vid}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d6/d2b/classsaedb_1_1sae__graph_ad669c708cd89709cb522dc79e5f8e797}
+
+
+Definition at line 188 of file graph.\-hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classsaedb_1_1sae__graph_a0f438dbda72b5762b72c444c5655e9e2}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!nedge@{nedge}}
+\index{nedge@{nedge}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{nedge}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::nedge}}\label{d6/d2b/classsaedb_1_1sae__graph_a0f438dbda72b5762b72c444c5655e9e2}
+
+
+Definition at line 50 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a06ee4411cd8c4c9352bbe111526e23bc}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!nvertex@{nvertex}}
+\index{nvertex@{nvertex}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{nvertex}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::nvertex}}\label{d6/d2b/classsaedb_1_1sae__graph_a06ee4411cd8c4c9352bbe111526e23bc}
+
+
+Definition at line 48 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a62ce6b48cf14e233f705b232b374fe27}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex\-\_\-id\-\_\-2\-\_\-data@{vertex\-\_\-id\-\_\-2\-\_\-data}}
+\index{vertex\-\_\-id\-\_\-2\-\_\-data@{vertex\-\_\-id\-\_\-2\-\_\-data}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex\-\_\-id\-\_\-2\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ map$<${\bf vertex\-\_\-id\-\_\-type}, {\bf vertex\-\_\-data\-\_\-type}$>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::vertex\-\_\-id\-\_\-2\-\_\-data}}\label{d6/d2b/classsaedb_1_1sae__graph_a62ce6b48cf14e233f705b232b374fe27}
+
+
+Definition at line 46 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a29465e678178961ca52a3887cec29062}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex\-\_\-id\-\_\-2\-\_\-in\-\_\-edges@{vertex\-\_\-id\-\_\-2\-\_\-in\-\_\-edges}}
+\index{vertex\-\_\-id\-\_\-2\-\_\-in\-\_\-edges@{vertex\-\_\-id\-\_\-2\-\_\-in\-\_\-edges}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex\-\_\-id\-\_\-2\-\_\-in\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ map$<${\bf vertex\-\_\-id\-\_\-type}, {\bf vertex\-\_\-neighbours}$>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::vertex\-\_\-id\-\_\-2\-\_\-in\-\_\-edges}}\label{d6/d2b/classsaedb_1_1sae__graph_a29465e678178961ca52a3887cec29062}
+
+
+Definition at line 44 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_ad04eb3952dbc00e6cbe3f2638eb2c2bf}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex\-\_\-id\-\_\-2\-\_\-out\-\_\-edges@{vertex\-\_\-id\-\_\-2\-\_\-out\-\_\-edges}}
+\index{vertex\-\_\-id\-\_\-2\-\_\-out\-\_\-edges@{vertex\-\_\-id\-\_\-2\-\_\-out\-\_\-edges}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex\-\_\-id\-\_\-2\-\_\-out\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ map$<${\bf vertex\-\_\-id\-\_\-type}, {\bf vertex\-\_\-neighbours}$>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::vertex\-\_\-id\-\_\-2\-\_\-out\-\_\-edges}}\label{d6/d2b/classsaedb_1_1sae__graph_ad04eb3952dbc00e6cbe3f2638eb2c2bf}
+
+
+Definition at line 45 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a48eea89cb33990272507f967d5116216}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex\-\_\-id\-\_\-2\-\_\-vertex@{vertex\-\_\-id\-\_\-2\-\_\-vertex}}
+\index{vertex\-\_\-id\-\_\-2\-\_\-vertex@{vertex\-\_\-id\-\_\-2\-\_\-vertex}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex\-\_\-id\-\_\-2\-\_\-vertex}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ map$<${\bf vertex\-\_\-id\-\_\-type}, {\bf vertex\-\_\-type}$>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::vertex\-\_\-id\-\_\-2\-\_\-vertex}}\label{d6/d2b/classsaedb_1_1sae__graph_a48eea89cb33990272507f967d5116216}
+
+
+Definition at line 43 of file graph.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__graph_a2ccc2ab5b2a101c3a1c323d24ebc8575}{\index{saedb\-::sae\-\_\-graph@{saedb\-::sae\-\_\-graph}!vertex\-\_\-ids@{vertex\-\_\-ids}}
+\index{vertex\-\_\-ids@{vertex\-\_\-ids}!saedb::sae_graph@{saedb\-::sae\-\_\-graph}}
+\subsubsection[{vertex\-\_\-ids}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ set$<${\bf vertex\-\_\-id\-\_\-type}$>$ {\bf saedb\-::sae\-\_\-graph}$<$ Vertex\-Data, Edge\-Data $>$\-::vertex\-\_\-ids}}\label{d6/d2b/classsaedb_1_1sae__graph_a2ccc2ab5b2a101c3a1c323d24ebc8575}
+
+
+Definition at line 42 of file graph.\-hpp.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/saedb/\hyperlink{graph_8hpp}{graph.\-hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,116 @@
+\hypertarget{demo_2pagerank_2pagerank_8cpp}{\section{src/app/demo/pagerank/pagerank.cpp File Reference}
+\label{db/de9/demo_2pagerank_2pagerank_8cpp}\index{src/app/demo/pagerank/pagerank.\-cpp@{src/app/demo/pagerank/pagerank.\-cpp}}
+}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include \char`\"{}sae\-\_\-include.\-hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classpagerank}{pagerank}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef float \hyperlink{demo_2pagerank_2pagerank_8cpp_a83b84c881f9533bcb4419c5cea0ba87c}{vertex\-\_\-data\-\_\-type}
+\item 
+typedef float \hyperlink{demo_2pagerank_2pagerank_8cpp_a2380f382b92e3cea1397452fe957d199}{edge\-\_\-data\-\_\-type}
+\item 
+typedef \hyperlink{structsaedb_1_1empty}{saedb\-::empty} \hyperlink{demo_2pagerank_2pagerank_8cpp_a8461bf6b78a339f8f7689fa6701319eb}{message\-\_\-date\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1sae__graph}{saedb\-::sae\-\_\-graph}\\*
+$<$ \hyperlink{kmeans_8cpp_a83b84c881f9533bcb4419c5cea0ba87c}{vertex\-\_\-data\-\_\-type}, \\*
+\hyperlink{kmeans_8cpp_a2380f382b92e3cea1397452fe957d199}{edge\-\_\-data\-\_\-type} $>$ \hyperlink{demo_2pagerank_2pagerank_8cpp_afa42a4da0de8450a5bb4145aa06ee689}{graph\-\_\-type}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{kmeans_8cpp_afa42a4da0de8450a5bb4145aa06ee689}{graph\-\_\-type} \hyperlink{demo_2pagerank_2pagerank_8cpp_a50124c402af6281bf093b3f97566b842}{sample\-\_\-graph} ()
+\item 
+int \hyperlink{demo_2pagerank_2pagerank_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{demo_2pagerank_2pagerank_8cpp_aabb59c4c6873688baf77746a41b103a6}{R\-E\-S\-E\-T\-\_\-\-P\-R\-O\-B} = 0.\-15
+\item 
+float \hyperlink{demo_2pagerank_2pagerank_8cpp_a12319b6f2b711e444d3c7c87aa5d0a32}{T\-O\-L\-E\-R\-A\-N\-C\-E} = 1.\-0\-E-\/2
+\item 
+\hyperlink{classpagerank}{pagerank} \hyperlink{demo_2pagerank_2pagerank_8cpp_ab2f6eee759504a82848e412fde849d31}{sample\-\_\-graph}
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{demo_2pagerank_2pagerank_8cpp_a2380f382b92e3cea1397452fe957d199}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!edge\-\_\-data\-\_\-type@{edge\-\_\-data\-\_\-type}}
+\index{edge\-\_\-data\-\_\-type@{edge\-\_\-data\-\_\-type}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{edge\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}typedef float {\bf edge\-\_\-data\-\_\-type}}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_a2380f382b92e3cea1397452fe957d199}
+
+
+Definition at line 9 of file pagerank.\-cpp.
+
+\hypertarget{demo_2pagerank_2pagerank_8cpp_afa42a4da0de8450a5bb4145aa06ee689}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!graph\-\_\-type@{graph\-\_\-type}}
+\index{graph\-\_\-type@{graph\-\_\-type}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{graph\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf saedb\-::sae\-\_\-graph}$<${\bf vertex\-\_\-data\-\_\-type}, {\bf edge\-\_\-data\-\_\-type}$>$ {\bf graph\-\_\-type}}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_afa42a4da0de8450a5bb4145aa06ee689}
+
+
+Definition at line 11 of file pagerank.\-cpp.
+
+\hypertarget{demo_2pagerank_2pagerank_8cpp_a8461bf6b78a339f8f7689fa6701319eb}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!message\-\_\-date\-\_\-type@{message\-\_\-date\-\_\-type}}
+\index{message\-\_\-date\-\_\-type@{message\-\_\-date\-\_\-type}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{message\-\_\-date\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf saedb\-::empty} {\bf message\-\_\-date\-\_\-type}}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_a8461bf6b78a339f8f7689fa6701319eb}
+
+
+Definition at line 10 of file pagerank.\-cpp.
+
+\hypertarget{demo_2pagerank_2pagerank_8cpp_a83b84c881f9533bcb4419c5cea0ba87c}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!vertex\-\_\-data\-\_\-type@{vertex\-\_\-data\-\_\-type}}
+\index{vertex\-\_\-data\-\_\-type@{vertex\-\_\-data\-\_\-type}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{vertex\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}typedef float {\bf vertex\-\_\-data\-\_\-type}}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_a83b84c881f9533bcb4419c5cea0ba87c}
+
+
+Definition at line 8 of file pagerank.\-cpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{demo_2pagerank_2pagerank_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!main@{main}}
+\index{main@{main}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+Definition at line 54 of file pagerank.\-cpp.
+
+\hypertarget{demo_2pagerank_2pagerank_8cpp_a50124c402af6281bf093b3f97566b842}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!sample\-\_\-graph@{sample\-\_\-graph}}
+\index{sample\-\_\-graph@{sample\-\_\-graph}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{sample\-\_\-graph}]{\setlength{\rightskip}{0pt plus 5cm}{\bf graph\-\_\-type} sample\-\_\-graph (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_a50124c402af6281bf093b3f97566b842}
+
+
+Definition at line 40 of file pagerank.\-cpp.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{demo_2pagerank_2pagerank_8cpp_aabb59c4c6873688baf77746a41b103a6}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!R\-E\-S\-E\-T\-\_\-\-P\-R\-O\-B@{R\-E\-S\-E\-T\-\_\-\-P\-R\-O\-B}}
+\index{R\-E\-S\-E\-T\-\_\-\-P\-R\-O\-B@{R\-E\-S\-E\-T\-\_\-\-P\-R\-O\-B}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{R\-E\-S\-E\-T\-\_\-\-P\-R\-O\-B}]{\setlength{\rightskip}{0pt plus 5cm}float R\-E\-S\-E\-T\-\_\-\-P\-R\-O\-B = 0.\-15}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_aabb59c4c6873688baf77746a41b103a6}
+
+
+Definition at line 5 of file pagerank.\-cpp.
+
+\hypertarget{demo_2pagerank_2pagerank_8cpp_ab2f6eee759504a82848e412fde849d31}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!sample\-\_\-graph@{sample\-\_\-graph}}
+\index{sample\-\_\-graph@{sample\-\_\-graph}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{sample\-\_\-graph}]{\setlength{\rightskip}{0pt plus 5cm} {\bf pagerank} sample\-\_\-graph}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_ab2f6eee759504a82848e412fde849d31}
+\hypertarget{demo_2pagerank_2pagerank_8cpp_a12319b6f2b711e444d3c7c87aa5d0a32}{\index{demo/pagerank/pagerank.\-cpp@{demo/pagerank/pagerank.\-cpp}!T\-O\-L\-E\-R\-A\-N\-C\-E@{T\-O\-L\-E\-R\-A\-N\-C\-E}}
+\index{T\-O\-L\-E\-R\-A\-N\-C\-E@{T\-O\-L\-E\-R\-A\-N\-C\-E}!demo/pagerank/pagerank.cpp@{demo/pagerank/pagerank.\-cpp}}
+\subsubsection[{T\-O\-L\-E\-R\-A\-N\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}float T\-O\-L\-E\-R\-A\-N\-C\-E = 1.\-0\-E-\/2}}\label{db/de9/demo_2pagerank_2pagerank_8cpp_a12319b6f2b711e444d3c7c87aa5d0a32}
+
+
+Definition at line 6 of file pagerank.\-cpp.
+

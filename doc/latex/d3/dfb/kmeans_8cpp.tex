@@ -1,0 +1,160 @@
+\hypertarget{kmeans_8cpp}{\section{src/app/basic/clustering/kmeans.cpp File Reference}
+\label{d3/dfb/kmeans_8cpp}\index{src/app/basic/clustering/kmeans.\-cpp@{src/app/basic/clustering/kmeans.\-cpp}}
+}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include \char`\"{}sae\-\_\-include.\-hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classpagerank}{pagerank}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef float \hyperlink{kmeans_8cpp_a83b84c881f9533bcb4419c5cea0ba87c}{vertex\-\_\-data\-\_\-type}
+\item 
+typedef float \hyperlink{kmeans_8cpp_a2380f382b92e3cea1397452fe957d199}{edge\-\_\-data\-\_\-type}
+\item 
+typedef \hyperlink{structsaedb_1_1empty}{saedb\-::empty} \hyperlink{kmeans_8cpp_a876827dd793a2da0ea7f4c0b2be5ad59}{message\-\_\-data\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1sae__graph}{saedb\-::sae\-\_\-graph}\\*
+$<$ \hyperlink{kmeans_8cpp_a83b84c881f9533bcb4419c5cea0ba87c}{vertex\-\_\-data\-\_\-type}, \\*
+\hyperlink{kmeans_8cpp_a2380f382b92e3cea1397452fe957d199}{edge\-\_\-data\-\_\-type} $>$ \hyperlink{kmeans_8cpp_afa42a4da0de8450a5bb4145aa06ee689}{graph\-\_\-type}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classpagerank}{pagerank} \hyperlink{classsaedb_1_1sae__algorithm}{saedb\-::sae\-\_\-algorithm} \hyperlink{kmeans_8cpp_ab45631061b90196fdac4a6158e1d5942}{sample\-\_\-graph} ()
+\item 
+edge\-\_\-dir\-\_\-type \hyperlink{kmeans_8cpp_a8e71d5e0a209604a04039d888dcaec7e}{gather\-\_\-edges} (icontext\-\_\-type \&context, const vertex\-\_\-type \&vertex) const 
+\item 
+float \hyperlink{kmeans_8cpp_ab97a92616a8d9e9d21fa6959da4a3b1f}{gather} (icontext\-\_\-type \&context, const vertex\-\_\-type \&vertex, edge\-\_\-type \&edge)
+\item 
+void \hyperlink{kmeans_8cpp_a751960203a2e7b2959066b05ce126885}{apply} (icontext\-\_\-type \&context, vertex\-\_\-type \&vertex, const gather\-\_\-type \&total)
+\item 
+edge\-\_\-dir\-\_\-type \hyperlink{kmeans_8cpp_a35a0273b36aadca974130faafe63a9f7}{scatter\-\_\-edges} (icontext\-\_\-type \&context, const vertex)
+\item 
+void \hyperlink{kmeans_8cpp_a70c79bdce4f7a4be4fd87b375ef9e82e}{scatter} (icontext\-\_\-type \&context, const vertex\-\_\-type \&vertex, edge\-\_\-type \&edge) const 
+\item 
+int \hyperlink{kmeans_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{kmeans_8cpp_a2380f382b92e3cea1397452fe957d199}{\index{kmeans.\-cpp@{kmeans.\-cpp}!edge\-\_\-data\-\_\-type@{edge\-\_\-data\-\_\-type}}
+\index{edge\-\_\-data\-\_\-type@{edge\-\_\-data\-\_\-type}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{edge\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}typedef float {\bf edge\-\_\-data\-\_\-type}}}\label{d3/dfb/kmeans_8cpp_a2380f382b92e3cea1397452fe957d199}
+
+
+Definition at line 6 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_afa42a4da0de8450a5bb4145aa06ee689}{\index{kmeans.\-cpp@{kmeans.\-cpp}!graph\-\_\-type@{graph\-\_\-type}}
+\index{graph\-\_\-type@{graph\-\_\-type}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{graph\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf saedb\-::sae\-\_\-graph}$<${\bf vertex\-\_\-data\-\_\-type}, {\bf edge\-\_\-data\-\_\-type}$>$ {\bf graph\-\_\-type}}}\label{d3/dfb/kmeans_8cpp_afa42a4da0de8450a5bb4145aa06ee689}
+
+
+Definition at line 8 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_a876827dd793a2da0ea7f4c0b2be5ad59}{\index{kmeans.\-cpp@{kmeans.\-cpp}!message\-\_\-data\-\_\-type@{message\-\_\-data\-\_\-type}}
+\index{message\-\_\-data\-\_\-type@{message\-\_\-data\-\_\-type}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{message\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf saedb\-::empty} {\bf message\-\_\-data\-\_\-type}}}\label{d3/dfb/kmeans_8cpp_a876827dd793a2da0ea7f4c0b2be5ad59}
+
+
+Definition at line 7 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_a83b84c881f9533bcb4419c5cea0ba87c}{\index{kmeans.\-cpp@{kmeans.\-cpp}!vertex\-\_\-data\-\_\-type@{vertex\-\_\-data\-\_\-type}}
+\index{vertex\-\_\-data\-\_\-type@{vertex\-\_\-data\-\_\-type}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{vertex\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}typedef float {\bf vertex\-\_\-data\-\_\-type}}}\label{d3/dfb/kmeans_8cpp_a83b84c881f9533bcb4419c5cea0ba87c}
+
+
+Definition at line 5 of file kmeans.\-cpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{kmeans_8cpp_a751960203a2e7b2959066b05ce126885}{\index{kmeans.\-cpp@{kmeans.\-cpp}!apply@{apply}}
+\index{apply@{apply}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{apply}]{\setlength{\rightskip}{0pt plus 5cm}void sample\-\_\-graph\-::apply (
+\begin{DoxyParamCaption}
+\item[{icontext\-\_\-type \&}]{context, }
+\item[{vertex\-\_\-type \&}]{vertex, }
+\item[{const gather\-\_\-type \&}]{total}
+\end{DoxyParamCaption}
+)}}\label{d3/dfb/kmeans_8cpp_a751960203a2e7b2959066b05ce126885}
+
+
+Definition at line 54 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_ab97a92616a8d9e9d21fa6959da4a3b1f}{\index{kmeans.\-cpp@{kmeans.\-cpp}!gather@{gather}}
+\index{gather@{gather}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{gather}]{\setlength{\rightskip}{0pt plus 5cm}float sample\-\_\-graph\-::gather (
+\begin{DoxyParamCaption}
+\item[{icontext\-\_\-type \&}]{context, }
+\item[{const vertex\-\_\-type \&}]{vertex, }
+\item[{edge\-\_\-type \&}]{edge}
+\end{DoxyParamCaption}
+)}}\label{d3/dfb/kmeans_8cpp_ab97a92616a8d9e9d21fa6959da4a3b1f}
+
+
+Definition at line 47 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_a8e71d5e0a209604a04039d888dcaec7e}{\index{kmeans.\-cpp@{kmeans.\-cpp}!gather\-\_\-edges@{gather\-\_\-edges}}
+\index{gather\-\_\-edges@{gather\-\_\-edges}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{gather\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}edge\-\_\-dir\-\_\-type sample\-\_\-graph\-::gather\-\_\-edges (
+\begin{DoxyParamCaption}
+\item[{icontext\-\_\-type \&}]{context, }
+\item[{const vertex\-\_\-type \&}]{vertex}
+\end{DoxyParamCaption}
+) const}}\label{d3/dfb/kmeans_8cpp_a8e71d5e0a209604a04039d888dcaec7e}
+
+
+Definition at line 42 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{kmeans.\-cpp@{kmeans.\-cpp}!main@{main}}
+\index{main@{main}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{d3/dfb/kmeans_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+Definition at line 44 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_ab45631061b90196fdac4a6158e1d5942}{\index{kmeans.\-cpp@{kmeans.\-cpp}!sample\-\_\-graph@{sample\-\_\-graph}}
+\index{sample\-\_\-graph@{sample\-\_\-graph}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{sample\-\_\-graph}]{\setlength{\rightskip}{0pt plus 5cm}{\bf pagerank} {\bf saedb\-::sae\-\_\-algorithm} sample\-\_\-graph (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{d3/dfb/kmeans_8cpp_ab45631061b90196fdac4a6158e1d5942}
+
+
+Definition at line 39 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_a70c79bdce4f7a4be4fd87b375ef9e82e}{\index{kmeans.\-cpp@{kmeans.\-cpp}!scatter@{scatter}}
+\index{scatter@{scatter}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{scatter}]{\setlength{\rightskip}{0pt plus 5cm}void sample\-\_\-graph\-::scatter (
+\begin{DoxyParamCaption}
+\item[{icontext\-\_\-type \&}]{context, }
+\item[{const vertex\-\_\-type \&}]{vertex, }
+\item[{edge\-\_\-type \&}]{edge}
+\end{DoxyParamCaption}
+) const}}\label{d3/dfb/kmeans_8cpp_a70c79bdce4f7a4be4fd87b375ef9e82e}
+
+
+Definition at line 63 of file kmeans.\-cpp.
+
+\hypertarget{kmeans_8cpp_a35a0273b36aadca974130faafe63a9f7}{\index{kmeans.\-cpp@{kmeans.\-cpp}!scatter\-\_\-edges@{scatter\-\_\-edges}}
+\index{scatter\-\_\-edges@{scatter\-\_\-edges}!kmeans.cpp@{kmeans.\-cpp}}
+\subsubsection[{scatter\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}edge\-\_\-dir\-\_\-type sample\-\_\-graph\-::scatter\-\_\-edges (
+\begin{DoxyParamCaption}
+\item[{icontext\-\_\-type \&}]{context, }
+\item[{const vertex}]{}
+\end{DoxyParamCaption}
+)}}\label{d3/dfb/kmeans_8cpp_a35a0273b36aadca974130faafe63a9f7}
+
+
+Definition at line 59 of file kmeans.\-cpp.
+

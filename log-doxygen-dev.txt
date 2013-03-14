@@ -1,0 +1,2 @@
+warning: source ~/projects/saedb/src is not a readable file or directory... skipping.
+Problems running dot: exit code=127, command='dot', arguments='"/home/neo/projects/saedb/saedoc-dev/graph_legend.dot" -Tpng -o "/home/neo/projects/saedb/saedoc-dev/graph_legend.png"'

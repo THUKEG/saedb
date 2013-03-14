@@ -1,0 +1,243 @@
+\hypertarget{classsaedb_1_1sae__algorithm}{\section{saedb\-:\-:sae\-\_\-algorithm$<$ Graph, Gather\-Type, Message\-Type $>$ Class Template Reference}
+\label{d0/d9f/classsaedb_1_1sae__algorithm}\index{saedb\-::sae\-\_\-algorithm$<$ Graph, Gather\-Type, Message\-Type $>$@{saedb\-::sae\-\_\-algorithm$<$ Graph, Gather\-Type, Message\-Type $>$}}
+}
+
+
+{\ttfamily \#include $<$vertex\-\_\-program.\-hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Graph\-::vertex\-\_\-data\-\_\-type \hyperlink{classsaedb_1_1sae__algorithm_a709b55d6063cfd2c5f0dcdb17d6d5258}{vertex\-\_\-data\-\_\-type}
+\item 
+typedef Graph\-::edge\-\_\-data\-\_\-type \hyperlink{classsaedb_1_1sae__algorithm_a1d3acc631f0a3e22c830c91dcf104c8a}{edge\-\_\-data\-\_\-type}
+\item 
+typedef Gather\-Type \hyperlink{classsaedb_1_1sae__algorithm_a4c57e65dd3987f19d5d90bf394c8f2f8}{gather\-\_\-type}
+\item 
+typedef Graph \hyperlink{classsaedb_1_1sae__algorithm_a87749c5b779e21642c2928b746556540}{graph\-\_\-type}
+\item 
+typedef Message\-Type \hyperlink{classsaedb_1_1sae__algorithm_a757eb6dffc652f91f2c10a24f6596156}{message\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1sae__graph_a2f9a7bf2db556689f1cd9de9562ff41f}{graph\-\_\-type\-::vertex\-\_\-id\-\_\-type} \hyperlink{classsaedb_1_1sae__algorithm_a943e87163aee5f148d7a7c68be72b123}{vertex\-\_\-id\-\_\-type}
+\item 
+typedef \hyperlink{structsaedb_1_1sae__graph_1_1vertex__type}{graph\-\_\-type\-::vertex\-\_\-type} \hyperlink{classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}{vertex\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1sae__graph_1_1edge__type}{graph\-\_\-type\-::edge\-\_\-type} \hyperlink{classsaedb_1_1sae__algorithm_aaebb1836596e0efad3d694a5b829871f}{edge\-\_\-type}
+\item 
+typedef \hyperlink{namespacesaedb_adf5ad13c09a48fb2f42f8e7348ea3ac3}{saedb\-::edge\-\_\-dir\-\_\-type} \hyperlink{classsaedb_1_1sae__algorithm_a0918d4a10cf91f715a686560b5b95b03}{edge\-\_\-dir\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1icontext}{icontext}$<$ \hyperlink{classsaedb_1_1sae__algorithm_a87749c5b779e21642c2928b746556540}{graph\-\_\-type}, \\*
+\hyperlink{classsaedb_1_1sae__algorithm_a4c57e65dd3987f19d5d90bf394c8f2f8}{gather\-\_\-type}, \hyperlink{classsaedb_1_1sae__algorithm_a757eb6dffc652f91f2c10a24f6596156}{message\-\_\-type} $>$ \hyperlink{classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}{icontext\-\_\-type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classsaedb_1_1sae__algorithm_ae67be2fe37126b9ab28b1be43a6b1e96}{$\sim$sae\-\_\-algorithm} ()
+\item 
+virtual void \hyperlink{classsaedb_1_1sae__algorithm_aae58b92247a316b2734704e24ee20700}{init} (\hyperlink{classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}{icontext\-\_\-type} \&\hyperlink{classsaedb_1_1context}{context}, const \hyperlink{classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}{vertex\-\_\-type} \&vertex)
+\item 
+virtual \hyperlink{namespacesaedb_adf5ad13c09a48fb2f42f8e7348ea3ac3}{edge\-\_\-dir\-\_\-type} \hyperlink{classsaedb_1_1sae__algorithm_aa2930d50f01ae01c12639a19e517329f}{gather\-\_\-edges} (\hyperlink{classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}{icontext\-\_\-type} \&\hyperlink{classsaedb_1_1context}{context}, const \hyperlink{classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}{vertex\-\_\-type} \&vertex) const 
+\item 
+virtual \hyperlink{classsaedb_1_1sae__algorithm_a4c57e65dd3987f19d5d90bf394c8f2f8}{gather\-\_\-type} \hyperlink{classsaedb_1_1sae__algorithm_aef9f7edc10a5e76234157db8c9c8c2bb}{gather} (\hyperlink{classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}{icontext\-\_\-type} \&\hyperlink{classsaedb_1_1context}{context}, const \hyperlink{classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}{vertex\-\_\-type} \&vertex, \hyperlink{classsaedb_1_1sae__algorithm_aaebb1836596e0efad3d694a5b829871f}{edge\-\_\-type} \&edge) const 
+\item 
+virtual void \hyperlink{classsaedb_1_1sae__algorithm_a25fcc38700d5209fb2dcc81771253033}{apply} (\hyperlink{classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}{icontext\-\_\-type} \&\hyperlink{classsaedb_1_1context}{context}, \hyperlink{classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}{vertex\-\_\-type} \&vertex, const \hyperlink{classsaedb_1_1sae__algorithm_a4c57e65dd3987f19d5d90bf394c8f2f8}{gather\-\_\-type} \&total)=0
+\item 
+virtual \hyperlink{namespacesaedb_adf5ad13c09a48fb2f42f8e7348ea3ac3}{edge\-\_\-dir\-\_\-type} \hyperlink{classsaedb_1_1sae__algorithm_adfc160930509d2259cb98f96a80d1232}{scatter\-\_\-edges} (\hyperlink{classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}{icontext\-\_\-type} \&\hyperlink{classsaedb_1_1context}{context}, const \hyperlink{classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}{vertex\-\_\-type} \&vertex) const 
+\item 
+virtual void \hyperlink{classsaedb_1_1sae__algorithm_a584008f538972457cf702cc8cac474bf}{scatter} (\hyperlink{classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}{icontext\-\_\-type} \&\hyperlink{classsaedb_1_1context}{context}, const \hyperlink{classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}{vertex\-\_\-type} \&vertex, \hyperlink{classsaedb_1_1sae__algorithm_aaebb1836596e0efad3d694a5b829871f}{edge\-\_\-type} \&edge) const 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$class saedb\-::sae\-\_\-algorithm$<$ Graph, Gather\-Type, Message\-Type $>$}
+
+
+
+Definition at line 12 of file vertex\-\_\-program.\-hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classsaedb_1_1sae__algorithm_a1d3acc631f0a3e22c830c91dcf104c8a}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!edge\-\_\-data\-\_\-type@{edge\-\_\-data\-\_\-type}}
+\index{edge\-\_\-data\-\_\-type@{edge\-\_\-data\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{edge\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef Graph\-::edge\-\_\-data\-\_\-type {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf edge\-\_\-data\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a1d3acc631f0a3e22c830c91dcf104c8a}
+
+
+Definition at line 16 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_a0918d4a10cf91f715a686560b5b95b03}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!edge\-\_\-dir\-\_\-type@{edge\-\_\-dir\-\_\-type}}
+\index{edge\-\_\-dir\-\_\-type@{edge\-\_\-dir\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{edge\-\_\-dir\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef {\bf saedb\-::edge\-\_\-dir\-\_\-type} {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf edge\-\_\-dir\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a0918d4a10cf91f715a686560b5b95b03}
+
+
+Definition at line 23 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_aaebb1836596e0efad3d694a5b829871f}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!edge\-\_\-type@{edge\-\_\-type}}
+\index{edge\-\_\-type@{edge\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{edge\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef {\bf graph\-\_\-type\-::edge\-\_\-type} {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf edge\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_aaebb1836596e0efad3d694a5b829871f}
+
+
+Definition at line 22 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_a4c57e65dd3987f19d5d90bf394c8f2f8}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!gather\-\_\-type@{gather\-\_\-type}}
+\index{gather\-\_\-type@{gather\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{gather\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef Gather\-Type {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf gather\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a4c57e65dd3987f19d5d90bf394c8f2f8}
+
+
+Definition at line 17 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_a87749c5b779e21642c2928b746556540}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!graph\-\_\-type@{graph\-\_\-type}}
+\index{graph\-\_\-type@{graph\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{graph\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef Graph {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf graph\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a87749c5b779e21642c2928b746556540}
+
+
+Definition at line 18 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!icontext\-\_\-type@{icontext\-\_\-type}}
+\index{icontext\-\_\-type@{icontext\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{icontext\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef {\bf icontext}$<${\bf graph\-\_\-type}, {\bf gather\-\_\-type}, {\bf message\-\_\-type}$>$ {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf icontext\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a190f07adbc04f0188ad09b50dbe93a33}
+
+
+Definition at line 24 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_a757eb6dffc652f91f2c10a24f6596156}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!message\-\_\-type@{message\-\_\-type}}
+\index{message\-\_\-type@{message\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{message\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef Message\-Type {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf message\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a757eb6dffc652f91f2c10a24f6596156}
+
+
+Definition at line 19 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_a709b55d6063cfd2c5f0dcdb17d6d5258}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!vertex\-\_\-data\-\_\-type@{vertex\-\_\-data\-\_\-type}}
+\index{vertex\-\_\-data\-\_\-type@{vertex\-\_\-data\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{vertex\-\_\-data\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef Graph\-::vertex\-\_\-data\-\_\-type {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf vertex\-\_\-data\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a709b55d6063cfd2c5f0dcdb17d6d5258}
+
+
+Definition at line 15 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_a943e87163aee5f148d7a7c68be72b123}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!vertex\-\_\-id\-\_\-type@{vertex\-\_\-id\-\_\-type}}
+\index{vertex\-\_\-id\-\_\-type@{vertex\-\_\-id\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{vertex\-\_\-id\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef {\bf graph\-\_\-type\-::vertex\-\_\-id\-\_\-type} {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf vertex\-\_\-id\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a943e87163aee5f148d7a7c68be72b123}
+
+
+Definition at line 20 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!vertex\-\_\-type@{vertex\-\_\-type}}
+\index{vertex\-\_\-type@{vertex\-\_\-type}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{vertex\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ typedef {\bf graph\-\_\-type\-::vertex\-\_\-type} {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::{\bf vertex\-\_\-type}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_ae26abf349aed2b0c9f82e1396b78561a}
+
+
+Definition at line 21 of file vertex\-\_\-program.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsaedb_1_1sae__algorithm_ae67be2fe37126b9ab28b1be43a6b1e96}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!$\sim$sae\-\_\-algorithm@{$\sim$sae\-\_\-algorithm}}
+\index{$\sim$sae\-\_\-algorithm@{$\sim$sae\-\_\-algorithm}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{$\sim$sae\-\_\-algorithm}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ virtual {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::$\sim${\bf sae\-\_\-algorithm} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_ae67be2fe37126b9ab28b1be43a6b1e96}
+
+
+Definition at line 26 of file vertex\-\_\-program.\-hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsaedb_1_1sae__algorithm_a25fcc38700d5209fb2dcc81771253033}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!apply@{apply}}
+\index{apply@{apply}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{apply}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ virtual void {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::apply (
+\begin{DoxyParamCaption}
+\item[{{\bf icontext\-\_\-type} \&}]{context, }
+\item[{{\bf vertex\-\_\-type} \&}]{vertex, }
+\item[{const {\bf gather\-\_\-type} \&}]{total}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a25fcc38700d5209fb2dcc81771253033}
+
+
+Implemented in \hyperlink{classpagerank_aad9830119d9cdf6099749c97c707cb79}{pagerank}, \hyperlink{classpagerank_aad9830119d9cdf6099749c97c707cb79}{pagerank}, and \hyperlink{classpagerank_aad9830119d9cdf6099749c97c707cb79}{pagerank}.
+
+\hypertarget{classsaedb_1_1sae__algorithm_aef9f7edc10a5e76234157db8c9c8c2bb}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!gather@{gather}}
+\index{gather@{gather}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{gather}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ virtual {\bf gather\-\_\-type} {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::gather (
+\begin{DoxyParamCaption}
+\item[{{\bf icontext\-\_\-type} \&}]{context, }
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex, }
+\item[{{\bf edge\-\_\-type} \&}]{edge}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_aef9f7edc10a5e76234157db8c9c8c2bb}
+
+
+Reimplemented in \hyperlink{classpagerank_af1c6b5a1959b6667fb3adf6899d15964}{pagerank}.
+
+
+
+Definition at line 36 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_aa2930d50f01ae01c12639a19e517329f}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!gather\-\_\-edges@{gather\-\_\-edges}}
+\index{gather\-\_\-edges@{gather\-\_\-edges}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{gather\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ virtual {\bf edge\-\_\-dir\-\_\-type} {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::gather\-\_\-edges (
+\begin{DoxyParamCaption}
+\item[{{\bf icontext\-\_\-type} \&}]{context, }
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_aa2930d50f01ae01c12639a19e517329f}
+
+
+Reimplemented in \hyperlink{classpagerank_a6d6353f113e4e2035c530a1e731e5a04}{pagerank}, and \hyperlink{classpagerank_a6d6353f113e4e2035c530a1e731e5a04}{pagerank}.
+
+
+
+Definition at line 31 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_aae58b92247a316b2734704e24ee20700}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!init@{init}}
+\index{init@{init}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ virtual void {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::init (
+\begin{DoxyParamCaption}
+\item[{{\bf icontext\-\_\-type} \&}]{context, }
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_aae58b92247a316b2734704e24ee20700}
+N\-O\-P 
+
+Definition at line 28 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_a584008f538972457cf702cc8cac474bf}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!scatter@{scatter}}
+\index{scatter@{scatter}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{scatter}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ virtual void {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::scatter (
+\begin{DoxyParamCaption}
+\item[{{\bf icontext\-\_\-type} \&}]{context, }
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex, }
+\item[{{\bf edge\-\_\-type} \&}]{edge}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_a584008f538972457cf702cc8cac474bf}
+
+
+Reimplemented in \hyperlink{classpagerank_a6216a1bceaf95e35325a0e6d70af35dd}{pagerank}, \hyperlink{classpagerank_a6216a1bceaf95e35325a0e6d70af35dd}{pagerank}, and \hyperlink{classpagerank_a6216a1bceaf95e35325a0e6d70af35dd}{pagerank}.
+
+
+
+Definition at line 51 of file vertex\-\_\-program.\-hpp.
+
+\hypertarget{classsaedb_1_1sae__algorithm_adfc160930509d2259cb98f96a80d1232}{\index{saedb\-::sae\-\_\-algorithm@{saedb\-::sae\-\_\-algorithm}!scatter\-\_\-edges@{scatter\-\_\-edges}}
+\index{scatter\-\_\-edges@{scatter\-\_\-edges}!saedb::sae_algorithm@{saedb\-::sae\-\_\-algorithm}}
+\subsubsection[{scatter\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Graph, typename Gather\-Type, typename Message\-Type = float$>$ virtual {\bf edge\-\_\-dir\-\_\-type} {\bf saedb\-::sae\-\_\-algorithm}$<$ Graph, Gather\-Type, Message\-Type $>$\-::scatter\-\_\-edges (
+\begin{DoxyParamCaption}
+\item[{{\bf icontext\-\_\-type} \&}]{context, }
+\item[{const {\bf vertex\-\_\-type} \&}]{vertex}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{d0/d9f/classsaedb_1_1sae__algorithm_adfc160930509d2259cb98f96a80d1232}
+
+
+Reimplemented in \hyperlink{classpagerank_a518dd8b8877a509420ed834d8dbd129b}{pagerank}.
+
+
+
+Definition at line 46 of file vertex\-\_\-program.\-hpp.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/saedb/\hyperlink{vertex__program_8hpp}{vertex\-\_\-program.\-hpp}\end{DoxyCompactItemize}

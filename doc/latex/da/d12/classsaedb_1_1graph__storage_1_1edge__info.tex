@@ -1,0 +1,158 @@
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info}{\section{saedb\-:\-:graph\-\_\-storage$<$ Vertex\-Data, Edge\-Data $>$\-:\-:edge\-\_\-info Class Reference}
+\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info}\index{saedb\-::graph\-\_\-storage$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info}}
+}
+
+
+{\ttfamily \#include $<$graph\-\_\-storage.\-hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__info_a105a70a653042dd5e3341b0d7eeab383}{edge\-\_\-info} ()
+\item 
+void \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_af089914b036b8eeeca35b28caaabb906}{reserve\-\_\-edge\-\_\-space} (size\-\_\-t n)
+\item 
+void \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_a681508fc5ebfc310761328718603e4e3}{add\-\_\-edge} (\hyperlink{classsaedb_1_1graph__storage_a147a907accd64bb1f803a423d04dd04b}{lvid\-\_\-type} source, \hyperlink{classsaedb_1_1graph__storage_a147a907accd64bb1f803a423d04dd04b}{lvid\-\_\-type} target, Edge\-Data \-\_\-data)
+\item 
+void \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_a2a2078969581e18c034180dcf1d149ea}{add\-\_\-block\-\_\-edges} (const std\-::vector$<$ \hyperlink{classsaedb_1_1graph__storage_a147a907accd64bb1f803a423d04dd04b}{lvid\-\_\-type} $>$ \&src\-\_\-arr, const std\-::vector$<$ \hyperlink{classsaedb_1_1graph__storage_a147a907accd64bb1f803a423d04dd04b}{lvid\-\_\-type} $>$ \&dst\-\_\-arr, const std\-::vector$<$ Edge\-Data $>$ \&edata\-\_\-arr)
+\item 
+void \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_a9564399765fda82a7490d4d5db85a141}{clear} ()
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_aac1190dac0b62b52be9bfaf5f8a7ab3d}{size} () const 
+\item 
+size\-\_\-t \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_a3d95a79d55d5cb9b4a9ffc20cd0da644}{estimate\-\_\-sizeof} () const 
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::vector$<$ Edge\-Data $>$ \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_a89cef81db49ddcf298a96752a3d3740a}{data}
+\item 
+std\-::vector$<$ \hyperlink{classsaedb_1_1graph__storage_a147a907accd64bb1f803a423d04dd04b}{lvid\-\_\-type} $>$ \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_a0fc2e3ebc1bc17e51d42473155f05cfb}{source\-\_\-arr}
+\item 
+std\-::vector$<$ \hyperlink{classsaedb_1_1graph__storage_a147a907accd64bb1f803a423d04dd04b}{lvid\-\_\-type} $>$ \hyperlink{classsaedb_1_1graph__storage_1_1edge__info_a02ff602b64457dfe61471b55a2183fe0}{target\-\_\-arr}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Vertex\-Data, typename Edge\-Data$>$class saedb\-::graph\-\_\-storage$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info}
+
+
+
+Definition at line 23 of file graph\-\_\-storage.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_a105a70a653042dd5e3341b0d7eeab383}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!edge\-\_\-info@{edge\-\_\-info}}
+\index{edge\-\_\-info@{edge\-\_\-info}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{edge\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::edge\-\_\-info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_a105a70a653042dd5e3341b0d7eeab383}
+
+
+Definition at line 29 of file graph\-\_\-storage.\-hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_a2a2078969581e18c034180dcf1d149ea}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!add\-\_\-block\-\_\-edges@{add\-\_\-block\-\_\-edges}}
+\index{add\-\_\-block\-\_\-edges@{add\-\_\-block\-\_\-edges}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{add\-\_\-block\-\_\-edges}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::add\-\_\-block\-\_\-edges (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ {\bf lvid\-\_\-type} $>$ \&}]{src\-\_\-arr, }
+\item[{const std\-::vector$<$ {\bf lvid\-\_\-type} $>$ \&}]{dst\-\_\-arr, }
+\item[{const std\-::vector$<$ Edge\-Data $>$ \&}]{edata\-\_\-arr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_a2a2078969581e18c034180dcf1d149ea}
+
+
+Definition at line 42 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_a681508fc5ebfc310761328718603e4e3}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!add\-\_\-edge@{add\-\_\-edge}}
+\index{add\-\_\-edge@{add\-\_\-edge}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{add\-\_\-edge}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::add\-\_\-edge (
+\begin{DoxyParamCaption}
+\item[{{\bf lvid\-\_\-type}}]{source, }
+\item[{{\bf lvid\-\_\-type}}]{target, }
+\item[{Edge\-Data}]{\-\_\-data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_a681508fc5ebfc310761328718603e4e3}
+
+
+Definition at line 36 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_a9564399765fda82a7490d4d5db85a141}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!clear@{clear}}
+\index{clear@{clear}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{clear}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_a9564399765fda82a7490d4d5db85a141}
+
+
+Definition at line 50 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_a3d95a79d55d5cb9b4a9ffc20cd0da644}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!estimate\-\_\-sizeof@{estimate\-\_\-sizeof}}
+\index{estimate\-\_\-sizeof@{estimate\-\_\-sizeof}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{estimate\-\_\-sizeof}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::estimate\-\_\-sizeof (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_a3d95a79d55d5cb9b4a9ffc20cd0da644}
+
+
+Definition at line 60 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_af089914b036b8eeeca35b28caaabb906}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!reserve\-\_\-edge\-\_\-space@{reserve\-\_\-edge\-\_\-space}}
+\index{reserve\-\_\-edge\-\_\-space@{reserve\-\_\-edge\-\_\-space}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{reserve\-\_\-edge\-\_\-space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ void {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::reserve\-\_\-edge\-\_\-space (
+\begin{DoxyParamCaption}
+\item[{size\-\_\-t}]{n}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_af089914b036b8eeeca35b28caaabb906}
+
+
+Definition at line 30 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_aac1190dac0b62b52be9bfaf5f8a7ab3d}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!size@{size}}
+\index{size@{size}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ size\-\_\-t {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_aac1190dac0b62b52be9bfaf5f8a7ab3d}
+
+
+Definition at line 56 of file graph\-\_\-storage.\-hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_a89cef81db49ddcf298a96752a3d3740a}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!data@{data}}
+\index{data@{data}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{data}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ std\-::vector$<$Edge\-Data$>$ {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::data}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_a89cef81db49ddcf298a96752a3d3740a}
+
+
+Definition at line 25 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_a0fc2e3ebc1bc17e51d42473155f05cfb}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!source\-\_\-arr@{source\-\_\-arr}}
+\index{source\-\_\-arr@{source\-\_\-arr}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{source\-\_\-arr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ std\-::vector$<${\bf lvid\-\_\-type}$>$ {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::source\-\_\-arr}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_a0fc2e3ebc1bc17e51d42473155f05cfb}
+
+
+Definition at line 26 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__info_a02ff602b64457dfe61471b55a2183fe0}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}!target\-\_\-arr@{target\-\_\-arr}}
+\index{target\-\_\-arr@{target\-\_\-arr}!saedb::graph_storage::edge_info@{saedb\-::graph\-\_\-storage\-::edge\-\_\-info}}
+\subsubsection[{target\-\_\-arr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ std\-::vector$<${\bf lvid\-\_\-type}$>$ {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-info\-::target\-\_\-arr}}\label{da/d12/classsaedb_1_1graph__storage_1_1edge__info_a02ff602b64457dfe61471b55a2183fe0}
+
+
+Definition at line 27 of file graph\-\_\-storage.\-hpp.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/saedb/\hyperlink{graph__storage_8hpp}{graph\-\_\-storage.\-hpp}\end{DoxyCompactItemize}

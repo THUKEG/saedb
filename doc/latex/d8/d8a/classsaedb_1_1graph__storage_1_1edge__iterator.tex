@@ -1,0 +1,272 @@
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator}{\section{saedb\-:\-:graph\-\_\-storage$<$ Vertex\-Data, Edge\-Data $>$\-:\-:edge\-\_\-iterator Class Reference}
+\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator}\index{saedb\-::graph\-\_\-storage$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator}}
+}
+
+
+{\ttfamily \#include $<$graph\-\_\-storage.\-hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \\*
+std\-::random\-\_\-access\-\_\-iterator\-\_\-tag \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a4fac79a017431f05a075583324643f7e}{iterator\-\_\-category}
+\item 
+typedef \hyperlink{classsaedb_1_1graph__storage_1_1edge__type}{edge\-\_\-type} \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_acd702148975e7e70c037eb2eade2c42e}{value\-\_\-type}
+\item 
+typedef ssize\-\_\-t \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a36e4780cec6028b4af8cb4e34b8de5b4}{difference\-\_\-type}
+\item 
+typedef \hyperlink{classsaedb_1_1graph__storage_1_1edge__type}{edge\-\_\-type} $\ast$ \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a387ef43e028c606818c1eff451f33d1c}{pointer}
+\item 
+typedef \hyperlink{classsaedb_1_1graph__storage_1_1edge__type}{edge\-\_\-type} \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a2f581a4c04f23e1dab137fb7ec5f1e75}{reference}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a121af17c88a8ddead25b8d26c626fa98}{edge\-\_\-iterator} ()
+\begin{DoxyCompactList}\small\item\em Creates an empty iterator. \end{DoxyCompactList}\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_aa3e367ad88af6089a0011dc3572b167a}{edge\-\_\-iterator} (\hyperlink{classsaedb_1_1graph__storage_a147a907accd64bb1f803a423d04dd04b}{lvid\-\_\-type} \-\_\-center, size\-\_\-t \-\_\-offset, \hyperlink{namespacesaedb_adf5ad13c09a48fb2f42f8e7348ea3ac3}{edge\-\_\-dir\-\_\-type} \-\_\-itype, const \hyperlink{classsaedb_1_1graph__storage_a147a907accd64bb1f803a423d04dd04b}{lvid\-\_\-type} $\ast$\-\_\-vid\-\_\-arr)
+\begin{DoxyCompactList}\small\item\em Creates an iterator at a specific edge. The edge location is defined by the follows\-: A center vertex id, an offset to the center, the direction and the pointer to the start of edge id array. \end{DoxyCompactList}\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__type}{edge\-\_\-type} \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_ae22b1266928aadc78470ca76dbc24d85}{operator$\ast$} () const 
+\begin{DoxyCompactList}\small\item\em Returns the value of the iterator. An empty iterator always returns empty edge type. \end{DoxyCompactList}\item 
+bool \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a3fc5f6398f5f04338b3f1990919f4a70}{operator==} (const \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator}{edge\-\_\-iterator} \&it) const 
+\begin{DoxyCompactList}\small\item\em Returns if two iterators point to the same edge. \end{DoxyCompactList}\item 
+bool \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a18d08388d096af2837205d0d90b4e052}{operator!=} (const \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator}{edge\-\_\-iterator} \&it) const 
+\begin{DoxyCompactList}\small\item\em Returns if two iterators don't point to the same edge. \end{DoxyCompactList}\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator}{edge\-\_\-iterator} \& \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a6af7e5e5e706480086b58138d943df8f}{operator++} ()
+\begin{DoxyCompactList}\small\item\em Increases the iterator. \end{DoxyCompactList}\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator}{edge\-\_\-iterator} \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a1f88307cf3082cbf763c0a0767470a4b}{operator++} (int)
+\begin{DoxyCompactList}\small\item\em Increases the iterator. \end{DoxyCompactList}\item 
+ssize\-\_\-t \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a6a0cdf3ee29e88ba320ef3b4a11498ee}{operator-\/} (const \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator}{edge\-\_\-iterator} \&it) const 
+\begin{DoxyCompactList}\small\item\em Computes the difference of two iterators. \end{DoxyCompactList}\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator}{edge\-\_\-iterator} \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_aefc37786296b0b3f8eec6000256f0710}{operator+} (\hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a36e4780cec6028b4af8cb4e34b8de5b4}{difference\-\_\-type} i) const 
+\begin{DoxyCompactList}\small\item\em Returns a new iterator whose value is increased by i difference units. \end{DoxyCompactList}\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator}{edge\-\_\-iterator} \& \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_ad97b0775bb8aaeca052a88baf080a9aa}{operator+=} (\hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a36e4780cec6028b4af8cb4e34b8de5b4}{difference\-\_\-type} i)
+\begin{DoxyCompactList}\small\item\em Increases the iterator by i difference units. \end{DoxyCompactList}\item 
+\hyperlink{classsaedb_1_1graph__storage_1_1edge__type}{edge\-\_\-type} \hyperlink{classsaedb_1_1graph__storage_1_1edge__iterator_a9f264f29debdb6bf71a6180bf3e23009}{make\-\_\-value} () const 
+\begin{DoxyCompactList}\small\item\em Generate the return value of the iterator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Vertex\-Data, typename Edge\-Data$>$class saedb\-::graph\-\_\-storage$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator}
+
+
+
+Definition at line 111 of file graph\-\_\-storage.\-hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a36e4780cec6028b4af8cb4e34b8de5b4}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!difference\-\_\-type@{difference\-\_\-type}}
+\index{difference\-\_\-type@{difference\-\_\-type}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{difference\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef ssize\-\_\-t {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf edge\-\_\-iterator\-::difference\-\_\-type}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a36e4780cec6028b4af8cb4e34b8de5b4}
+
+
+Definition at line 115 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a4fac79a017431f05a075583324643f7e}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!iterator\-\_\-category@{iterator\-\_\-category}}
+\index{iterator\-\_\-category@{iterator\-\_\-category}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{iterator\-\_\-category}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef std\-::random\-\_\-access\-\_\-iterator\-\_\-tag {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf edge\-\_\-iterator\-::iterator\-\_\-category}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a4fac79a017431f05a075583324643f7e}
+
+
+Definition at line 113 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a387ef43e028c606818c1eff451f33d1c}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!pointer@{pointer}}
+\index{pointer@{pointer}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{pointer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef {\bf edge\-\_\-type}$\ast$ {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf edge\-\_\-iterator\-::pointer}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a387ef43e028c606818c1eff451f33d1c}
+
+
+Definition at line 116 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a2f581a4c04f23e1dab137fb7ec5f1e75}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!reference@{reference}}
+\index{reference@{reference}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{reference}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef {\bf edge\-\_\-type} {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf edge\-\_\-iterator\-::reference}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a2f581a4c04f23e1dab137fb7ec5f1e75}
+
+
+Definition at line 117 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_acd702148975e7e70c037eb2eade2c42e}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!value\-\_\-type@{value\-\_\-type}}
+\index{value\-\_\-type@{value\-\_\-type}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{value\-\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ typedef {\bf edge\-\_\-type} {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::{\bf edge\-\_\-iterator\-::value\-\_\-type}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_acd702148975e7e70c037eb2eade2c42e}
+
+
+Definition at line 114 of file graph\-\_\-storage.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a121af17c88a8ddead25b8d26c626fa98}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!edge\-\_\-iterator@{edge\-\_\-iterator}}
+\index{edge\-\_\-iterator@{edge\-\_\-iterator}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{edge\-\_\-iterator}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::edge\-\_\-iterator (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a121af17c88a8ddead25b8d26c626fa98}
+
+
+Creates an empty iterator. 
+
+
+
+Definition at line 122 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_aa3e367ad88af6089a0011dc3572b167a}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!edge\-\_\-iterator@{edge\-\_\-iterator}}
+\index{edge\-\_\-iterator@{edge\-\_\-iterator}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{edge\-\_\-iterator}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::edge\-\_\-iterator (
+\begin{DoxyParamCaption}
+\item[{{\bf lvid\-\_\-type}}]{\-\_\-center, }
+\item[{size\-\_\-t}]{\-\_\-offset, }
+\item[{{\bf edge\-\_\-dir\-\_\-type}}]{\-\_\-itype, }
+\item[{const {\bf lvid\-\_\-type} $\ast$}]{\-\_\-vid\-\_\-arr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_aa3e367ad88af6089a0011dc3572b167a}
+
+
+Creates an iterator at a specific edge. The edge location is defined by the follows\-: A center vertex id, an offset to the center, the direction and the pointer to the start of edge id array. 
+
+
+
+Definition at line 127 of file graph\-\_\-storage.\-hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a9f264f29debdb6bf71a6180bf3e23009}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!make\-\_\-value@{make\-\_\-value}}
+\index{make\-\_\-value@{make\-\_\-value}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{make\-\_\-value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf edge\-\_\-type} {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::make\-\_\-value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a9f264f29debdb6bf71a6180bf3e23009}
+
+
+Generate the return value of the iterator. 
+
+
+
+Definition at line 181 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a18d08388d096af2837205d0d90b4e052}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!operator!=@{operator!=}}
+\index{operator!=@{operator!=}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{operator!=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ bool {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf edge\-\_\-iterator} \&}]{it}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a18d08388d096af2837205d0d90b4e052}
+
+
+Returns if two iterators don't point to the same edge. 
+
+
+
+Definition at line 145 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_ae22b1266928aadc78470ca76dbc24d85}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{operator$\ast$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf edge\-\_\-type} {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::operator$\ast$ (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_ae22b1266928aadc78470ca76dbc24d85}
+
+
+Returns the value of the iterator. An empty iterator always returns empty edge type. 
+
+
+
+Definition at line 132 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_aefc37786296b0b3f8eec6000256f0710}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!operator+@{operator+}}
+\index{operator+@{operator+}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{operator+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf edge\-\_\-iterator} {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::operator+ (
+\begin{DoxyParamCaption}
+\item[{{\bf difference\-\_\-type}}]{i}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_aefc37786296b0b3f8eec6000256f0710}
+
+
+Returns a new iterator whose value is increased by i difference units. 
+
+
+
+Definition at line 170 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a6af7e5e5e706480086b58138d943df8f}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!operator++@{operator++}}
+\index{operator++@{operator++}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{operator++}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf edge\-\_\-iterator}\& {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::operator++ (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a6af7e5e5e706480086b58138d943df8f}
+
+
+Increases the iterator. 
+
+
+
+Definition at line 150 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a1f88307cf3082cbf763c0a0767470a4b}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!operator++@{operator++}}
+\index{operator++@{operator++}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{operator++}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf edge\-\_\-iterator} {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::operator++ (
+\begin{DoxyParamCaption}
+\item[{int}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a1f88307cf3082cbf763c0a0767470a4b}
+
+
+Increases the iterator. 
+
+
+
+Definition at line 157 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_ad97b0775bb8aaeca052a88baf080a9aa}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{operator+=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ {\bf edge\-\_\-iterator}\& {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::operator+= (
+\begin{DoxyParamCaption}
+\item[{{\bf difference\-\_\-type}}]{i}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_ad97b0775bb8aaeca052a88baf080a9aa}
+
+
+Increases the iterator by i difference units. 
+
+
+
+Definition at line 175 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a6a0cdf3ee29e88ba320ef3b4a11498ee}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{operator-\/}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ ssize\-\_\-t {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf edge\-\_\-iterator} \&}]{it}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a6a0cdf3ee29e88ba320ef3b4a11498ee}
+
+
+Computes the difference of two iterators. 
+
+
+
+Definition at line 165 of file graph\-\_\-storage.\-hpp.
+
+\hypertarget{classsaedb_1_1graph__storage_1_1edge__iterator_a3fc5f6398f5f04338b3f1990919f4a70}{\index{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}!operator==@{operator==}}
+\index{operator==@{operator==}!saedb::graph_storage::edge_iterator@{saedb\-::graph\-\_\-storage\-::edge\-\_\-iterator}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vertex\-Data , typename Edge\-Data $>$ bool {\bf saedb\-::graph\-\_\-storage}$<$ Vertex\-Data, Edge\-Data $>$\-::edge\-\_\-iterator\-::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf edge\-\_\-iterator} \&}]{it}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{d8/d8a/classsaedb_1_1graph__storage_1_1edge__iterator_a3fc5f6398f5f04338b3f1990919f4a70}
+
+
+Returns if two iterators point to the same edge. 
+
+
+
+Definition at line 138 of file graph\-\_\-storage.\-hpp.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/saedb/\hyperlink{graph__storage_8hpp}{graph\-\_\-storage.\-hpp}\end{DoxyCompactItemize}
