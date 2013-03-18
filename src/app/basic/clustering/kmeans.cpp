@@ -25,6 +25,7 @@ size_t KMEANS_INITIALIZATION;
 
 class vertex_data{
 
+
 }
 
 class edge_data{
