@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "sae_include.hpp"
-#include "sample_data"
+#include "sample_data.cpp"
 
 float RESET_PROB = 0.15;
 float TOLERANCE = 1.0E-2;
