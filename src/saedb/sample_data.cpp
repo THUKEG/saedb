@@ -9,7 +9,7 @@ graph_type LOAD_SAMPLE_GRAPH(){
       graph_type graph;
       for (int i=1; i<=6012; ++i){
 	    // add_vertex(id, vertex_data)
-	    graph.add_vertex(i, 1.0);
+	    graph.add_vertex(i, 1.0 / 6012);
       }
 
       // add_edge(source, target, edge_data)
