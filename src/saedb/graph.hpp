@@ -75,8 +75,13 @@ namespace saedb
 
 	    void display(){
 		  typename map<vertex_id_type, vertex_data_type>::iterator it;
+		  int counter = 0;
+		  std::cout << "show fist 100 vertex data" << std::endl;
 		  for ( it = vertex_id_2_data.begin(); it != vertex_id_2_data.end();++it){
 			std::cout << it->first << " " << it->second << std::endl;
+			counter++;
+			if (counter > 100)
+			      break;
 		  }
 	    }
 
@@ -94,10 +99,10 @@ namespace saedb
 
 	    void add_edge(vertex_id_type source, vertex_id_type target, edge_data_type data) {
 		  // now assum both source and target are inserted
-		  vertex_neighbours out_nbr = vertex_id_2_out_edges[source];
-		  vertex_neighbours in_nbr = vertex_id_2_out_edges[target];
-		  out_nbr.push_back( edge_type(*this, source, target) );
-		  in_nbr.push_back( edge_type(*this, source, target) );
+		  vertex_neighbours& s_out_nbr = vertex_id_2_out_edges[source];
+		  vertex_neighbours& t_in_nbr = vertex_id_2_in_edges[target];
+		  s_out_nbr.push_back( edge_type(*this, source, target) );
+		  t_in_nbr.push_back( edge_type(*this, source, target) );
 		  ++nedge;
 	    }
 
@@ -135,9 +140,13 @@ namespace saedb
 		  }
 
 		  size_t num_in_edges() const {
+			auto in_edge = graph_ref.vertex_id_2_in_edges[lvid];
+			return in_edge.size();
 		  }
 
 		  size_t num_out_edges() const {
+			auto out_edge = graph_ref.vertex_id_2_out_edges[lvid];
+			return out_edge.size();
 		  }
       
 		  vertex_id_type id() const {

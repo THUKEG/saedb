@@ -96,7 +96,6 @@ namespace saedb
 		  gather_type accum = gather_type();
 		  if (gather_dir == IN_EDGES || gather_dir == ALL_EDGES){
 			for(edge_type local_edge : vertex.in_edges()){
-			      std::cout << "hi" << std::endl;
 			      edge_type edge(local_edge);
 			      if(accum_is_set) {
 				    accum += vprog.gather(context, vertex, edge);
