@@ -38,20 +38,6 @@ public:
       }
 };
 
-graph_type sample_graph_back(){
-      graph_type graph;
-      // add_vertex(id, vertex_data)
-      graph.add_vertex(1, 1.0);
-      graph.add_vertex(2, 1.0);
-      graph.add_vertex(3, 1.0);
-      graph.add_vertex(4, 1.0);
-
-      // add_edge(source, target, edge_data)
-      graph.add_edge(1, 2, 2.0);
-      graph.add_edge(2, 3, 4.0);
-      return graph;
-}
-
 graph_type sample_graph(){
       return LOAD_SAMPLE_GRAPH<graph_type>();
 }

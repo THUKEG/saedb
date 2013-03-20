@@ -7,12 +7,8 @@
 template<typename graph_type>
 graph_type LOAD_SAMPLE_GRAPH(){
       graph_type graph;
-      // add_vertex(id, vertex_data)
-      graph.add_vertex(1, 1.0);
-      graph.add_vertex(2, 1.0);
-      graph.add_vertex(3, 1.0);
-      graph.add_vertex(4, 1.0);
       for (int i=1; i<=6012; ++i){
+	    // add_vertex(id, vertex_data)
 	    graph.add_vertex(i, 1.0);
       }
 
