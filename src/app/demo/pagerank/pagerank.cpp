@@ -15,6 +15,12 @@ class pagerank :
       public saedb::sae_algorithm<graph_type, float>
 {
 public:
+
+      edge_dir_type gather_edges(icontext_type& context,
+	    const vertex_type& vertex) const{
+	    return saedb::IN_EDGES;
+      }
+      
       float gather(icontext_type& context, const vertex_type& vertex,
 		   edge_type& edge) const {
 	    return ((1.0 - RESET_PROB) / edge.source().num_out_edges()) *

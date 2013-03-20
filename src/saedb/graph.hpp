@@ -94,10 +94,10 @@ namespace saedb
 
 	    void add_edge(vertex_id_type source, vertex_id_type target, edge_data_type data) {
 		  // now assum both source and target are inserted
-		  vertex_neighbours out_nbr = vertex_id_2_out_edges[source];
-		  vertex_neighbours in_nbr = vertex_id_2_out_edges[target];
-		  out_nbr.push_back( edge_type(*this, source, target) );
-		  in_nbr.push_back( edge_type(*this, source, target) );
+		  vertex_neighbours s_out_nbr = vertex_id_2_out_edges[source];
+		  vertex_neighbours t_in_nbr = vertex_id_2_in_edges[target];
+		  s_out_nbr.push_back( edge_type(*this, source, target) );
+		  t_in_nbr.push_back( edge_type(*this, source, target) );
 		  ++nedge;
 	    }
 
