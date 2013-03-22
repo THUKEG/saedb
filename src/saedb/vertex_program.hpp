@@ -1,7 +1,7 @@
 #ifndef SAE_ALGORITHM_HPP
 #define SAE_ALGORITHM_HPP
 
-#include "graph_basic_types.cpp"
+#include "graph_basic_types.hpp"
 #include "icontext.hpp"
 
 namespace saedb
