@@ -2,7 +2,7 @@
 #define SAE_LOCALGRAPH_GPP
 
 #include <vector>
-#include "graph_basic_types.cpp"
+#include "graph_basic_types.hpp"
 #include "graph_storage.hpp"
 
 namespace saedb {
