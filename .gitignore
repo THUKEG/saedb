@@ -16,3 +16,7 @@
 *#
 .*#*
 *.out
+
+build/
+xcode-sae/xcode-sae.xcodeproj/xcuserdata/
+xcode-sae/xcode-sae.xcodeproj/project.xcworkspace/xcuserdata/
