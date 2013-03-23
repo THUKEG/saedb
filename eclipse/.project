@@ -119,11 +119,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>cdt_build</name>
-			<type>2</type>
-			<location>/home/neo/projects/saedb/cdt_build</location>
-		</link>
-		<link>
 			<name>[Subprojects]/pagerank</name>
 			<type>2</type>
 			<location>/home/neo/projects/saedb/src/app/demo/pagerank</location>
