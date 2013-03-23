@@ -57,25 +57,27 @@ namespace saedb {
 	    //  */
 	    // size_t num_updates() const { return engine.num_updates(); }
 
-	    size_t procid() const {  }
+        size_t procid() const { return 0; }
       
-	    size_t num_procs() const {  }
+        size_t num_procs() const {  return 0;}
 
 	    std::ostream& cout() const {
+            return std::cout;
 	    }
 
 	    std::ostream& cerr() const {
+            return std::cerr;
 	    }
 
 	    /**
 	     * Get the elapsed time in seconds
 	     */
-	    float elapsed_seconds() const {  }
+        float elapsed_seconds() const {  return 0.0;}
 
 	    /**
 	     * Return the current interation number (if supported).
 	     */
-	    int iteration() const { }
+        int iteration() const { return 0.0;}
 
 	    /**
 	     * Force the engine to stop executing additional update functions.

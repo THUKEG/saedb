@@ -131,8 +131,8 @@ namespace saedb
 		  vertex_type vertex {graph.vertex(vid)};
 		  const edge_dir_type gather_dir = vprog.scatter_edges(context, vertex);
 		  
-		  bool accum_is_set = false;
-		  gather_type accum = gather_type();
+//		  bool accum_is_set = false;
+//		  gather_type accum = gather_type();
 		  if (gather_dir == IN_EDGES || gather_dir == ALL_EDGES){
 			for(edge_type local_edge : vertex.in_edges()){
 			      edge_type edge(local_edge);
