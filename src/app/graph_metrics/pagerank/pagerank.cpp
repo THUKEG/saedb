@@ -17,27 +17,27 @@ class pagerank :
 public:
 
       edge_dir_type gather_edges(icontext_type& context,
-	    const vertex_type& vertex) const{
-	    return saedb::IN_EDGES;
+              const vertex_type& vertex) const{
+          return saedb::IN_EDGES;
       }
-      
+
       float gather(icontext_type& context, const vertex_type& vertex,
 		   edge_type& edge) const {
 	    return ((1.0 - RESET_PROB) / edge.source().num_out_edges()) *
 		  edge.source().data();
       }
-      
+
       void apply(icontext_type& context, vertex_type& vertex,
 		 const gather_type& total){
 	    const double newval = total + RESET_PROB;
 	    vertex.data() = newval;
       }
-      
+
       edge_dir_type scatter_edges(icontext_type& context,
 				  const vertex_type& vertex) const{
 	    return saedb::OUT_EDGES;
       }
-      
+
       void scatter(icontext_type& context, const vertex_type& vertex,
 		   edge_type& edge) const {
 	    context.signal(edge.target());
@@ -58,12 +58,12 @@ int main(){
       // graph.load_format(graph_dir, format);
 
       std::cout << "#vertices: "
-		<< graph.num_vertices()
-		<< " #edges:"
-		<< graph.num_edges() << std::endl;
-      
+          << graph.num_vertices()
+        << " #edges:"
+        << graph.num_edges() << std::endl;
+
       // graph.transform_vertices(init_vertex);
-      
+
       saedb::sae_synchronous_engine<pagerank> engine(graph);
       // engine.signal_all();
       engine.start();
