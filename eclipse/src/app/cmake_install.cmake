@@ -1,4 +1,4 @@
-# Install script for directory: /home/neo/projects/saedb/src/app
+# Install script for directory: /home/neo/Projects/saedb/src/app
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,8 +34,7 @@ ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 
 IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  INCLUDE("/home/neo/projects/saedb/cdt_build/src/app/demo/cmake_install.cmake")
-  INCLUDE("/home/neo/projects/saedb/cdt_build/src/app/basic/cmake_install.cmake")
+  INCLUDE("/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/cmake_install.cmake")
 
 ENDIF(NOT CMAKE_INSTALL_LOCAL_ONLY)
 

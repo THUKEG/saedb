@@ -47,108 +47,567 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/neo/projects/saedb
+CMAKE_SOURCE_DIR = /home/neo/Projects/saedb
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/neo/projects/saedb/cdt_build
+CMAKE_BINARY_DIR = /home/neo/Projects/saedb/eclipse
 
 #=============================================================================
 # Directory level rules for directory src/app
 
 # Convenience name for "all" pass in the directory.
-src/app/all: src/app/demo/all
-src/app/all: src/app/basic/all
+src/app/all: src/app/graph_analysis/all
 .PHONY : src/app/all
 
 # Convenience name for "clean" pass in the directory.
-src/app/clean: src/app/demo/clean
-src/app/clean: src/app/basic/clean
+src/app/clean: src/app/graph_analysis/clean
 .PHONY : src/app/clean
 
 # Convenience name for "preinstall" pass in the directory.
-src/app/preinstall: src/app/demo/preinstall
-src/app/preinstall: src/app/basic/preinstall
+src/app/preinstall: src/app/graph_analysis/preinstall
 .PHONY : src/app/preinstall
 
 #=============================================================================
-# Directory level rules for directory src/app/demo
+# Directory level rules for directory src/app/graph_analysis
 
 # Convenience name for "all" pass in the directory.
-src/app/demo/all: src/app/demo/pagerank/all
-.PHONY : src/app/demo/all
+src/app/graph_analysis/all: src/app/graph_analysis/kcores/all
+src/app/graph_analysis/all: src/app/graph_analysis/utils/all
+src/app/graph_analysis/all: src/app/graph_analysis/cascades/all
+src/app/graph_analysis/all: src/app/graph_analysis/motifs/all
+src/app/graph_analysis/all: src/app/graph_analysis/pagerank/all
+src/app/graph_analysis/all: src/app/graph_analysis/connected_component/all
+src/app/graph_analysis/all: src/app/graph_analysis/shortest_path/all
+src/app/graph_analysis/all: src/app/graph_analysis/community/all
+src/app/graph_analysis/all: src/app/graph_analysis/cliques/all
+src/app/graph_analysis/all: src/app/graph_analysis/centrality/all
+.PHONY : src/app/graph_analysis/all
 
 # Convenience name for "clean" pass in the directory.
-src/app/demo/clean: src/app/demo/pagerank/clean
-.PHONY : src/app/demo/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/kcores/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/utils/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/cascades/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/motifs/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/pagerank/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/connected_component/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/shortest_path/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/community/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/cliques/clean
+src/app/graph_analysis/clean: src/app/graph_analysis/centrality/clean
+.PHONY : src/app/graph_analysis/clean
 
 # Convenience name for "preinstall" pass in the directory.
-src/app/demo/preinstall: src/app/demo/pagerank/preinstall
-.PHONY : src/app/demo/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/kcores/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/utils/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/cascades/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/motifs/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/pagerank/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/connected_component/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/shortest_path/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/community/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/cliques/preinstall
+src/app/graph_analysis/preinstall: src/app/graph_analysis/centrality/preinstall
+.PHONY : src/app/graph_analysis/preinstall
 
 #=============================================================================
-# Directory level rules for directory src/app/demo/pagerank
+# Directory level rules for directory src/app/graph_analysis/kcores
 
 # Convenience name for "all" pass in the directory.
-src/app/demo/pagerank/all: src/app/demo/pagerank/CMakeFiles/pagerank.dir/all
-.PHONY : src/app/demo/pagerank/all
+src/app/graph_analysis/kcores/all: src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/all
+.PHONY : src/app/graph_analysis/kcores/all
 
 # Convenience name for "clean" pass in the directory.
-src/app/demo/pagerank/clean: src/app/demo/pagerank/CMakeFiles/pagerank.dir/clean
-.PHONY : src/app/demo/pagerank/clean
+src/app/graph_analysis/kcores/clean: src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/clean
+.PHONY : src/app/graph_analysis/kcores/clean
 
 # Convenience name for "preinstall" pass in the directory.
-src/app/demo/pagerank/preinstall:
-.PHONY : src/app/demo/pagerank/preinstall
+src/app/graph_analysis/kcores/preinstall:
+.PHONY : src/app/graph_analysis/kcores/preinstall
 
 #=============================================================================
-# Target rules for target src/app/demo/pagerank/CMakeFiles/pagerank.dir
+# Target rules for target src/app/graph_analysis/kcores/CMakeFiles/kcores.dir
 
 # All Build rule for target.
-src/app/demo/pagerank/CMakeFiles/pagerank.dir/all:
-	$(MAKE) -f src/app/demo/pagerank/CMakeFiles/pagerank.dir/build.make src/app/demo/pagerank/CMakeFiles/pagerank.dir/depend
-	$(MAKE) -f src/app/demo/pagerank/CMakeFiles/pagerank.dir/build.make src/app/demo/pagerank/CMakeFiles/pagerank.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/projects/saedb/cdt_build/CMakeFiles  1
-	@echo "Built target pagerank"
-.PHONY : src/app/demo/pagerank/CMakeFiles/pagerank.dir/all
+src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/all:
+	$(MAKE) -f src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/build.make src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/depend
+	$(MAKE) -f src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/build.make src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  6
+	@echo "Built target kcores"
+.PHONY : src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/all
 
 # Include target in all.
-all: src/app/demo/pagerank/CMakeFiles/pagerank.dir/all
+all: src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-src/app/demo/pagerank/CMakeFiles/pagerank.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/projects/saedb/cdt_build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 src/app/demo/pagerank/CMakeFiles/pagerank.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/projects/saedb/cdt_build/CMakeFiles 0
-.PHONY : src/app/demo/pagerank/CMakeFiles/pagerank.dir/rule
+src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/rule
 
 # Convenience name for target.
-pagerank: src/app/demo/pagerank/CMakeFiles/pagerank.dir/rule
-.PHONY : pagerank
+kcores: src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/rule
+.PHONY : kcores
 
 # clean rule for target.
-src/app/demo/pagerank/CMakeFiles/pagerank.dir/clean:
-	$(MAKE) -f src/app/demo/pagerank/CMakeFiles/pagerank.dir/build.make src/app/demo/pagerank/CMakeFiles/pagerank.dir/clean
-.PHONY : src/app/demo/pagerank/CMakeFiles/pagerank.dir/clean
+src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/build.make src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/clean
+.PHONY : src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/clean
 
 # clean rule for target.
-clean: src/app/demo/pagerank/CMakeFiles/pagerank.dir/clean
+clean: src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Directory level rules for directory src/app/basic
+# Directory level rules for directory src/app/graph_analysis/utils
 
 # Convenience name for "all" pass in the directory.
-src/app/basic/all:
-.PHONY : src/app/basic/all
+src/app/graph_analysis/utils/all: src/app/graph_analysis/utils/CMakeFiles/utils.dir/all
+.PHONY : src/app/graph_analysis/utils/all
 
 # Convenience name for "clean" pass in the directory.
-src/app/basic/clean:
-.PHONY : src/app/basic/clean
+src/app/graph_analysis/utils/clean: src/app/graph_analysis/utils/CMakeFiles/utils.dir/clean
+.PHONY : src/app/graph_analysis/utils/clean
 
 # Convenience name for "preinstall" pass in the directory.
-src/app/basic/preinstall:
-.PHONY : src/app/basic/preinstall
+src/app/graph_analysis/utils/preinstall:
+.PHONY : src/app/graph_analysis/utils/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/utils/CMakeFiles/utils.dir
+
+# All Build rule for target.
+src/app/graph_analysis/utils/CMakeFiles/utils.dir/all:
+	$(MAKE) -f src/app/graph_analysis/utils/CMakeFiles/utils.dir/build.make src/app/graph_analysis/utils/CMakeFiles/utils.dir/depend
+	$(MAKE) -f src/app/graph_analysis/utils/CMakeFiles/utils.dir/build.make src/app/graph_analysis/utils/CMakeFiles/utils.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  10
+	@echo "Built target utils"
+.PHONY : src/app/graph_analysis/utils/CMakeFiles/utils.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/utils/CMakeFiles/utils.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/utils/CMakeFiles/utils.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/utils/CMakeFiles/utils.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/utils/CMakeFiles/utils.dir/rule
+
+# Convenience name for target.
+utils: src/app/graph_analysis/utils/CMakeFiles/utils.dir/rule
+.PHONY : utils
+
+# clean rule for target.
+src/app/graph_analysis/utils/CMakeFiles/utils.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/utils/CMakeFiles/utils.dir/build.make src/app/graph_analysis/utils/CMakeFiles/utils.dir/clean
+.PHONY : src/app/graph_analysis/utils/CMakeFiles/utils.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/utils/CMakeFiles/utils.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory src/app/graph_analysis/cascades
+
+# Convenience name for "all" pass in the directory.
+src/app/graph_analysis/cascades/all: src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/all
+.PHONY : src/app/graph_analysis/cascades/all
+
+# Convenience name for "clean" pass in the directory.
+src/app/graph_analysis/cascades/clean: src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/clean
+.PHONY : src/app/graph_analysis/cascades/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/app/graph_analysis/cascades/preinstall:
+.PHONY : src/app/graph_analysis/cascades/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/cascades/CMakeFiles/cascades.dir
+
+# All Build rule for target.
+src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/all:
+	$(MAKE) -f src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/build.make src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/depend
+	$(MAKE) -f src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/build.make src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  1
+	@echo "Built target cascades"
+.PHONY : src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/rule
+
+# Convenience name for target.
+cascades: src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/rule
+.PHONY : cascades
+
+# clean rule for target.
+src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/build.make src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/clean
+.PHONY : src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory src/app/graph_analysis/motifs
+
+# Convenience name for "all" pass in the directory.
+src/app/graph_analysis/motifs/all: src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/all
+.PHONY : src/app/graph_analysis/motifs/all
+
+# Convenience name for "clean" pass in the directory.
+src/app/graph_analysis/motifs/clean: src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/clean
+.PHONY : src/app/graph_analysis/motifs/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/app/graph_analysis/motifs/preinstall:
+.PHONY : src/app/graph_analysis/motifs/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/motifs/CMakeFiles/motifs.dir
+
+# All Build rule for target.
+src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/all:
+	$(MAKE) -f src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/build.make src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/depend
+	$(MAKE) -f src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/build.make src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  7
+	@echo "Built target motifs"
+.PHONY : src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/rule
+
+# Convenience name for target.
+motifs: src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/rule
+.PHONY : motifs
+
+# clean rule for target.
+src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/build.make src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/clean
+.PHONY : src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory src/app/graph_analysis/pagerank
+
+# Convenience name for "all" pass in the directory.
+src/app/graph_analysis/pagerank/all: src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/all
+.PHONY : src/app/graph_analysis/pagerank/all
+
+# Convenience name for "clean" pass in the directory.
+src/app/graph_analysis/pagerank/clean: src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/clean
+.PHONY : src/app/graph_analysis/pagerank/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/app/graph_analysis/pagerank/preinstall:
+.PHONY : src/app/graph_analysis/pagerank/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir
+
+# All Build rule for target.
+src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/all:
+	$(MAKE) -f src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/build.make src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/depend
+	$(MAKE) -f src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/build.make src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  8
+	@echo "Built target pagerank"
+.PHONY : src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/rule
+
+# Convenience name for target.
+pagerank: src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/rule
+.PHONY : pagerank
+
+# clean rule for target.
+src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/build.make src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/clean
+.PHONY : src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory src/app/graph_analysis/connected_component
+
+# Convenience name for "all" pass in the directory.
+src/app/graph_analysis/connected_component/all: src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/all
+.PHONY : src/app/graph_analysis/connected_component/all
+
+# Convenience name for "clean" pass in the directory.
+src/app/graph_analysis/connected_component/clean: src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/clean
+.PHONY : src/app/graph_analysis/connected_component/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/app/graph_analysis/connected_component/preinstall:
+.PHONY : src/app/graph_analysis/connected_component/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir
+
+# All Build rule for target.
+src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/all:
+	$(MAKE) -f src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/build.make src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/depend
+	$(MAKE) -f src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/build.make src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  5
+	@echo "Built target connected_component"
+.PHONY : src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/rule
+
+# Convenience name for target.
+connected_component: src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/rule
+.PHONY : connected_component
+
+# clean rule for target.
+src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/build.make src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/clean
+.PHONY : src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory src/app/graph_analysis/shortest_path
+
+# Convenience name for "all" pass in the directory.
+src/app/graph_analysis/shortest_path/all: src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/all
+.PHONY : src/app/graph_analysis/shortest_path/all
+
+# Convenience name for "clean" pass in the directory.
+src/app/graph_analysis/shortest_path/clean: src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/clean
+.PHONY : src/app/graph_analysis/shortest_path/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/app/graph_analysis/shortest_path/preinstall:
+.PHONY : src/app/graph_analysis/shortest_path/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir
+
+# All Build rule for target.
+src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/all:
+	$(MAKE) -f src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/build.make src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/depend
+	$(MAKE) -f src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/build.make src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  9
+	@echo "Built target shortest_path"
+.PHONY : src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/rule
+
+# Convenience name for target.
+shortest_path: src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/rule
+.PHONY : shortest_path
+
+# clean rule for target.
+src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/build.make src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/clean
+.PHONY : src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory src/app/graph_analysis/community
+
+# Convenience name for "all" pass in the directory.
+src/app/graph_analysis/community/all: src/app/graph_analysis/community/CMakeFiles/community.dir/all
+.PHONY : src/app/graph_analysis/community/all
+
+# Convenience name for "clean" pass in the directory.
+src/app/graph_analysis/community/clean: src/app/graph_analysis/community/CMakeFiles/community.dir/clean
+.PHONY : src/app/graph_analysis/community/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/app/graph_analysis/community/preinstall:
+.PHONY : src/app/graph_analysis/community/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/community/CMakeFiles/community.dir
+
+# All Build rule for target.
+src/app/graph_analysis/community/CMakeFiles/community.dir/all:
+	$(MAKE) -f src/app/graph_analysis/community/CMakeFiles/community.dir/build.make src/app/graph_analysis/community/CMakeFiles/community.dir/depend
+	$(MAKE) -f src/app/graph_analysis/community/CMakeFiles/community.dir/build.make src/app/graph_analysis/community/CMakeFiles/community.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  4
+	@echo "Built target community"
+.PHONY : src/app/graph_analysis/community/CMakeFiles/community.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/community/CMakeFiles/community.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/community/CMakeFiles/community.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/community/CMakeFiles/community.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/community/CMakeFiles/community.dir/rule
+
+# Convenience name for target.
+community: src/app/graph_analysis/community/CMakeFiles/community.dir/rule
+.PHONY : community
+
+# clean rule for target.
+src/app/graph_analysis/community/CMakeFiles/community.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/community/CMakeFiles/community.dir/build.make src/app/graph_analysis/community/CMakeFiles/community.dir/clean
+.PHONY : src/app/graph_analysis/community/CMakeFiles/community.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/community/CMakeFiles/community.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory src/app/graph_analysis/cliques
+
+# Convenience name for "all" pass in the directory.
+src/app/graph_analysis/cliques/all: src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/all
+.PHONY : src/app/graph_analysis/cliques/all
+
+# Convenience name for "clean" pass in the directory.
+src/app/graph_analysis/cliques/clean: src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/clean
+.PHONY : src/app/graph_analysis/cliques/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/app/graph_analysis/cliques/preinstall:
+.PHONY : src/app/graph_analysis/cliques/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/cliques/CMakeFiles/cliques.dir
+
+# All Build rule for target.
+src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/all:
+	$(MAKE) -f src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/build.make src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/depend
+	$(MAKE) -f src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/build.make src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  3
+	@echo "Built target cliques"
+.PHONY : src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/rule
+
+# Convenience name for target.
+cliques: src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/rule
+.PHONY : cliques
+
+# clean rule for target.
+src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/build.make src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/clean
+.PHONY : src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory src/app/graph_analysis/centrality
+
+# Convenience name for "all" pass in the directory.
+src/app/graph_analysis/centrality/all: src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/all
+.PHONY : src/app/graph_analysis/centrality/all
+
+# Convenience name for "clean" pass in the directory.
+src/app/graph_analysis/centrality/clean: src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/clean
+.PHONY : src/app/graph_analysis/centrality/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/app/graph_analysis/centrality/preinstall:
+.PHONY : src/app/graph_analysis/centrality/preinstall
+
+#=============================================================================
+# Target rules for target src/app/graph_analysis/centrality/CMakeFiles/centrality.dir
+
+# All Build rule for target.
+src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/all:
+	$(MAKE) -f src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/build.make src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/depend
+	$(MAKE) -f src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/build.make src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/neo/Projects/saedb/eclipse/CMakeFiles  2
+	@echo "Built target centrality"
+.PHONY : src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/all
+
+# Include target in all.
+all: src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
+.PHONY : src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/rule
+
+# Convenience name for target.
+centrality: src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/rule
+.PHONY : centrality
+
+# clean rule for target.
+src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/clean:
+	$(MAKE) -f src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/build.make src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/clean
+.PHONY : src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/clean
+
+# clean rule for target.
+clean: src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/clean
+.PHONY : clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

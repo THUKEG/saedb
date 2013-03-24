@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/neo/projects/saedb
+CMAKE_SOURCE_DIR = /home/neo/Projects/saedb
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/neo/projects/saedb/cdt_build
+CMAKE_BINARY_DIR = /home/neo/Projects/saedb/eclipse
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/projects/saedb/cdt_build/CMakeFiles /home/neo/projects/saedb/cdt_build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles /home/neo/Projects/saedb/eclipse/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/projects/saedb/cdt_build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -99,6 +99,58 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named kcores
+
+# Build rule for target.
+kcores: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 kcores
+.PHONY : kcores
+
+# fast build rule for target.
+kcores/fast:
+	$(MAKE) -f src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/build.make src/app/graph_analysis/kcores/CMakeFiles/kcores.dir/build
+.PHONY : kcores/fast
+
+#=============================================================================
+# Target rules for targets named utils
+
+# Build rule for target.
+utils: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 utils
+.PHONY : utils
+
+# fast build rule for target.
+utils/fast:
+	$(MAKE) -f src/app/graph_analysis/utils/CMakeFiles/utils.dir/build.make src/app/graph_analysis/utils/CMakeFiles/utils.dir/build
+.PHONY : utils/fast
+
+#=============================================================================
+# Target rules for targets named cascades
+
+# Build rule for target.
+cascades: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cascades
+.PHONY : cascades
+
+# fast build rule for target.
+cascades/fast:
+	$(MAKE) -f src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/build.make src/app/graph_analysis/cascades/CMakeFiles/cascades.dir/build
+.PHONY : cascades/fast
+
+#=============================================================================
+# Target rules for targets named motifs
+
+# Build rule for target.
+motifs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 motifs
+.PHONY : motifs
+
+# fast build rule for target.
+motifs/fast:
+	$(MAKE) -f src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/build.make src/app/graph_analysis/motifs/CMakeFiles/motifs.dir/build
+.PHONY : motifs/fast
+
+#=============================================================================
 # Target rules for targets named pagerank
 
 # Build rule for target.
@@ -108,8 +160,73 @@ pagerank: cmake_check_build_system
 
 # fast build rule for target.
 pagerank/fast:
-	$(MAKE) -f src/app/demo/pagerank/CMakeFiles/pagerank.dir/build.make src/app/demo/pagerank/CMakeFiles/pagerank.dir/build
+	$(MAKE) -f src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/build.make src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir/build
 .PHONY : pagerank/fast
+
+#=============================================================================
+# Target rules for targets named connected_component
+
+# Build rule for target.
+connected_component: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 connected_component
+.PHONY : connected_component
+
+# fast build rule for target.
+connected_component/fast:
+	$(MAKE) -f src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/build.make src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir/build
+.PHONY : connected_component/fast
+
+#=============================================================================
+# Target rules for targets named shortest_path
+
+# Build rule for target.
+shortest_path: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 shortest_path
+.PHONY : shortest_path
+
+# fast build rule for target.
+shortest_path/fast:
+	$(MAKE) -f src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/build.make src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir/build
+.PHONY : shortest_path/fast
+
+#=============================================================================
+# Target rules for targets named community
+
+# Build rule for target.
+community: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 community
+.PHONY : community
+
+# fast build rule for target.
+community/fast:
+	$(MAKE) -f src/app/graph_analysis/community/CMakeFiles/community.dir/build.make src/app/graph_analysis/community/CMakeFiles/community.dir/build
+.PHONY : community/fast
+
+#=============================================================================
+# Target rules for targets named cliques
+
+# Build rule for target.
+cliques: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cliques
+.PHONY : cliques
+
+# fast build rule for target.
+cliques/fast:
+	$(MAKE) -f src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/build.make src/app/graph_analysis/cliques/CMakeFiles/cliques.dir/build
+.PHONY : cliques/fast
+
+#=============================================================================
+# Target rules for targets named centrality
+
+# Build rule for target.
+centrality: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 centrality
+.PHONY : centrality
+
+# fast build rule for target.
+centrality/fast:
+	$(MAKE) -f src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/build.make src/app/graph_analysis/centrality/CMakeFiles/centrality.dir/build
+.PHONY : centrality/fast
 
 # Help Target
 help:
@@ -119,7 +236,16 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... kcores"
+	@echo "... utils"
+	@echo "... cascades"
+	@echo "... motifs"
 	@echo "... pagerank"
+	@echo "... connected_component"
+	@echo "... shortest_path"
+	@echo "... community"
+	@echo "... cliques"
+	@echo "... centrality"
 .PHONY : help
 
 

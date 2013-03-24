@@ -1,0 +1,1 @@
+/usr/bin/c++   -g    CMakeFiles/kcores.dir/pagerank.cpp.o  -o ../../../../kcores -rdynamic 

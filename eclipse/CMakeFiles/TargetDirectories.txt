@@ -1,1 +1,10 @@
-/home/neo/projects/saedb/cdt_build/src/app/demo/pagerank/CMakeFiles/pagerank.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/cascades/CMakeFiles/cascades.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/centrality/CMakeFiles/centrality.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/cliques/CMakeFiles/cliques.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/community/CMakeFiles/community.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/connected_component/CMakeFiles/connected_component.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/kcores/CMakeFiles/kcores.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/motifs/CMakeFiles/motifs.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/pagerank/CMakeFiles/pagerank.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/shortest_path/CMakeFiles/shortest_path.dir
+/home/neo/Projects/saedb/eclipse/src/app/graph_analysis/utils/CMakeFiles/utils.dir

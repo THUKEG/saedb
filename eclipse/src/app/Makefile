@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/neo/projects/saedb
+CMAKE_SOURCE_DIR = /home/neo/Projects/saedb
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/neo/projects/saedb/cdt_build
+CMAKE_BINARY_DIR = /home/neo/Projects/saedb/eclipse
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,14 +69,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/neo/projects/saedb/cdt_build && $(CMAKE_COMMAND) -E cmake_progress_start /home/neo/projects/saedb/cdt_build/CMakeFiles /home/neo/projects/saedb/cdt_build/src/app/CMakeFiles/progress.marks
-	cd /home/neo/projects/saedb/cdt_build && $(MAKE) -f CMakeFiles/Makefile2 src/app/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/projects/saedb/cdt_build/CMakeFiles 0
+	cd /home/neo/Projects/saedb/eclipse && $(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles /home/neo/Projects/saedb/eclipse/src/app/CMakeFiles/progress.marks
+	cd /home/neo/Projects/saedb/eclipse && $(MAKE) -f CMakeFiles/Makefile2 src/app/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/neo/Projects/saedb/eclipse/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/neo/projects/saedb/cdt_build && $(MAKE) -f CMakeFiles/Makefile2 src/app/clean
+	cd /home/neo/Projects/saedb/eclipse && $(MAKE) -f CMakeFiles/Makefile2 src/app/clean
 .PHONY : clean
 
 # The main clean target
@@ -85,17 +85,17 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/neo/projects/saedb/cdt_build && $(MAKE) -f CMakeFiles/Makefile2 src/app/preinstall
+	cd /home/neo/Projects/saedb/eclipse && $(MAKE) -f CMakeFiles/Makefile2 src/app/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/neo/projects/saedb/cdt_build && $(MAKE) -f CMakeFiles/Makefile2 src/app/preinstall
+	cd /home/neo/Projects/saedb/eclipse && $(MAKE) -f CMakeFiles/Makefile2 src/app/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/neo/projects/saedb/cdt_build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/neo/Projects/saedb/eclipse && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Help Target
@@ -117,6 +117,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/neo/projects/saedb/cdt_build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/neo/Projects/saedb/eclipse && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

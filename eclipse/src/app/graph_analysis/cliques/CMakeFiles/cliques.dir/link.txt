@@ -1,0 +1,1 @@
+/usr/bin/c++   -g    CMakeFiles/cliques.dir/cliques.cpp.o  -o ../../../../cliques -rdynamic 
