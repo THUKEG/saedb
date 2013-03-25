@@ -20,15 +20,29 @@
 #include "sae_include.hpp"
 #include "sample_data.cpp"
 
-typedef float vertex_data_type;
+//define vertex data structure
+class vdata{
+public:
+    long label;
+    //the sum function finds the minimum id of the connected component
+    vdata& operator+=(const vdata& other){
+        label = std::min<long>(label, other.label);
+        return *this;
+    }
+}
+
+//define data type
+typedef vdata vertex_data_type;
 typedef float edge_data_type;
 typedef saedb::empty message_date_type;
 typedef saedb::sae_graph<vertex_data_type, edge_data_type> graph_type;
 
-void init_vertex(vertex_data_type& vertex){
-    vertex.data() = -1;
+//set label to vertex id
+void initialize_vertex(graph_type::vertex_type& v){
+    v.data().label = v.id();
+    //reload the operator + to
+    //sum perform founding the minimum value
 }
-
 
 /**
  * @brief Connected Component
@@ -40,58 +54,62 @@ void init_vertex(vertex_data_type& vertex){
 class connected_component:
     public saedb::sae_algorithm<graph, float>{
 private:
-    // set changed to determine which edges to scatter on
-    bool changed;
-    // local copy of the message value
-    vertex_data_type message_value;
+    // set perform_scatter to determine which edges to scatter on
+    bool perform_scatter;
 
 public:
+    edge_dir_type gather_edges(icontext_type& context,
+            const vertex_type& vertex) const{
+        return sae::ALL_EDGES;
+    }
 
-    void init(icontext_type& context,
+    vdata gather(incontex_type& context,
             const vertex_type& vertex,
-            const message_type& message){
-        // message.value == * on first run, so init message_value to vertex data.
-        if(message.value == 4294967295){
-            message.value = vertex.id();
-        }else{
-            // else, set the local copy to the message parameter
-            message_value = message.value;
+            edge_type& edge){
+        if(edge.source().id() != vertex.id()){
+            return edge.source().data().label;
+        }
+        if(edge.target().id() != vertex.id()){
+            return edge.target().data().label;
         }
     }
 
-    edge_dir_type gather_edges(icontext_type& context,
-            const vertex_type& vertex) const{
-        return sae::NO_EDGES;
-    }
-
-    float gather(icontext_type& context,
-            const vertex_type& vertex,
-            edge_type& edge) const{
-        return 0;
-    }
-
-    // Change the vertex data if any of its neighbors have a lower data value
+    //change the vertex data if any of its neighbors have a lower data value
     void apply(icontext_type& context,
             vertex_type& vertex,
             const gather_type& total){
-        if(message_value < vertex.)
+        if(total < vertex.data().label){
+            perform_scatter = true;
+        }else{
+            perform_scatter = false;
+        }
     }
 
     edge_dir_type scatter_edges(icontext_type& context,
             const vertex_type& vertex) const{
-        if(changed){
-            return sae::ALL_EDGES;
+        if(perform_scatter){
+            return saedb::ALL_EDGES;
         }else{
-            return sae::NO_EDGES;
+            return saedb::NO_EDGES;
         }
     }
 
     void scatter(icontext_type& context,
             const vertex_type& vertex,
             edge_type& edge) const{
-
+        //if a neighbor vertex has a bigger label, send a massage
+        if(edge.source().id() != vertex.id()
+                && edge.source().data().label > vertex.data().label){
+            context.signal(edge.source());
+        }
+        if(edge.target().id() != vertex.id()
+                && edge.target().data().label > vertex.data().label){
+            context.signal(edge.target());
+        }
     }
 }
+
+//require a reduce phase to aggregate all the data
 
 int main(){
     std::cout << "Connected Component...\n";
