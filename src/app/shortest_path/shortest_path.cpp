@@ -1,98 +1,71 @@
 #include <iostream>
 #include <limits>
 #include <fstream>
-#include <string>
+#include <algorithm>
 #include "sae_include.hpp"
-#include "sample_data.hpp"
+#include "generate.hpp"
 
-#define INFILE "input"
-#define MAX (100)
-
-typedef float vertex_data_type;
-typedef float edge_data_type;
-typedef saedb::empty message_data_type;
-typedef saedb::sae_graph<vertex_data_type, edge_data_type> graph_type;
+#define MAXFL (numeric_limits<float>::max())
 
 class SP_dis
 {
 public:
 	float dis;
+	SP_dis(float dis_ = MAXFL) : dis(dis_) {}
 	void operator +=(const SP_dis& other)
 	{
-		if (other.dis < dis) dis = other.dis;
+		dis = min(dis, other.dis);
 	}
-	SP_dis(float dis_ = MAX): dis(dis_) {}
 };
 
-class shortest_path: public saedb::sae_algorithm<graph_type, SP_dis>
+using namespace saedb;
+
+template <typename data_type, typename gather_type>
+class shortest_path: public sae_algorithm <sae_graph<data_type, data_type>, gather_type>
 {
 public:
+	typedef sae_algorithm<sae_graph<data_type, data_type>, gather_type> alg_type;
+	typedef typename alg_type::icontext_type icontext_type;
+	typedef typename alg_type::vertex_type vertex_type;
+	typedef typename alg_type::edge_type edge_type;
+
+	void init(icontext_type& context, const vertex_type& vertex) {}
+	
 	edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const
 	{
-		return saedb::IN_EDGES;
+		return IN_EDGES;
 	}
-
-	SP_dis gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const
+	
+	gather_type gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const
 	{
-		float newval = edge.source().data() + edge.data();
-		return SP_dis(newval);
+		float newval = edge.data() + edge.source().data();
+		return gather_type(newval);
 	}
-
-	void apply(icontext_type& context, vertex_type& vertex, const SP_dis& total)
+	
+	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total)
 	{
-		if (total.dis < vertex.data())
-			vertex.data() = total.dis;
+		vertex.data() = min(vertex.data(), total.dis);
 	}
-
+	
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const
 	{
-		return saedb::OUT_EDGES;
+		return OUT_EDGES;
 	}
-
+	
 	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const
 	{
-		// TODO signal funciton is not yet implemented
 		if (vertex.data() + edge.data() < edge.target().data())
 			context.signal(edge.target());
 	}
 };
 
-graph_type generate_graph()
-{
-	graph_type graph;
-	using namespace std;
-	ifstream fin(INFILE);
-
-	int n;
-	fin >> n;
-	graph.add_vertex(0, 0);
-	for (int i=1; i<n; i++)
-		graph.add_vertex(i, MAX);
-
-	int m;
-	fin >> m;
-	for (int i=0; i<m; i++)
-	{
-		saedb::vertex_id_type x, y;
-		float e;
-		fin >> x >> y >> e;
-		graph.add_edge(x, y, e);
-	}
-
-	return graph;
-}
-
 int main()
 {
-	graph_type graph = generate_graph();
+	shortest_path<float, SP_dis> sp;
+	float_graph graph = generate_graph();
 
-	using namespace std;
-	cout << "#vertices: " << graph.num_vertices() << " #edges: " << graph.num_edges() << endl;
-
-	saedb::sae_synchronous_engine<shortest_path> engine(graph);
-	//engine.signal(vertex_type(&graph, 0));
+	sae_synchronous_engine<shortest_path<float, SP_dis> > engine(graph);
 	engine.start();
-	cout << "Done." << endl;
 
 	return 0;
 }
