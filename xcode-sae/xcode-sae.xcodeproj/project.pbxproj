@@ -27,7 +27,6 @@
 /* Begin PBXFileReference section */
 		1F1AB3D916FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1F1AB3DA16FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
-		1F1AB3DC16FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1F1AB3DE16FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1F1AB3DF16FDE02D00433ED5 /* pagerank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = pagerank.cpp; sourceTree = "<group>"; };
 		1F1AB3E116FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
@@ -98,7 +97,6 @@
 		1F1AB3DB16FDE02D00433ED5 /* demo */ = {
 			isa = PBXGroup;
 			children = (
-				1F1AB3DC16FDE02D00433ED5 /* CMakeLists.txt */,
 				1F1AB3DD16FDE02D00433ED5 /* pagerank */,
 			);
 			path = demo;
@@ -298,6 +296,7 @@
 				1F1AB3FA16FDE05F00433ED5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
