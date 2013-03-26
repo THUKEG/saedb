@@ -34,7 +34,7 @@ namespace saedb
         
     public:
 	    sae_synchronous_engine(graph_type& graph);
-        void signal_all(const message_type& message = message_type());
+        void signal_all();
 	    void start();
         
     private:
@@ -48,19 +48,29 @@ namespace saedb
 	    void execute_applys();
 	    void execute_scatters();
         
+        // exchange messages signaled last iteration
+        void receive_messages();
+        
         void internal_signal(const vertex_type& vertex, const message_type& message = message_type());
+        
+        void clear_active_minorstep();
+        void clear_active_superstep();
+        void clear_messages();
+        
+        void count_active_vertices();
 
     private:
         graph_type& graph;
         size_t max_iterations;
         size_t iteration_counter;
+        size_t num_active_vertices;
         std::vector<vertex_program_type>    vertex_programs;
         std::vector<gather_type>            gather_accum;
-        std::vector<bool>                   has_msg;
+        std::vector<int>                   has_msg;
         std::vector<message_type>           messages;
 //        std::vector<std::mutex>             local_vertex_lock;
-        std::vector<bool>                   active_superstep;
-        std::vector<bool>                   active_minorstep;
+        std::vector<int>                   active_superstep;
+        std::vector<int>                   active_minorstep;
     };
     
     
@@ -74,10 +84,10 @@ namespace saedb
 	    vertex_programs.resize(graph.num_local_vertices());
 	    gather_accum.resize(graph.num_local_vertices());
 //        local_vertex_lock.resize(graph.num_local_vertices());
-        has_msg.resize(graph.num_local_vertices(), false);
+        has_msg.resize(graph.num_local_vertices(), 0);
         messages.resize(graph.num_local_vertices(), message_type());
-        active_superstep.resize(graph.num_local_vertices(), false);
-        active_minorstep.resize(graph.num_local_vertices(), false);
+        active_superstep.resize(graph.num_local_vertices(), 0);
+        active_minorstep.resize(graph.num_local_vertices(), 0);
     }
     
     template <typename VertexProgram>
@@ -86,12 +96,19 @@ namespace saedb
 	    graph.display();
 	    while ( iteration_counter < max_iterations ){
             std::cout << "Iteration " << iteration_counter << std::endl;
+            // mark vertex which has message as active in this superstep, no it is
+            // not parallized
+            receive_messages();
+            clear_messages();
+            count_active_vertices();
+            std::cout << "num of active vertices: " << num_active_vertices << std::endl;
+            
             run_synchronous( &sae_synchronous_engine::execute_gathers);
             run_synchronous( &sae_synchronous_engine::execute_applys);
             run_synchronous( &sae_synchronous_engine::execute_scatters);
             ++iteration_counter;
-            graph.display();
 	    }
+        graph.display();
     }
     
     template <typename VertexProgram>
@@ -100,6 +117,9 @@ namespace saedb
 	    context_type context(*this, graph);
 	    auto vetex_ids = graph.vertex_ids;
 	    for(lvid_type vid : vetex_ids){
+            if (!active_superstep[vid]) {
+                continue;
+            }
             // vertex is the same, hack
             //		  const vertex_program_type& vprog = vertex_programs[vid];
             const vertex_program_type& vprog = vertex_program_type();
@@ -140,24 +160,25 @@ namespace saedb
 	    context_type context(*this, graph);
 	    auto vetex_ids = graph.vertex_ids;
 	    for(lvid_type vid: vetex_ids){
+            if (!active_superstep[vid]) {
+                continue;
+            }
             //		  const vertex_program_type& vprog = vertex_programs[vid];// no used here
             const vertex_program_type& vprog = vertex_program_type();
             vertex_type vertex {graph.vertex(vid)};
-            const edge_dir_type gather_dir = vprog.scatter_edges(context, vertex);
+            const edge_dir_type scatter_dir = vprog.scatter_edges(context, vertex);
             
-            //		  bool accum_is_set = false;
-            //		  gather_type accum = gather_type();
-            if (gather_dir == IN_EDGES || gather_dir == ALL_EDGES){
+            if (scatter_dir == IN_EDGES || scatter_dir == ALL_EDGES){
                 for(edge_type local_edge : vertex.in_edges()){
                     edge_type edge(local_edge);
                     vprog.scatter(context, vertex, edge);
                 }
             }
             
-            if (gather_dir == OUT_EDGES || gather_dir == ALL_EDGES){
+            if (scatter_dir == OUT_EDGES || scatter_dir == ALL_EDGES){
                 for(edge_type local_edge : vertex.out_edges()){
                     edge_type edge(local_edge);
-                    vprog.gather(context, vertex, edge);
+                    vprog.scatter(context, vertex, edge);
                 }
             }
 	    }	    
@@ -168,6 +189,9 @@ namespace saedb
 	    context_type context(*this, graph);
 	    auto vetex_ids = graph.vertex_ids;	    
 	    for(lvid_type vid: vetex_ids){
+            if (!active_superstep[vid]) {
+                continue;
+            }
             vertex_type vertex(graph.vertex(vid));
             const gather_type& accum = gather_accum[vid];
             vertex_program_type vprog = vertex_program_type();
@@ -179,13 +203,25 @@ namespace saedb
     
     template <typename VertexProgram>
     void sae_synchronous_engine<VertexProgram>::
+    receive_messages(){
+        auto bit = active_superstep.begin();
+        auto mit  = has_msg.begin();
+        while( mit != has_msg.end() ){
+            *bit = *mit;
+            bit++;
+            mit++;
+        }
+    }
+    
+    template <typename VertexProgram>
+    void sae_synchronous_engine<VertexProgram>::
     internal_signal(const vertex_type &vertex, const message_type& message){
         const lvid_type lvid = vertex.local_id();
 //        local_vertex_lock[lvid].lock();
         if (has_msg[lvid]) {
             messages[lvid] += message;
         }else{
-            has_msg[lvid] = true;
+            has_msg[lvid] = 1;
             messages[lvid] = message;
         }
 //        local_vertex_lock[lvid].unlock();
@@ -193,9 +229,40 @@ namespace saedb
     
     template <typename VertexProgram>
     void sae_synchronous_engine<VertexProgram>::
-    signal_all(const message_type& message){
-        active_superstep.assign(graph.num_localz_vertices(), true);
-        active_minorstep.assign(graph.num_localz_vertices(), true);
+    signal_all(){
+        active_superstep.assign(graph.num_local_vertices(), 1);
+        active_minorstep.assign(graph.num_local_vertices(), 1);
+        has_msg.assign(graph.num_local_vertices(), 1);
+    }
+    
+    template <typename VertexProgram>
+    void sae_synchronous_engine<VertexProgram>::
+    clear_active_minorstep(){
+        active_minorstep.assign(graph.num_local_vertices(), false);
+    }
+    
+    template <typename VertexProgram>
+    void sae_synchronous_engine<VertexProgram>::
+    clear_active_superstep(){
+        active_superstep.assign(graph.num_local_vertices(), false);
+    }
+    
+    template <typename VertexProgram>
+    void sae_synchronous_engine<VertexProgram>::
+    clear_messages(){
+        messages.assign(graph.num_local_vertices(), message_type());
+        has_msg.assign(graph.num_local_vertices(), 0);
+    }
+    
+    template <typename VertexProgram>
+    void sae_synchronous_engine<VertexProgram>::
+    count_active_vertices(){
+        num_active_vertices = 0;
+        for(auto i : active_superstep){
+            if(i){
+                num_active_vertices++;
+            }
+        }
     }
 }
 #endif

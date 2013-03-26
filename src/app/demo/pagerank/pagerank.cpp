@@ -65,7 +65,7 @@ int main(){
       // graph.transform_vertices(init_vertex);
       
       saedb::sae_synchronous_engine<pagerank> engine(graph);
-      // engine.signal_all();
+      engine.signal_all();
       engine.start();
       std::cout << "Done" << std::endl;
       return 0;
