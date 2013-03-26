@@ -1,6 +1,6 @@
-##About using map reduce with graphlab (k-means)
+#About using map reduce with graphlab (k-means)
 #2013.3.25
-
+#reference: https://group.google.com/forum/?fromgroups=#!topic/graphlabapi/YawqDQZ4Sec
 Graphlab don't have an interface for a single "map_reduce_over_neighbors" call.
 For k-means, first create a fully connected bipartite graph with data points on one side, and K centers on the other side.
 Then implement an update function.
