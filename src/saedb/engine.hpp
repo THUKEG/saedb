@@ -18,9 +18,6 @@ namespace saedb
 	    virtual ~sae_engine() {};
 	    virtual void start() = 0;
 	    virtual int iteration() const { return -1; }
-        
-    public:
-        virtual void signal_all(const message_type& message = message_type());
     };
 }
 #endif

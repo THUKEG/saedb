@@ -27,7 +27,6 @@ namespace saedb {
         // force the engine to stop
 	    virtual void stop() { }
         
-        
 	    virtual void signal(const vertex_type& vertex,
                             const message_type& message = message_type()) { }
 	    virtual void signal_vid(vertex_id_type gvid,
