@@ -46,6 +46,7 @@ namespace saedb
 	    void runSynchronous(MemberFunction func){
             ( (this)->*(func) )();
 	    }
+	    void executeInits();
 	    void executeGathers();
 	    void executeApplys();
 	    void executeScatters();
@@ -99,6 +100,7 @@ namespace saedb
     void SynchronousEngine<VertexProgram>::start(){
 	    std::cout << "Before running..." << std::endl;
 	    graph_.display();
+	    runSynchronous( &SynchronousEngine::executeInits);
 	    while ( iteration_counter_ < max_iterations_ ){
             std::cout << "Iteration " << iteration_counter_ << std::endl;
             // mark vertex which has message as active in this superstep, no it is
@@ -117,6 +119,17 @@ namespace saedb
         graph_.display();
     }
     
+    template <typename VertexProgram>
+    void SynchronousEngine<VertexProgram>::executeInits (){
+    	context_type context(*this, graph_);
+    	auto vertex_ids = graph_.vertex_ids;
+    	vertex_program_type vprog = vertex_program_type();
+    	for(lvid_type vid : vertex_ids){
+    		vertex_type vertex(graph_.vertex(vid));
+    		vprog.init(context, vertex);
+    	}
+    }
+
     template <typename VertexProgram>
     void SynchronousEngine<VertexProgram>::executeGathers (){
 	    // todo, how to get list of vertex ids to iterate?
