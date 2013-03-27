@@ -9,15 +9,15 @@
 
 namespace saedb {
     template<typename Engine>
-    class context :
-    public icontext<typename Engine::graph_type,
-                    typename Engine::gather_type,
-                    typename Engine::message_type> {
+    class Context:
+    public IContext<typename Engine::graph_type,
+    typename Engine::gather_type,
+    typename Engine::message_type> {
     public:
 	    typedef Engine                                  engine_type;
-	    typedef icontext<typename Engine::graph_type,
-                         typename Engine::gather_type,
-                         typename Engine::message_type> icontext_type;
+	    typedef IContext<typename Engine::graph_type,
+        typename Engine::gather_type,
+        typename Engine::message_type> icontext_type;
 	    typedef typename icontext_type::graph_type      graph_type;
 	    typedef typename icontext_type::vertex_id_type  vertex_id_type;
 	    typedef typename icontext_type::vertex_type     vertex_type;
@@ -26,25 +26,25 @@ namespace saedb {
         
     private:
         // reference to engine
-	    engine_type& engine;
+	    engine_type& engine_;
         // reference to graph
-	    graph_type& graph;
+	    graph_type& graph_;
         
     public:
-	    context(engine_type& engine, graph_type& graph) :
-        engine(engine), graph(graph) { }
+	    Context(engine_type& engine, graph_type& graph):
+        engine_(engine), graph_(graph) { }
         
-	    size_t num_vertices() const { return graph.num_vertices(); }
+	    size_t getNumVertices() const { return graph_.num_vertices(); }
         
-	    size_t num_edges() const { return graph.num_edges(); }
+	    size_t getNumEdges() const { return graph_.num_edges(); }
         
-        size_t procid() const { return 0; }
+        size_t getProcid() const { return 0; }
         
-        size_t num_procs() const {  return 0;}
-                        
+        size_t getNumProcs() const {  return 0;}
+        
         // return the current iteration
-        int iteration() const { return 0.0;}
-
+        int getIteration() const { return 0.0;}
+        
         // force the engine to stop
 	    void stop() { }
         
@@ -53,28 +53,19 @@ namespace saedb {
 	     */
 	    void signal(const vertex_type& vertex,
                     const message_type& message = message_type()) {
-            engine.internal_signal(vertex, message);
+            engine_.internalSignal(vertex, message);
 	    }
         
         /*
          * send a message to a vertex with specific id.
          */
-        void signal_vid(vertex_id_type vid,
-                        const message_type& message = message_type()) {
+        void signalVid(vertex_id_type vid,
+                       const message_type& message = message_type()) {
 	    }
         
-	    /**
-	     * Post a change to the cached sum for the vertex
-	     */
-	    void post_delta(const vertex_type& vertex,
-                        const gather_type& delta) {
-	    }
-        
-	    /**
-	     * Invalidate the cached gather on the vertex.
-	     */
-	    virtual void clear_gather_cache(const vertex_type& vertex) { 
-	    }
+        IAggregator* getAggregator(const string& name) {
+            return engine_.internalGetAggregator(name);
+        }
     };
 }
 #endif

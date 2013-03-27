@@ -1,10 +1,11 @@
 #ifndef SAE_ENGINE_HPP
 #define SAE_ENGINE_HPP
+#include "aggregator/aggregator.hpp"
 
 namespace saedb
 {
     template <typename VertexProgramType>
-    class sae_engine
+    class IEngine
     {
     public:
 	    typedef VertexProgramType                           vertex_program_type;
@@ -15,9 +16,11 @@ namespace saedb
 	    typedef typename graph_type::edge_type              edge_type;
 	    typedef typename vertex_program_type::icontext_type icontext_type;
 	    
-	    virtual ~sae_engine() {};
+	    virtual ~IEngine() {};
 	    virtual void start() = 0;
+        virtual void signalAll() {};
 	    virtual int iteration() const { return -1; }
+        virtual void registerAggregator(const string& name, IAggregator worker) {}
     };
 }
 #endif
