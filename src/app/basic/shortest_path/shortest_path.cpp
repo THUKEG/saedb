@@ -56,7 +56,7 @@ public:
 	
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const
 	{
-		if (updated) return OUT_EDGES;
+		if (updated || vertex.data() == 0) return OUT_EDGES;
 		else return NO_EDGES;
 	}
 	
@@ -73,7 +73,7 @@ int main()
 	float_graph graph = generate_graph();
 
 	sae_synchronous_engine<shortest_path<float, SP_dis> > engine(graph);
-	engine.signal_all();
+	// engine.signal(0);
 	engine.start();
 
 	return 0;
