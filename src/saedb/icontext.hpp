@@ -31,7 +31,10 @@ namespace saedb {
                             const message_type& message = message_type()) { }
 	    virtual void signal_vid(vertex_id_type gvid,
                                 const message_type& message = message_type()) { }
-	    virtual void clear_gather_cache(const vertex_type& vertex) { }
+
+        // get specific aggregator
+        virtual aggregator* GetAggregator(const string&) { };
+
         virtual ~icontext() { }
     };
 }
