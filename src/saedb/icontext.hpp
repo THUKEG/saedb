@@ -6,7 +6,7 @@
  */
 namespace saedb {
     template<typename GraphType,typename GatherType,typename MessageType>
-    class icontext
+    class IContext
     {
     public:
 	    typedef GraphType                           graph_type;
@@ -16,23 +16,27 @@ namespace saedb {
 	    typedef GatherType                          gather_type;
         
     public:
-	    virtual size_t num_vertices() const { return 0; }
-	    virtual size_t num_edges() const { return 0; }
-	    virtual size_t procid() const { return 0; }
-	    virtual size_t num_procs() const { return 0; }
+	    virtual size_t getNumVertices() const { return 0; }
+	    virtual size_t getNumEdges() const { return 0; }
+	    virtual size_t getProcid() const { return 0; }
+	    virtual size_t getNumProcs() const { return 0; }
         
         // return the current iteration
-	    virtual int iteration() const { return -1; }
+	    virtual int getIteration() const {return -1;}
         
         // force the engine to stop
-	    virtual void stop() { }
+	    virtual void stop() {}
         
 	    virtual void signal(const vertex_type& vertex,
-                            const message_type& message = message_type()) { }
-	    virtual void signal_vid(vertex_id_type gvid,
-                                const message_type& message = message_type()) { }
-	    virtual void clear_gather_cache(const vertex_type& vertex) { }
-        virtual ~icontext() { }
+                            const message_type& message = message_type()) {}
+        
+	    virtual void signalVid(vertex_id_type gvid,
+                               const message_type& message = message_type()) {}
+        
+        // get specific aggregator
+        virtual IAggregator* getAggregator(const string&) {}
+        
+        virtual ~IContext() {}
     };
 }
 #endif
