@@ -69,12 +69,10 @@ namespace saedb {
 	    void post_delta(const vertex_type& vertex,
                         const gather_type& delta) {
 	    }
-        
-	    /**
-	     * Invalidate the cached gather on the vertex.
-	     */
-	    virtual void clear_gather_cache(const vertex_type& vertex) { 
-	    }
+                        
+        aggregator* GetAggregator(const string& name) {
+            return engine.internalGetAggregator(name);
+        }
     };
 }
 #endif

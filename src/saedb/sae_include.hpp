@@ -5,5 +5,6 @@
 #include "engine.hpp"
 #include "vertex_program.hpp"
 #include "synchronous_engine.hpp"
+#include "aggregator/aggregator.hpp"
 
 #endif

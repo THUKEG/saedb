@@ -25,7 +25,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1F1AB3D916FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1F1AB3DA16FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1F1AB3DE16FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1F1AB3DF16FDE02D00433ED5 /* pagerank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = pagerank.cpp; sourceTree = "<group>"; };
@@ -44,6 +43,12 @@
 		1F1AB3FD16FDE2F100433ED5 /* graph_basic_types.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = graph_basic_types.hpp; sourceTree = "<group>"; };
 		1F1AB3FE16FDE2F100433ED5 /* sample_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = sample_data.hpp; sourceTree = "<group>"; };
 		1F1AB3FF16FDE2F100433ED5 /* synchronous_engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = synchronous_engine.hpp; sourceTree = "<group>"; };
+		1F1E747D1702BA8E00F0D300 /* aggregator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = aggregator.hpp; path = aggregator/aggregator.hpp; sourceTree = "<group>"; };
+		1F1E747F1702C97C00F0D300 /* .shortest_path.cpp.swo */ = {isa = PBXFileReference; lastKnownFileType = file; path = .shortest_path.cpp.swo; sourceTree = "<group>"; };
+		1F1E74801702C97C00F0D300 /* .shortest_path.cpp.swp */ = {isa = PBXFileReference; lastKnownFileType = file; path = .shortest_path.cpp.swp; sourceTree = "<group>"; };
+		1F1E74811702C97C00F0D300 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		1F1E74821702C97C00F0D300 /* generate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = generate.hpp; sourceTree = "<group>"; };
+		1F1E74831702C97C00F0D300 /* shortest_path.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shortest_path.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,19 +84,11 @@
 		1F1AB3D716FDE02D00433ED5 /* app */ = {
 			isa = PBXGroup;
 			children = (
-				1F1AB3D816FDE02D00433ED5 /* basic */,
+				1F1E747E1702C97C00F0D300 /* shortest_path */,
 				1F1AB3DA16FDE02D00433ED5 /* CMakeLists.txt */,
 				1F1AB3DB16FDE02D00433ED5 /* demo */,
 			);
 			path = app;
-			sourceTree = "<group>";
-		};
-		1F1AB3D816FDE02D00433ED5 /* basic */ = {
-			isa = PBXGroup;
-			children = (
-				1F1AB3D916FDE02D00433ED5 /* CMakeLists.txt */,
-			);
-			path = basic;
 			sourceTree = "<group>";
 		};
 		1F1AB3DB16FDE02D00433ED5 /* demo */ = {
@@ -114,6 +111,7 @@
 		1F1AB3E016FDE02D00433ED5 /* saedb */ = {
 			isa = PBXGroup;
 			children = (
+				1F1E747C1702BA5D00F0D300 /* aggragator */,
 				1F1AB3FC16FDE2F100433ED5 /* dumb.cpp */,
 				1F1AB3FD16FDE2F100433ED5 /* graph_basic_types.hpp */,
 				1F1AB3FE16FDE2F100433ED5 /* sample_data.hpp */,
@@ -145,6 +143,26 @@
 				1F1AB3F616FDE05F00433ED5 /* pagerank.1 */,
 			);
 			path = pagerank;
+			sourceTree = "<group>";
+		};
+		1F1E747C1702BA5D00F0D300 /* aggragator */ = {
+			isa = PBXGroup;
+			children = (
+				1F1E747D1702BA8E00F0D300 /* aggregator.hpp */,
+			);
+			name = aggragator;
+			sourceTree = "<group>";
+		};
+		1F1E747E1702C97C00F0D300 /* shortest_path */ = {
+			isa = PBXGroup;
+			children = (
+				1F1E747F1702C97C00F0D300 /* .shortest_path.cpp.swo */,
+				1F1E74801702C97C00F0D300 /* .shortest_path.cpp.swp */,
+				1F1E74811702C97C00F0D300 /* CMakeLists.txt */,
+				1F1E74821702C97C00F0D300 /* generate.hpp */,
+				1F1E74831702C97C00F0D300 /* shortest_path.cpp */,
+			);
+			path = shortest_path;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
