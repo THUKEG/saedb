@@ -23,6 +23,8 @@ using namespace saedb;
 template <typename data_type, typename gather_type>
 class shortest_path: public sae_algorithm <sae_graph<data_type, data_type>, gather_type>
 {
+private:
+	bool updated;
 public:
 	typedef sae_algorithm<sae_graph<data_type, data_type>, gather_type> alg_type;
 	typedef typename alg_type::icontext_type icontext_type;
@@ -44,12 +46,18 @@ public:
 	
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total)
 	{
-		vertex.data() = min(vertex.data(), total.dis);
+		if (total.dis < vertex.data())
+		{
+			updated = true;
+			vertex.data() = total.dis;
+		}
+		else updated = false;
 	}
 	
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const
 	{
-		return OUT_EDGES;
+		if (updated) return OUT_EDGES;
+		else return NO_EDGES;
 	}
 	
 	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const
@@ -65,6 +73,7 @@ int main()
 	float_graph graph = generate_graph();
 
 	sae_synchronous_engine<shortest_path<float, SP_dis> > engine(graph);
+	engine.signal_all();
 	engine.start();
 
 	return 0;

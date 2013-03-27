@@ -11,7 +11,7 @@ float_graph generate_graph()
 {
 	float_graph graph;
 
-	ifstream fin("input");
+	ifstream fin("sp_input");
 	int n;
 	fin >> n;
 	graph.add_vertex(0, 0);
@@ -24,6 +24,7 @@ float_graph generate_graph()
 	{
 		id x, y;
 		float e;
+		fin >> x >> y >> e;
 		graph.add_edge(x, y, e);
 	}
 
