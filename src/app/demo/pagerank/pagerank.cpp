@@ -38,6 +38,10 @@ class pagerank:
 public saedb::IAlgorithm<graph_type, float>
 {
 public:
+	void init(icontext_type& context,
+			  vertex_type& vertex) {
+		vertex.data() = 1.0;
+	}
     
     edge_dir_type gather_edges(icontext_type& context,
                                const vertex_type& vertex) const{
