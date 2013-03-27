@@ -5,9 +5,9 @@
 #include <bitset>
 #include <mutex>
 
-#include "engine.hpp"
+#include "iengine.hpp"
 #include "context.hpp"
-#include "aggregator/aggregator.hpp"
+#include "aggregator/iaggregator.hpp"
 
 namespace saedb
 {

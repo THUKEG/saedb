@@ -1,6 +1,6 @@
 #ifndef SAE_ENGINE_HPP
 #define SAE_ENGINE_HPP
-#include "aggregator/aggregator.hpp"
+#include "aggregator/iaggregator.hpp"
 
 namespace saedb
 {

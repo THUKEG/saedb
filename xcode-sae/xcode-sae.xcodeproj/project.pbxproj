@@ -31,7 +31,7 @@
 		1F1AB3DF16FDE02D00433ED5 /* pagerank.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = pagerank.cpp; sourceTree = "<group>"; };
 		1F1AB3E116FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1F1AB3E216FDE02D00433ED5 /* context.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = context.hpp; sourceTree = "<group>"; };
-		1F1AB3E316FDE02D00433ED5 /* engine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = engine.hpp; sourceTree = "<group>"; };
+		1F1AB3E316FDE02D00433ED5 /* iengine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = iengine.hpp; sourceTree = "<group>"; };
 		1F1AB3E416FDE02D00433ED5 /* graph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = graph.hpp; sourceTree = "<group>"; };
 		1F1AB3E616FDE02D00433ED5 /* graph_storage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = graph_storage.hpp; sourceTree = "<group>"; };
 		1F1AB3E716FDE02D00433ED5 /* icontext.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = icontext.hpp; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 		1F1AB3FD16FDE2F100433ED5 /* graph_basic_types.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = graph_basic_types.hpp; sourceTree = "<group>"; };
 		1F1AB3FE16FDE2F100433ED5 /* sample_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = sample_data.hpp; sourceTree = "<group>"; };
 		1F1AB3FF16FDE2F100433ED5 /* synchronous_engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = synchronous_engine.hpp; sourceTree = "<group>"; };
-		1FA47A4517033F380042A617 /* aggregator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = aggregator.hpp; path = aggregator/aggregator.hpp; sourceTree = "<group>"; };
+		1FA47A4517033F380042A617 /* iaggregator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = iaggregator.hpp; path = aggregator/iaggregator.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +122,7 @@
 				1F1AB3FF16FDE2F100433ED5 /* synchronous_engine.hpp */,
 				1F1AB3E116FDE02D00433ED5 /* CMakeLists.txt */,
 				1F1AB3E216FDE02D00433ED5 /* context.hpp */,
-				1F1AB3E316FDE02D00433ED5 /* engine.hpp */,
+				1F1AB3E316FDE02D00433ED5 /* iengine.hpp */,
 				1F1AB3E416FDE02D00433ED5 /* graph.hpp */,
 				1F1AB3E616FDE02D00433ED5 /* graph_storage.hpp */,
 				1F1AB3E716FDE02D00433ED5 /* icontext.hpp */,
@@ -152,7 +152,7 @@
 		1FA47A4417033ECA0042A617 /* aggregator */ = {
 			isa = PBXGroup;
 			children = (
-				1FA47A4517033F380042A617 /* aggregator.hpp */,
+				1FA47A4517033F380042A617 /* iaggregator.hpp */,
 			);
 			name = aggregator;
 			sourceTree = "<group>";
