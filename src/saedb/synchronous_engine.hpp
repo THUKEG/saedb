@@ -63,7 +63,7 @@ namespace saedb
         void clear_messages();
         
         void count_active_vertices();
-
+        
     private:
         graph_type& graph;
         size_t max_iterations;
@@ -73,7 +73,6 @@ namespace saedb
         std::vector<gather_type>            gather_accum;
         std::vector<int>                    has_msg;
         std::vector<message_type>           messages;
-//        std::vector<std::mutex>             local_vertex_lock;
         std::vector<int>                    active_superstep;
         std::vector<int>                    active_minorstep;
         std::map<string, aggregator*>       aggregators;
@@ -87,9 +86,9 @@ namespace saedb
     template <typename VertexProgram>
     sae_synchronous_engine<VertexProgram>::sae_synchronous_engine(graph_type& graph):
     iteration_counter(0), max_iterations(10), graph(graph) {
-//	    vertex_programs.resize(graph.num_local_vertices());
+        //	    vertex_programs.resize(graph.num_local_vertices());
 	    gather_accum.resize(graph.num_local_vertices());
-//        local_vertex_lock.resize(graph.num_local_vertices());
+        //        local_vertex_lock.resize(graph.num_local_vertices());
         has_msg.resize(graph.num_local_vertices(), 0);
         messages.resize(graph.num_local_vertices(), message_type());
         active_superstep.resize(graph.num_local_vertices(), 0);
@@ -190,14 +189,14 @@ namespace saedb
                     vprog.scatter(context, vertex, edge);
                 }
             }
-	    }	    
+	    }
     }
     
     template <typename VertexProgram>
     void sae_synchronous_engine<VertexProgram>::
     execute_applys (){
 	    context_type context(*this, graph);
-	    auto vetex_ids = graph.vertex_ids;	    
+	    auto vetex_ids = graph.vertex_ids;
         vertex_program_type vprog = vertex_program_type();
 	    for(lvid_type vid: vetex_ids){
             if (!active_superstep[vid]) {
@@ -244,14 +243,14 @@ namespace saedb
     void sae_synchronous_engine<VertexProgram>::
     internal_signal(const vertex_type &vertex, const message_type& message){
         const lvid_type lvid = vertex.local_id();
-//        local_vertex_lock[lvid].lock();
+        //        local_vertex_lock[lvid].lock();
         if (has_msg[lvid]) {
             messages[lvid] += message;
         }else{
             has_msg[lvid] = 1;
             messages[lvid] = message;
         }
-//        local_vertex_lock[lvid].unlock();
+        //        local_vertex_lock[lvid].unlock();
     }
     
     template <typename VertexProgram>
