@@ -13,46 +13,52 @@ struct EData {
 };
 
 void test_create() {
-    MappedGraph* g = MappedGraph::Create("tg", 10, 20, sizeof(VData), sizeof(EData));
+    sae::io::GraphBuilder<int, VData, EData> builder;
 
-    auto vs = g->Vertices();
-    for (; vs->Alive(); vs->Next()) {
-        VData* vd = (VData*) vs->Data();
-        vd->pagerank = vs->Id();
-    }
-    delete vs;
+    builder.AddEdge(0, 10, EData{10});
+    builder.AddEdge(10, 20, EData{20});
+    builder.AddEdge(20, 10, EData{30});
+    builder.AddEdge(30, 40, EData{40});
 
-    auto es = g->Edges();
-    for (; es->Alive(); es->Next()) {
-        *es->MutableSource() = 1;
-        *es->MutableTarget() = 2;
-        *es->MutableDocId() = es->Id();
-        EData* ed = (EData*) es->Data();
-        ed->type = 5;
-    }
-    delete es;
+    builder.AddVertex(0, VData{0.5});
+    builder.AddVertex(10, VData{0.6});
+    builder.AddVertex(30, VData{0.7});
 
-    g->Close();
-    delete g;
+    builder.Save("test_graph");
 }
 
 void test_load() {
-    MappedGraph* g = MappedGraph::Open("tg");
+    MappedGraph* g = MappedGraph::Open("test_graph");
     cout << "loaded, n: " << g->VertexCount() << ", m:" << g->EdgeCount() << endl;
 
-    auto vs = g->Vertices();
-    for (; vs->Alive(); vs->Next()) {
+    for (auto vs = g->Vertices(); vs->Alive(); vs->Next()) {
         VData* vd = (VData*) vs->Data();
         cout << vs->Id() << ": " << vd->pagerank << endl;
-    }
-    delete vs;
 
-    auto es = g->Edges();
-    for (; es->Alive(); es->Next()) {
-        EData* ed = (EData*) es->Data();
-        cout << es->Id() << "[" << es->Source() << "," << es->Target() << "]" << ": " << ed->type << endl;
+        cout << "In Edges:" << endl;
+        for (auto ei = vs->InEdges(); ei->Alive(); ei->Next()) {
+            cout << "\t" << "[" << ei->SourceId() << "," << ei->TargetId() << "]" << ": " << ((EData*)ei->Data())->type << endl;
+        }
+
+        cout << "Out Edges:" << endl;
+        for (auto ei = vs->OutEdges(); ei->Alive(); ei->Next()) {
+            cout << "\t" << "[" << ei->SourceId() << "," << ei->TargetId() << "]" << ": " << ((EData*)ei->Data())->type << endl;
+        }
     }
-    delete es;
+
+    cout << endl;
+    cout << "Forward Edges:" << endl;
+
+    for (auto es = g->ForwardEdges(); es->Alive(); es->Next()) {
+        EData* ed = (EData*) es->Data();
+        cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << ed->type << endl;
+    }
+
+    cout << "Backward Edges:" << endl;
+    for (auto es = g->BackwardEdges(); es->Alive(); es->Next()) {
+        EData* ed = (EData*) es->Data();
+        cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << ed->type << endl;
+    }
 
     g->Close();
     delete g;
