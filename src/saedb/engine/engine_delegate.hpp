@@ -5,7 +5,9 @@
 #include <bitset>
 #include <mutex>
 
+#include "synchronous_engine.hpp"
 #include "iengine.hpp"
+
 #include "context.hpp"
 #include "aggregator/iaggregator.hpp"
 

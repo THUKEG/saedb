@@ -227,12 +227,14 @@
 		1F1AB3D416FDDFDB00433ED5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = /Users/ChenWei/Documents/github/saedb/src/saedb;
 			};
 			name = Debug;
 		};
 		1F1AB3D516FDDFDB00433ED5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = /Users/ChenWei/Documents/github/saedb/src/saedb;
 			};
 			name = Release;
 		};
