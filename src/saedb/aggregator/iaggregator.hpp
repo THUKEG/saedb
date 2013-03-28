@@ -4,15 +4,15 @@ namespace saedb {
     class IAggregator {
     public:
         // initial accumulate value
-        virtual void init(void*) {};
+        virtual void init(void*) = 0;
         
         // reduce with another data into a sigle value
-        virtual void reduce(void*) {};
+        virtual void reduce(void*) = 0;
         
         // return the final aggregated data. read only.
-        virtual void* data() const { return nullptr;};
+        virtual void* data() const = 0;
         
-        virtual ~IAggregator() {};
+        virtual ~IAggregator() {}
     };
 }
 #endif

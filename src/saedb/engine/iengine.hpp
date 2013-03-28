@@ -4,11 +4,11 @@
 
 namespace saedb
 {
-    template <typename VertexProgramType>
+    template <typename algorithm_t>
     class IEngine
     {
     public:
-        typedef VertexProgramType                           vertex_program_type;
+        typedef algorithm_t                                 vertex_program_type;
         typedef typename vertex_program_type::graph_type    graph_type;
         typedef typename vertex_program_type::message_type  message_type;
         typedef typename graph_type::vertex_id_type         vertex_id_type;
@@ -17,14 +17,14 @@ namespace saedb
         typedef typename vertex_program_type::icontext_type icontext_type;
 
         // start engine
-        virtual void start() {}
+        virtual void start() = 0;
 
         // mark all vertices as active
-        virtual void signalAll() {}
+        virtual void signalAll() = 0;
 
         // register an aggregator
         virtual void registerAggregator(const string& name,
-                                        IAggregator* worker) {}
+                                        IAggregator* worker) = 0;
 
         virtual ~IEngine() {}
     };

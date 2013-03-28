@@ -17,27 +17,22 @@ namespace saedb
      * This is the delegator for user to call related 
      * engine(now only SynchronousEngine).
      */
-    template <typename VertexProgram>
+    template <typename algorithm_t>
     class EngineDelegate:
-    public IEngine<VertexProgram>
+    public IEngine<algorithm_t>
     {
     public:
-        typedef VertexProgram                               vertex_program_type;
-	    typedef typename VertexProgram::gather_type         gather_type;
-	    typedef typename VertexProgram::message_type        message_type;
-	    typedef typename VertexProgram::vertex_data_type    vertex_data_type;
-	    typedef typename VertexProgram::edge_data_type      edge_data_type;
-	    typedef typename VertexProgram::graph_type          graph_type;
+        typedef algorithm_t                                 vertex_program_type;
+	    typedef typename algorithm_t::gather_type           gather_type;
+	    typedef typename algorithm_t::message_type          message_type;
+	    typedef typename algorithm_t::vertex_data_type      vertex_data_type;
+	    typedef typename algorithm_t::edge_data_type        edge_data_type;
+	    typedef typename algorithm_t::graph_type            graph_type;
 	    typedef typename graph_type::vertex_type            vertex_type;
 	    typedef typename graph_type::edge_type              edge_type;
 	    typedef typename graph_type::lvid_type              lvid_type;
         typedef Context<EngineDelegate>                     context_type;
         
-    private:
-        /*
-         * Friend class
-         */
-        friend class Context<EngineDelegate>;
         
     public:
         // TODO, add an option to select corresponding engine.
@@ -53,6 +48,12 @@ namespace saedb
         void registerAggregator(const string &, IAggregator*);
         
         ~EngineDelegate();
+
+    private:
+        /*
+         * Friend class
+         */
+        friend class Context<EngineDelegate>;
         
     private:
 	    void internalStop();
@@ -74,33 +75,33 @@ namespace saedb
     /*
      * Implementation of EngineDelegate
      **/
-    template <typename VertexProgram>
-    EngineDelegate<VertexProgram>::EngineDelegate(graph_type& graph){
+    template <typename algorithm_t>
+    EngineDelegate<algorithm_t>::EngineDelegate(graph_type& graph){
         // the default is SynchronousEngine
         // TODO here is where we select which engine we want, may need
         // an option.
-        engine = new SynchronousEngine<VertexProgram>(graph);
+        engine = new SynchronousEngine<algorithm_t>(graph);
     }
     
-    template <typename VertexProgram>
-    void EngineDelegate<VertexProgram>::start(){
+    template <typename algorithm_t>
+    void EngineDelegate<algorithm_t>::start(){
         engine->start();
     }
     
-    template <typename VertexProgram>
-    void EngineDelegate<VertexProgram>::
+    template <typename algorithm_t>
+    void EngineDelegate<algorithm_t>::
     signalAll(){
         engine->signalAll();
     }
     
-    template <typename VertexProgram>
-    void EngineDelegate<VertexProgram>::
+    template <typename algorithm_t>
+    void EngineDelegate<algorithm_t>::
     registerAggregator(const string &name, IAggregator* worker){
         engine->registerAggregator(name, worker);
     }
     
-    template <typename VertexProgram>
-    EngineDelegate<VertexProgram>::
+    template <typename algorithm_t>
+    EngineDelegate<algorithm_t>::
     ~EngineDelegate(){
         std::cout << "cleaning EngineDelegate" << std::endl;
         delete engine;
