@@ -36,10 +36,9 @@ struct EdgeListItem {
 
 namespace {
 
-    // XXX not thread safe
-    char* concat(const char* a, const char* b) {
+    const char * concat(const char * a, const char * b) {
         static char buf[1024];
-        sprintf(buf, "%s%s", a, b);
+        snprintf(buf, sizeof(buf), "%s%s", a, b);
         return buf;
     }
 
@@ -56,6 +55,7 @@ namespace {
     }
 }
 
+
 struct GraphData {
     GraphHeader* meta;
     vid_t *findex, *bindex;
@@ -64,8 +64,10 @@ struct GraphData {
     char *edgeData;
 };
 
+
 // Evil forward declartion.
 unique_ptr<EdgeIterator> CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list);
+
 
 struct VertexIteratorImpl : public VertexIterator {
     const GraphData& g;
@@ -114,6 +116,7 @@ struct VertexIteratorImpl : public VertexIterator {
         return count;
     }
 };
+
 
 struct EdgeIteratorImpl : public EdgeIterator {
     const GraphData& g;
@@ -177,25 +180,26 @@ struct EdgeIteratorImpl : public EdgeIterator {
     }
 };
 
+
 unique_ptr<EdgeIterator> CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list) {
     return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, base, count, list));
 }
 
 
 struct MappedGraphImpl : public MappedGraph {
-    MMapFile *meta_file, *forward_index_file, *forward_file, *backward_index_file, *backward_file, *vdata_file, *edata_file;
+    unique_ptr<MMapFile> meta_file, forward_index_file, forward_file, backward_index_file, backward_file, vdata_file, edata_file;
     GraphData g;
 
     static MappedGraphImpl* Open(const char * prefix) {
         MappedGraphImpl* mg = new MappedGraphImpl;
 
-        mg->meta_file = MMapFile::Open(concat(prefix, ".meta"));
-        mg->forward_index_file = MMapFile::Open(concat(prefix, ".findex"));
-        mg->forward_file = MMapFile::Open(concat(prefix, ".forward"));
-        mg->backward_index_file = MMapFile::Open(concat(prefix, ".bindex"));
-        mg->backward_file = MMapFile::Open(concat(prefix, ".backward"));
-        mg->vdata_file = MMapFile::Open(concat(prefix, ".vdata"));
-        mg->edata_file = MMapFile::Open(concat(prefix, ".edata"));
+        mg->meta_file.reset(MMapFile::Open(concat(prefix, ".meta")));
+        mg->forward_index_file.reset(MMapFile::Open(concat(prefix, ".findex")));
+        mg->forward_file.reset(MMapFile::Open(concat(prefix, ".forward")));
+        mg->backward_index_file.reset(MMapFile::Open(concat(prefix, ".bindex")));
+        mg->backward_file.reset(MMapFile::Open(concat(prefix, ".backward")));
+        mg->vdata_file.reset(MMapFile::Open(concat(prefix, ".vdata")));
+        mg->edata_file.reset(MMapFile::Open(concat(prefix, ".edata")));
 
         mg->g.meta = (GraphHeader*) mg->meta_file->Data();
         mg->g.findex = (vid_t*) mg->forward_index_file->Data();
@@ -211,13 +215,13 @@ struct MappedGraphImpl : public MappedGraph {
     static MappedGraphImpl* Create(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_size, uint32_t edge_data_size) {
         MappedGraphImpl* mg = new MappedGraphImpl();
 
-        mg->meta_file = MMapFile::Create(concat(prefix, ".meta"), sizeof(GraphHeader));
-        mg->forward_index_file = MMapFile::Create(concat(prefix, ".findex"), sizeof(vid_t) * (n + 1));
-        mg->backward_index_file = MMapFile::Create(concat(prefix, ".bindex"), sizeof(vid_t) * (n + 1));
-        mg->forward_file = MMapFile::Create(concat(prefix, ".forward"), sizeof(EdgeListItem) * m);
-        mg->backward_file = MMapFile::Create(concat(prefix, ".backward"), sizeof(EdgeListItem) * m);
-        mg->vdata_file = MMapFile::Create(concat(prefix, ".vdata"), vertex_data_size * n);
-        mg->edata_file = MMapFile::Create(concat(prefix, ".edata"), edge_data_size * m);
+        mg->meta_file.reset(MMapFile::Create(concat(prefix, ".meta"), sizeof(GraphHeader)));
+        mg->forward_index_file.reset(MMapFile::Create(concat(prefix, ".findex"), sizeof(vid_t) * (n + 1)));
+        mg->backward_index_file.reset(MMapFile::Create(concat(prefix, ".bindex"), sizeof(vid_t) * (n + 1)));
+        mg->forward_file.reset(MMapFile::Create(concat(prefix, ".forward"), sizeof(EdgeListItem) * m));
+        mg->backward_file.reset(MMapFile::Create(concat(prefix, ".backward"), sizeof(EdgeListItem) * m));
+        mg->vdata_file.reset(MMapFile::Create(concat(prefix, ".vdata"), vertex_data_size * n));
+        mg->edata_file.reset(MMapFile::Create(concat(prefix, ".edata"), edge_data_size * m));
 
         mg->g.meta = (GraphHeader*) mg->meta_file->Data();
         mg->g.findex = (vid_t*) mg->forward_index_file->Data();
