@@ -38,6 +38,7 @@ namespace saedb
         void signalAll();
 	    void start();
         void registerAggregator(const string &, IAggregator*);
+        ~SynchronousEngine();
         
     private:
 	    void internalStop();
@@ -99,7 +100,7 @@ namespace saedb
     template <typename VertexProgram>
     void SynchronousEngine<VertexProgram>::start(){
 	    std::cout << "Before running..." << std::endl;
-	    graph_.display();
+//	    graph_.display();
 	    runSynchronous( &SynchronousEngine::executeInits);
 	    while ( iteration_counter_ < max_iterations_ ){
             std::cout << "Iteration " << iteration_counter_ << std::endl;
@@ -116,7 +117,7 @@ namespace saedb
             runSynchronous( &SynchronousEngine::executeAggregate);
             ++iteration_counter_;
 	    }
-        graph_.display();
+//        graph_.display();
     }
     
     template <typename VertexProgram>
@@ -312,6 +313,15 @@ namespace saedb
     void SynchronousEngine<VertexProgram>::
     registerAggregator(const string &name, IAggregator* worker){
         aggregators_[name] = worker;
+    }
+    
+    template <typename VertexProgram>
+    SynchronousEngine<VertexProgram>::
+    ~SynchronousEngine(){
+        std::cout << "cleaning SynchonousEngine......" << std::endl;
+        for(const auto &pair : aggregators_){
+            delete pair.second;
+        }
     }
 }
 #endif

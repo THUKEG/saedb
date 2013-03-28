@@ -34,7 +34,7 @@ namespace saedb {
                                const message_type& message = message_type()) {}
         
         // get specific aggregator
-        virtual IAggregator* getAggregator(const string&) {}
+        virtual IAggregator* getAggregator(const string&) =0;
         
         virtual ~IContext() {}
     };

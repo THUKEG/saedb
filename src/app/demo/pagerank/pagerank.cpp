@@ -6,7 +6,7 @@
 #include "sample_data.hpp"
 
 
-class Float_max_aggregator: public saedb::IAggregator
+class FloatMaxAggregator: public saedb::IAggregator
 {
 public:
     void init(void* i){
@@ -38,10 +38,6 @@ class pagerank:
 public saedb::IAlgorithm<graph_type, float>
 {
 public:
-	void init(icontext_type& context,
-			  vertex_type& vertex) {
-		vertex.data() = 1.0;
-	}
     
     edge_dir_type gather_edges(icontext_type& context,
                                const vertex_type& vertex) const{
@@ -95,19 +91,20 @@ int main(){
     << " #edges:"
     << graph.num_edges() << std::endl;
     
-    saedb::SynchronousEngine<pagerank> engine(graph);
+    saedb::IEngine<pagerank> *engine = new saedb::EngineDelegate<pagerank>(graph);
     
     // aggregator
     float* init_rank = new float(0);
-    saedb::IAggregator* max_pagerank = new Float_max_aggregator();
+    saedb::IAggregator* max_pagerank = new FloatMaxAggregator();
     max_pagerank->init(init_rank);
-    engine.registerAggregator("max_pagerank", max_pagerank);
+    engine->registerAggregator("max_pagerank", max_pagerank);
     
     // start engine
-    engine.signalAll();
-    engine.start();
+    engine->signalAll();
+    engine->start();
     
     std::cout << "max pagerank: " << *((float*)max_pagerank->data()) << std::endl;
-    std::cout << "Done" << std::endl;
+    std::cout << "Done, do some cleaning......" << std::endl;
+    delete engine;
     return 0;
 }

@@ -16,11 +16,17 @@ namespace saedb
 	    typedef typename graph_type::edge_type              edge_type;
 	    typedef typename vertex_program_type::icontext_type icontext_type;
 	    
-	    virtual ~IEngine() {};
-	    virtual void start() = 0;
-        virtual void signalAll() {};
-	    virtual int iteration() const { return -1; }
-        virtual void registerAggregator(const string& name, IAggregator worker) {}
+        // start engine
+	    virtual void start() {}
+        
+        // mark all vertices as active
+        virtual void signalAll() {}
+        
+        // register an aggregator
+        virtual void registerAggregator(const string& name,
+                                        IAggregator* worker) {}
+        
+	    virtual ~IEngine() {}
     };
 }
 #endif
