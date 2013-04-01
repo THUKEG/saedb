@@ -115,6 +115,11 @@ int main()
 	engine->signalAll();
 	engine->start();
 
+	/*
+	Calculation of degree centrality of a given graph.
+	REF: http://en.wikipedia.org/wiki/Centrality#cite_note-2
+	*/
+
 	float max_degree = *((float*)max_degree_centrality->data());
 	float sum_degree = *((float*)sum_degree_centrality->data());
 	float num_vertex = (float)graph.num_vertices();
