@@ -29,7 +29,6 @@ namespace saedb
 		typedef typename algorithm_t::graph_type            graph_type;
 		typedef typename graph_type::vertex_type            vertex_type;
 		typedef typename graph_type::edge_type              edge_type;
-		typedef typename graph_type::lvid_type              lvid_type;
         typedef Context<SynchronousEngine>                  context_type;
         
     private:
@@ -127,23 +126,27 @@ namespace saedb
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::executeInits (){
 		context_type context(*this, graph_);
-		auto vertex_ids = graph_.vertex_ids;
-		for(lvid_type vid : vertex_ids){
+        lvid_type vid = 0;
+        while (true) {
             if ( vid >= graph_.num_local_vertices() ){
                 break;
             }
             auto &vprog = vertex_programs_[vid];
 			vertex_type vertex(graph_.vertex(vid));
 			vprog.init(context, vertex);
-		}
+            vid++;
+        }
     }
 
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::executeGathers (){
 		// todo, how to get list of vertex ids to iterate?
 		context_type context(*this, graph_);
-		auto vetex_ids = graph_.vertex_ids;
-		for(lvid_type vid : vetex_ids){
+        lvid_type vid = 0;
+        while (true) {
+            if ( vid >= graph_.num_local_vertices() ){
+                break;
+            }
             if (!active_superstep_[vid]) {
                 continue;
             }
@@ -177,14 +180,18 @@ namespace saedb
                 }
             }
             gather_accum_[vid] = accum;
+            vid++;
 		}
     }
     
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::executeScatters (){
 		context_type context(*this, graph_);
-		auto vetex_ids = graph_.vertex_ids;
-		for(lvid_type vid: vetex_ids){
+        lvid_type vid = 0;
+        while (true) {
+            if ( vid >= graph_.num_local_vertices() ){
+                break;
+            }
             if (!active_superstep_[vid]) {
                 continue;
             }
@@ -205,6 +212,7 @@ namespace saedb
                     vprog.scatter(context, vertex, edge);
                 }
             }
+            vid++;
 		}
     }
     
@@ -212,8 +220,11 @@ namespace saedb
     void SynchronousEngine<algorithm_t>::
     executeApplys (){
 		context_type context(*this, graph_);
-		auto vetex_ids = graph_.vertex_ids;
-		for(lvid_type vid: vetex_ids){
+        lvid_type vid = 0;
+        while (true) {
+            if ( vid >= graph_.num_local_vertices() ){
+                break;
+            }
             if (!active_superstep_[vid]) {
                 continue;
             }
@@ -223,6 +234,7 @@ namespace saedb
             vprog.apply(context, vertex, accum);
             // clear gather accum array
             gather_accum_[vid] = gather_type();
+            vid++;
 		}
     }
     
@@ -257,7 +269,7 @@ namespace saedb
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::
     internalSignal(const vertex_type &vertex, const message_type& message){
-        const lvid_type lvid = vertex.local_id();
+        lvid_type lvid = vertex.local_id();
         //        local_vertex_lock[lvid].lock();
         if (has_msg_[lvid]) {
             messages_[lvid] += message;

@@ -11,8 +11,6 @@
 		1F1AB3FB16FDE11800433ED5 /* pagerank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F1AB3DF16FDE02D00433ED5 /* pagerank.cpp */; };
 		1FCE30C217097690004EDF65 /* graph_builder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCE30BB17097690004EDF65 /* graph_builder.cpp */; };
 		1FCE30C317097690004EDF65 /* mgraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCE30BD17097690004EDF65 /* mgraph.cpp */; };
-		1FCE30C417097690004EDF65 /* mgraph_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCE30BF17097690004EDF65 /* mgraph_test.cpp */; };
-		1FCE30C517097690004EDF65 /* mmap_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCE30C117097690004EDF65 /* mmap_test.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -244,8 +242,6 @@
 				1F1AB3FB16FDE11800433ED5 /* pagerank.cpp in Sources */,
 				1FCE30C217097690004EDF65 /* graph_builder.cpp in Sources */,
 				1FCE30C317097690004EDF65 /* mgraph.cpp in Sources */,
-				1FCE30C417097690004EDF65 /* mgraph_test.cpp in Sources */,
-				1FCE30C517097690004EDF65 /* mmap_test.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
