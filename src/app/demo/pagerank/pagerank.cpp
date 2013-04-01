@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <math.h>
+#include <algorithm>
 
 #include "sae_include.hpp"
 #include "sample_data.hpp"
@@ -14,7 +14,7 @@ public:
     }
     
     void reduce(void* next){
-        accu = max(accu, *((float*)next));
+        accu = std::max(accu, *((float*)next));
     }
     
     void* data() const{

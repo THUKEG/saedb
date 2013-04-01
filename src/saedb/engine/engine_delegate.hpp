@@ -30,7 +30,6 @@ namespace saedb
 		typedef typename algorithm_t::graph_type            graph_type;
 		typedef typename graph_type::vertex_type            vertex_type;
 		typedef typename graph_type::edge_type              edge_type;
-		typedef typename graph_type::lvid_type              lvid_type;
         typedef Context<EngineDelegate>                     context_type;
         
         
