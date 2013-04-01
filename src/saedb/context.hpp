@@ -4,6 +4,7 @@
 #include <set>
 #include <vector>
 #include <cassert>
+#include <string>
 
 #include "icontext.hpp"
 
@@ -63,7 +64,7 @@ namespace saedb {
                        const message_type& message = message_type()) {
 		}
         
-        IAggregator* getAggregator(const string& name) {
+        IAggregator* getAggregator(const std::string& name) {
             return engine_.internalGetAggregator(name);
         }
     };

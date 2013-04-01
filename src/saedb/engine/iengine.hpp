@@ -1,5 +1,6 @@
 #ifndef SAE_ENGINE_HPP
 #define SAE_ENGINE_HPP
+#include <string>
 #include "aggregator/iaggregator.hpp"
 
 namespace saedb
@@ -23,7 +24,7 @@ namespace saedb
         virtual void signalAll() = 0;
 
         // register an aggregator
-        virtual void registerAggregator(const string& name,
+        virtual void registerAggregator(const std::string& name,
                                         IAggregator* worker) = 0;
 
         virtual ~IEngine() {}

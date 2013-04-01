@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		1F1AB3F716FDE05F00433ED5 /* pagerank.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1F1AB3F616FDE05F00433ED5 /* pagerank.1 */; };
 		1F1AB3FB16FDE11800433ED5 /* pagerank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F1AB3DF16FDE02D00433ED5 /* pagerank.cpp */; };
+		1FCE30C217097690004EDF65 /* graph_builder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCE30BB17097690004EDF65 /* graph_builder.cpp */; };
+		1FCE30C317097690004EDF65 /* mgraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCE30BD17097690004EDF65 /* mgraph.cpp */; };
+		1FCE30C417097690004EDF65 /* mgraph_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCE30BF17097690004EDF65 /* mgraph_test.cpp */; };
+		1FCE30C517097690004EDF65 /* mmap_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCE30C117097690004EDF65 /* mmap_test.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,9 +36,7 @@
 		1F1AB3E116FDE02D00433ED5 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1F1AB3E216FDE02D00433ED5 /* context.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = context.hpp; sourceTree = "<group>"; };
 		1F1AB3E416FDE02D00433ED5 /* graph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = graph.hpp; sourceTree = "<group>"; };
-		1F1AB3E616FDE02D00433ED5 /* graph_storage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = graph_storage.hpp; sourceTree = "<group>"; };
 		1F1AB3E716FDE02D00433ED5 /* icontext.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = icontext.hpp; sourceTree = "<group>"; };
-		1F1AB3E816FDE02D00433ED5 /* local_graph.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = local_graph.hpp; sourceTree = "<group>"; };
 		1F1AB3E916FDE02D00433ED5 /* sae_include.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sae_include.hpp; sourceTree = "<group>"; };
 		1F1AB3EC16FDE02D00433ED5 /* ialgorithm.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ialgorithm.hpp; sourceTree = "<group>"; };
 		1F1AB3F116FDE05F00433ED5 /* pagerank */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pagerank; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +48,14 @@
 		1F9FA26217041DF6003309DA /* iengine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = iengine.hpp; sourceTree = "<group>"; };
 		1F9FA26317041DF6003309DA /* synchronous_engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = synchronous_engine.hpp; sourceTree = "<group>"; };
 		1FA47A4517033F380042A617 /* iaggregator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = iaggregator.hpp; path = aggregator/iaggregator.hpp; sourceTree = "<group>"; };
+		1FCE30BA17097690004EDF65 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		1FCE30BB17097690004EDF65 /* graph_builder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph_builder.cpp; sourceTree = "<group>"; };
+		1FCE30BC17097690004EDF65 /* graph_builder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = graph_builder.hpp; sourceTree = "<group>"; };
+		1FCE30BD17097690004EDF65 /* mgraph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mgraph.cpp; sourceTree = "<group>"; };
+		1FCE30BE17097690004EDF65 /* mgraph.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mgraph.hpp; sourceTree = "<group>"; };
+		1FCE30BF17097690004EDF65 /* mgraph_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mgraph_test.cpp; sourceTree = "<group>"; };
+		1FCE30C017097690004EDF65 /* mmap_file.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mmap_file.hpp; sourceTree = "<group>"; };
+		1FCE30C117097690004EDF65 /* mmap_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mmap_test.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +126,7 @@
 		1F1AB3E016FDE02D00433ED5 /* saedb */ = {
 			isa = PBXGroup;
 			children = (
+				1FCE30B917097690004EDF65 /* io */,
 				1F9FA26017041DF5003309DA /* engine */,
 				1FA47A4417033ECA0042A617 /* aggregator */,
 				1F1AB3FC16FDE2F100433ED5 /* dumb.cpp */,
@@ -124,9 +135,7 @@
 				1F1AB3E116FDE02D00433ED5 /* CMakeLists.txt */,
 				1F1AB3E216FDE02D00433ED5 /* context.hpp */,
 				1F1AB3E416FDE02D00433ED5 /* graph.hpp */,
-				1F1AB3E616FDE02D00433ED5 /* graph_storage.hpp */,
 				1F1AB3E716FDE02D00433ED5 /* icontext.hpp */,
-				1F1AB3E816FDE02D00433ED5 /* local_graph.hpp */,
 				1F1AB3E916FDE02D00433ED5 /* sae_include.hpp */,
 				1F1AB3EC16FDE02D00433ED5 /* ialgorithm.hpp */,
 			);
@@ -165,6 +174,21 @@
 				1FA47A4517033F380042A617 /* iaggregator.hpp */,
 			);
 			name = aggregator;
+			sourceTree = "<group>";
+		};
+		1FCE30B917097690004EDF65 /* io */ = {
+			isa = PBXGroup;
+			children = (
+				1FCE30BA17097690004EDF65 /* CMakeLists.txt */,
+				1FCE30BB17097690004EDF65 /* graph_builder.cpp */,
+				1FCE30BC17097690004EDF65 /* graph_builder.hpp */,
+				1FCE30BD17097690004EDF65 /* mgraph.cpp */,
+				1FCE30BE17097690004EDF65 /* mgraph.hpp */,
+				1FCE30BF17097690004EDF65 /* mgraph_test.cpp */,
+				1FCE30C017097690004EDF65 /* mmap_file.hpp */,
+				1FCE30C117097690004EDF65 /* mmap_test.cpp */,
+			);
+			path = io;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +242,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F1AB3FB16FDE11800433ED5 /* pagerank.cpp in Sources */,
+				1FCE30C217097690004EDF65 /* graph_builder.cpp in Sources */,
+				1FCE30C317097690004EDF65 /* mgraph.cpp in Sources */,
+				1FCE30C417097690004EDF65 /* mgraph_test.cpp in Sources */,
+				1FCE30C517097690004EDF65 /* mmap_test.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

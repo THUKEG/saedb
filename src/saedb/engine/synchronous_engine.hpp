@@ -4,10 +4,15 @@
 #include <iostream>
 #include <bitset>
 #include <mutex>
+#include <string>
 
 #include "iengine.hpp"
 #include "context.hpp"
 #include "aggregator/iaggregator.hpp"
+
+#include "graph_basic_types.hpp"
+
+using std::string;
 
 namespace saedb
 {

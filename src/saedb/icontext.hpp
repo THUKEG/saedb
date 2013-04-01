@@ -1,6 +1,8 @@
 #ifndef SAE_ICONTEX_HPP
 #define SAE_ICONTEX_HPP
 
+#include <string>
+
 /*
  * Interface for communication between vertex programs.
  */
@@ -36,7 +38,7 @@ namespace saedb {
         signalVid(vertex_id_type gvid, const message_type& message = message_type()) = 0;
         
         // get specific aggregator
-        virtual IAggregator* getAggregator(const string&) = 0;
+        virtual IAggregator* getAggregator(const std::string&) = 0;
         
         virtual ~IContext() {}
     };
