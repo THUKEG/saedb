@@ -60,7 +60,6 @@
 		1F9FA26217041DF6003309DA /* iengine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = iengine.hpp; sourceTree = "<group>"; };
 		1F9FA26317041DF6003309DA /* synchronous_engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = synchronous_engine.hpp; sourceTree = "<group>"; };
 		1FA47A4517033F380042A617 /* iaggregator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = iaggregator.hpp; path = aggregator/iaggregator.hpp; sourceTree = "<group>"; };
-		1FCA000E1709A851009BB70C /* Influencemaximization_old.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Influencemaximization_old.cpp; sourceTree = "<group>"; };
 		1FCA00101709A87F009BB70C /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		1FCA00131709A8C9009BB70C /* inf_max.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = inf_max.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,7 +206,6 @@
 			children = (
 				1FCA00131709A8C9009BB70C /* inf_max.cpp */,
 				1FCA00101709A87F009BB70C /* CMakeLists.txt */,
-				1FCA000E1709A851009BB70C /* Influencemaximization_old.cpp */,
 			);
 			path = "influence-maxmization";
 			sourceTree = "<group>";
