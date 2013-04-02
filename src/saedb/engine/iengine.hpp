@@ -21,6 +21,12 @@ namespace saedb
 
         // mark all vertices as active
         virtual void signalAll() = 0;
+        
+        // mark a vertex as active
+        virtual void signalVertex(vertex_id_type) = 0;
+        
+        // mark some vertices as active
+        virtual void signalVertices(const vector<vertex_id_type>&) = 0;
 
         // register an aggregator
         virtual void registerAggregator(const string& name,

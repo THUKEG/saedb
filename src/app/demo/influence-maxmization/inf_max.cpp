@@ -1,0 +1,178 @@
+#include <iostream>
+#include <cstdio>
+#include <string>
+#include <algorithm>
+#include <cstdlib>
+#include <queue>
+
+#include "sae_include.hpp"
+#include "sample_data.hpp"
+
+typedef float                                               vertex_data_type;
+typedef float                                               edge_data_type;
+typedef saedb::empty                                        message_date_type;
+typedef saedb::sae_graph<vertex_data_type, edge_data_type>  graph_type;
+
+// count how many nodes are activated
+class ActivateNodeAggregator: public saedb::IAggregator
+{
+public:
+    void init(void* i){
+        accu = *((float*)i);
+    }
+    
+    void reduce(void* next){
+        accu += 1.0;
+    }
+    
+    void* data() const{
+        return (void*)(&accu);
+    }
+    
+    ~ActivateNodeAggregator() {}
+    
+private:
+    float accu;
+};
+
+class Simulate:
+public saedb::IAlgorithm<graph_type, float>
+{
+    /**
+     * Simulate does not need gather.
+     */
+public:
+    void init(icontext_type& context, vertex_type& vertex) {
+    }
+    
+    edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
+        return saedb::NO_EDGES;
+    }
+    
+    float gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
+        return 0.0;
+    }
+    
+    void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
+        // need not apply either
+    }
+    
+    edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
+        return saedb::IN_EDGES;
+    }
+    
+    void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
+        float weight = edge.data();
+        if ( ((double)rand() / RAND_MAX) < weight){
+            context.signalVid(edge.target().id());
+        }
+    }
+    
+    void aggregate(icontext_type& context, const vertex_type& vertex){
+        if (!marked) {
+            marked = true;
+            saedb::IAggregator* active_node = context.getAggregator("active_node");
+            float t = vertex.data();
+            active_node->reduce(&t);
+        }
+    }
+    
+private:
+    bool marked = false;
+};
+
+graph_type sample_graph(){
+    return LOAD_SAMPLE_GRAPH<graph_type>();
+}
+
+// give a seed u, to estimate how many nodes can be influenced by u
+double simulate(graph_type& graph, const vector<uint32_t> &seedset, int round){
+    // engine
+    saedb::IEngine<Simulate> *engine = new saedb::EngineDelegate<Simulate>(graph);
+    double result = 0.0;
+    
+    // aggregator
+    float* init_rank = new float(0);
+    saedb::IAggregator* active_node = new ActivateNodeAggregator();
+    
+    engine->registerAggregator("active_node", active_node);
+    
+    while (round > 0) {
+        active_node->init(init_rank);
+        engine->signalVertices(seedset);
+        engine->start();
+        result += *((float*)active_node->data()) - seedset.size();
+        round--;
+    }
+    
+    // clean
+    delete engine;
+    delete active_node;
+    delete init_rank;
+    
+    return result / round;
+}
+
+
+double *greedy_s;
+bool *mark;
+
+int main(){
+    graph_type graph = sample_graph();
+    // graph.load_format(graph_dir, format);
+    
+    std::cout << "#vertices: " << graph.num_vertices() << " #edges:" << graph.num_edges() << std::endl;
+    
+    size_t n = graph.num_vertices();
+    int round = 100;
+    int ss_cnt = 2;
+    char* outpath = "result";
+    
+    // Initilization
+    greedy_s = new double [ss_cnt+1];
+    mark = new bool[n];
+    
+	priority_queue<pair<double, pair<int,int> > > q;
+    vector<uint32_t> seed_list;
+	// calculate the influenced number of nodes by each node, and store into q
+	for (int i = 0; i < n; i++) {
+		pair<int, int> tp = make_pair(i, 1);
+		seed_list.push_back(i);
+		double val = simulate(graph, seed_list, round);
+		q.push(make_pair(val, tp));
+		seed_list.clear();
+	}
+    
+	double ret = 0;
+    // try ss_cnt seeds
+	seed_list.clear();
+	for (int ss = 1; ss <= ss_cnt; ss++) {
+		while (1) {
+			// fetch the node that can influence the most nodes
+			pair<double, pair<int, int> > tp = q.top();
+			q.pop();
+			if (tp.second.second == ss) {
+				ret += tp.first;
+				greedy_s[ss] = ret;
+                seed_list.push_back(tp.second.first);
+				break;
+			} else {
+				seed_list.push_back(tp.second.first);
+				double val = simulate(graph, seed_list, round);
+				seed_list.pop_back();
+				tp.second.second = ss;
+				tp.first = val - ret;
+				q.push(tp);
+			}
+		}
+	}
+    
+    FILE *fout = fopen(outpath, "w");
+    fprintf(fout, "greedy\n");
+	for (int i = 1; i <= ss_cnt; i++)
+		fprintf(fout, "%3.9lf\n", greedy_s[i]);
+	fclose(fout);
+    delete greedy_s;
+    delete mark;
+    return 0;
+}

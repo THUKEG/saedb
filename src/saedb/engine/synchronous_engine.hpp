@@ -35,8 +35,10 @@ namespace saedb
         
     public:
 		SynchronousEngine(graph_type& graph);
-        void signalAll();
 		void start();
+        void signalAll();
+        void signalVertex(vertex_id_type vid);
+        void signalVertices(const vector<vertex_id_type>&);
         void registerAggregator(const string &, IAggregator*);
         ~SynchronousEngine();
         
@@ -279,6 +281,22 @@ namespace saedb
     
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::
+    signalVertex(vertex_id_type vid){
+        active_superstep_[vid] = 1;
+        active_minorstep_[vid] = 1;
+        has_msg_[vid] = 1;
+    }
+    
+    template <typename algorithm_t>
+    void SynchronousEngine<algorithm_t>::
+    signalVertices(const vector<vertex_id_type>& vids){
+        for (auto vid: vids) {
+            signalVertex(vid);
+        }
+    }
+    
+    template <typename algorithm_t>
+    void SynchronousEngine<algorithm_t>::
     clearActiveMinorstep(){
         active_minorstep_.assign(graph_.num_local_vertices(), false);
     }
@@ -317,9 +335,6 @@ namespace saedb
     SynchronousEngine<algorithm_t>::
     ~SynchronousEngine(){
         std::cout << "cleaning SynchonousEngine......" << std::endl;
-        for(const auto &pair : aggregators_){
-            delete pair.second;
-        }
     }
 }
 #endif

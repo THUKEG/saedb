@@ -41,6 +41,10 @@ namespace saedb
         // mark all vertices as active
         void signalAll();
         
+        void signalVertex(vertex_id_type);
+        
+        void signalVertices(const vector<vertex_id_type>&);
+        
         // start engine
 		void start();
         
@@ -92,6 +96,18 @@ namespace saedb
     void EngineDelegate<algorithm_t>::
     signalAll(){
         engine->signalAll();
+    }
+    
+    template <typename algorithm_t>
+    void EngineDelegate<algorithm_t>::
+    signalVertex(vertex_id_type vid){
+        engine->signalVertex(vid);
+    }
+    
+    template <typename algorithm_t>
+    void EngineDelegate<algorithm_t>::
+    signalVertices(const vector<vertex_id_type> & vids){
+        engine->signalVertices(vids);
     }
     
     template <typename algorithm_t>
