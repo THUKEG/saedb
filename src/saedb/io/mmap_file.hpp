@@ -66,6 +66,10 @@ struct MMapFile {
         return size;
     }
 
+    bool Sync() {
+        return msync(data, size, MS_SYNC) == 0;
+    }
+
     bool Close() {
         return munmap(data, size) == 0;
     }

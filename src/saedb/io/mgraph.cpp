@@ -127,7 +127,7 @@ struct EdgeIteratorImpl : public EdgeIterator {
     eid_t base, index, count;
 
     EdgeIteratorImpl(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list) :
-        g(g), base(base), count(count), index(0), list(list)
+        g(g), list(list), base(base), index(0), count(count)
     {
         this->data = (char*) g.edgeData;
         this->data_size = g.meta->edge_data_size;
@@ -257,6 +257,16 @@ struct MappedGraphImpl : public MappedGraph {
 
     unique_ptr<EdgeIterator> BackwardEdges() {
         return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.backward));
+    }
+
+    void Sync() {
+        meta_file->Sync();
+        forward_index_file->Sync();
+        backward_index_file->Sync();
+        forward_file->Sync();
+        backward_file->Sync();
+        vdata_file->Sync();
+        edata_file->Sync();
     }
 
     void Close() {

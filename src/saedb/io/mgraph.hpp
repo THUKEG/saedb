@@ -86,12 +86,27 @@ namespace sae {
             virtual unique_ptr<EdgeIterator> BackwardEdges() = 0;
 
             /**
+             * Force sync the mapped files with disk.
+             *
+             * Note that operating system will sync with disk even you have
+             * never called this function.
+             */
+            virtual void Sync() = 0;
+
+            /**
              * Close memory mapped files.
              */
             virtual void Close() = 0;
 
-            MappedGraph(){}
-            virtual ~MappedGraph() {};
+            /**
+             * Default constructor. Do not use this directly.
+             */
+            MappedGraph() = default;
+
+            /**
+             * Default deconstructor.
+             */
+            virtual ~MappedGraph() = default;
         };
 
         struct MappedGraphWriter : public GraphWriter {
