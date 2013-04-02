@@ -100,8 +100,8 @@ namespace saedb
     
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::start(){
+        iteration_counter_ = 0;
 		std::cout << "Before running..." << std::endl;
-//		graph_.display();
 		runSynchronous( &SynchronousEngine::executeInits);
 		while ( iteration_counter_ < max_iterations_ ){
             std::cout << "Iteration " << iteration_counter_ << std::endl;
@@ -118,7 +118,6 @@ namespace saedb
             runSynchronous( &SynchronousEngine::executeAggregate);
             ++iteration_counter_;
 		}
-//        graph_.display();
     }
     
     template <typename algorithm_t>
