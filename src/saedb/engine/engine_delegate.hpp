@@ -41,11 +41,15 @@ namespace saedb
         // mark all vertices as active
         void signalAll();
         
+        void signalVertex(vertex_id_type);
+        
+        void signalVertices(const std::vector<vertex_id_type>&);
+        
         // start engine
 		void start();
         
         // register related aggregator
-        void registerAggregator(const string &, IAggregator*);
+        void registerAggregator(const std::string &, IAggregator*);
         
         ~EngineDelegate();
 
@@ -63,7 +67,7 @@ namespace saedb
         
         void internalSignal(const vertex_type& vertex,
                             const message_type& message = message_type());
-        IAggregator* internalGetAggregator(const string& name);
+        IAggregator* internalGetAggregator(const std::string& name);
         
     private:
         // the real engine pointer
@@ -96,7 +100,19 @@ namespace saedb
     
     template <typename algorithm_t>
     void EngineDelegate<algorithm_t>::
-    registerAggregator(const string &name, IAggregator* worker){
+    signalVertex(vertex_id_type vid){
+        engine->signalVertex(vid);
+    }
+    
+    template <typename algorithm_t>
+    void EngineDelegate<algorithm_t>::
+    signalVertices(const std::vector<vertex_id_type> & vids){
+        engine->signalVertices(vids);
+    }
+    
+    template <typename algorithm_t>
+    void EngineDelegate<algorithm_t>::
+    registerAggregator(const std::string &name, IAggregator* worker){
         engine->registerAggregator(name, worker);
     }
     
