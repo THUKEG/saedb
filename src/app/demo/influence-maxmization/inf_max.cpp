@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <queue>
+#include <fstream>
 
 #include "sae_include.hpp"
 #include "sample_data.hpp"
@@ -99,12 +100,11 @@ double simulate(saedb::IEngine<Simulate> *engine, graph_type& graph, const std::
 
     engine->registerAggregator("active_node", active_node);
 
-    while (round > 0) {
+    for(int i=0;i<round;++i){
         active_node->init(init_rank);
         engine->signalVertices(seedset);
         engine->start();
         result += *((float*)active_node->data()) - seedset.size();
-        round--;
     }
 
     // clean
@@ -125,7 +125,7 @@ int main(){
     size_t n = graph.num_vertices();
     int round = 1;
     int ss_cnt = 2;
-    char* outpath = "result";
+    std::string outpath = "result";
 
     // Initilization
     greedy_s = new double [ss_cnt+1];
@@ -168,11 +168,14 @@ int main(){
         }
     }
 
-    FILE *fout = fopen(outpath, "w");
-    fprintf(fout, "greedy\n");
+    std::ofstream result_file;
+    result_file.open (outpath);
     for (int i = 1; i <= ss_cnt; i++)
-        fprintf(fout, "%3.9lf\n", greedy_s[i]);
-    fclose(fout);
+    {
+        result_file << greedy_s[i] << std::endl;
+    }
+    result_file.close();
+    return 0;
 
     delete greedy_s;
     delete mark;

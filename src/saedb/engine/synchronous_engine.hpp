@@ -228,6 +228,10 @@ namespace saedb
             if(vid >= graph_.num_local_vertices()){
                 break;
             }
+            if (!active_superstep_[vid]) {
+                vid++;
+                continue;
+            }
             auto &vprog = vertex_programs_[vid];
             vertex_type vertex(graph_.vertex(vid));
             vprog.aggregate(context, vertex);
