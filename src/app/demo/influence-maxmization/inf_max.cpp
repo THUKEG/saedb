@@ -89,7 +89,7 @@ double *greedy_s;
 bool *mark;
 
 // give a seed u, to estimate how many nodes can be influenced by u
-double simulate(saedb::IEngine<Simulate> *engine, graph_type& graph, const vector<uint32_t> &seedset, int round){
+double simulate(saedb::IEngine<Simulate> *engine, graph_type& graph, const std::vector<uint32_t> &seedset, int round){
     // engine
     double result = 0.0;
 
@@ -111,7 +111,7 @@ double simulate(saedb::IEngine<Simulate> *engine, graph_type& graph, const vecto
     delete init_rank;
     delete active_node;
 
-    return result / round;
+    return result / (double)round;
 }
 
 int main(){
@@ -123,7 +123,7 @@ int main(){
     saedb::IEngine<Simulate> *engine = new saedb::EngineDelegate<Simulate>(graph);
 
     size_t n = graph.num_vertices();
-    int round = 100;
+    int round = 1;
     int ss_cnt = 2;
     char* outpath = "result";
 
@@ -131,24 +131,26 @@ int main(){
     greedy_s = new double [ss_cnt+1];
     mark = new bool[n];
 
-    priority_queue<pair<double, pair<int,int> > > q;
-    vector<uint32_t> seed_list;
+    std::priority_queue<std::pair<double, std::pair<int,int>>> q;
+    std::vector<uint32_t> seed_list;
     // calculate the influenced number of nodes by each node, and store into q
     for (int i = 0; i < n; i++) {
-        pair<int, int> tp = make_pair(i, 1);
+        std::pair<int, int> tp = std::make_pair(i, 1);
         seed_list.push_back(i);
+        std::cout << "simulating ..." << i << std::endl;
         double val = simulate(engine, graph, seed_list, round);
         q.push(make_pair(val, tp));
         seed_list.clear();
     }
 
+    std::cout << "Simulating all nodes done..." << std::endl;
     double ret = 0;
     // try ss_cnt seeds
     seed_list.clear();
     for (int ss = 1; ss <= ss_cnt; ss++) {
         while (1) {
             // fetch the node that can influence the most nodes
-            pair<double, pair<int, int> > tp = q.top();
+            std::pair<double, std::pair<int, int> > tp = q.top();
             q.pop();
             if (tp.second.second == ss) {
                 ret += tp.first;
