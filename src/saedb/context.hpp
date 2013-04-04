@@ -21,6 +21,8 @@ namespace saedb {
 		typedef typename icontext_type::graph_type      graph_type;
 		typedef typename icontext_type::vertex_id_type  vertex_id_type;
 		typedef typename icontext_type::vertex_type     vertex_type;
+		typedef typename icontext_type::edge_type 		edge_type;
+		typedef typename icontext_type::edge_data_type edge_data_type;
 		typedef typename icontext_type::message_type    message_type;
 		typedef typename icontext_type::gather_type     gather_type;
         
@@ -61,6 +63,12 @@ namespace saedb {
          */
         void signalVid(vertex_id_type vid,
                        const message_type& message = message_type()) {
+		}
+		
+		void add_edge(vertex_id_type vid_s, vertex_id_type vid_t,
+			edge_data_type e)
+		{
+			
 		}
         
         IAggregator* getAggregator(const string& name) {

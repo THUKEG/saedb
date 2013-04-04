@@ -12,6 +12,8 @@ namespace saedb {
         typedef graph_t                             graph_type;
         typedef typename graph_type::vertex_type    vertex_type;
         typedef typename graph_type::vertex_id_type vertex_id_type;
+		typedef typename graph_type::edge_type		edge_type;
+		typedef typename graph_type::edge_data_type edge_data_type;
         typedef message_t                           message_type;
         typedef gather_t                            gather_type;
         
@@ -37,6 +39,8 @@ namespace saedb {
         
         // get specific aggregator
         virtual IAggregator* getAggregator(const string&) = 0;
+
+		virtual void add_edge(vertex_id_type, vertex_id_type, edge_data_type) = 0;
         
         virtual ~IContext() {}
     };
