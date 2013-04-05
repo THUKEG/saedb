@@ -14,7 +14,7 @@ public:
     }
     
     void reduce(void* next){
-        accu = max(accu, *((float*)next));
+        accu = std::max(accu, *((float*)next));
     }
     
     void* data() const{

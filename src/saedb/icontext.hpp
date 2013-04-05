@@ -12,6 +12,8 @@ namespace saedb {
         typedef graph_t                             graph_type;
         typedef typename graph_type::vertex_type    vertex_type;
         typedef typename graph_type::vertex_id_type vertex_id_type;
+		typedef typename graph_type::edge_type		edge_type;
+		typedef typename graph_type::edge_data_type edge_data_type;
         typedef message_t                           message_type;
         typedef gather_t                            gather_type;
         
@@ -36,6 +38,8 @@ namespace saedb {
         signalVid(vertex_id_type gvid, const message_type& message = message_type()) = 0;
         
         // get specific aggregator
+
+		virtual void add_edge(vertex_id_type, vertex_id_type, edge_data_type) = 0;
         virtual IAggregator* getAggregator(const std::string&) = 0;
         
         virtual ~IContext() {}
