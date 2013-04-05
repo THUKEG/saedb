@@ -23,6 +23,7 @@ namespace saedb
 		typedef typename algorithm_t::edge_data_type        edge_data_type;
 		typedef typename algorithm_t::graph_type            graph_type;
 		typedef typename graph_type::vertex_type            vertex_type;
+		typedef typename graph_type::vertex_id_type			vertex_id_type;
 		typedef typename graph_type::edge_type              edge_type;
 		typedef typename graph_type::lvid_type              lvid_type;
         typedef Context<SynchronousEngine>                  context_type;
@@ -39,6 +40,31 @@ namespace saedb
 		void start();
         void registerAggregator(const string &, IAggregator*);
         ~SynchronousEngine();
+
+	private:
+		struct edge_cache
+		{
+			vertex_id_type vid_s_, vid_t_;
+			edge_data_type e_;
+			edge_cache(
+					vertex_id_type vid_s,
+					vertex_id_type vid_t,
+					edge_data_type e):
+					vid_s_(vid_s),
+					vid_t_(vid_t),
+					e_(e) {}
+		};
+
+		struct vertex_cache
+		{
+			vertex_id_type vid_;
+			vertex_data_type data_;
+			vertex_cache(
+				vertex_id_type vid,
+				vertex_data_type data):
+				vid_(vid),
+				data_(data) {}
+		};
         
     private:
 		void internalStop();
@@ -58,6 +84,9 @@ namespace saedb
         
         void internalSignal(const vertex_type& vertex,
                             const message_type& message = message_type());
+
+		void add_edge(vertex_id_type, vertex_id_type, edge_data_type);
+
         IAggregator* internalGetAggregator(const string& name);
         
         void clearActiveMinorstep();
@@ -65,6 +94,9 @@ namespace saedb
         void clearMessages();
         
         void countActiveVertices();
+
+		void dynamicModification();
+		void clear_modification_cache();
         
     private:
         graph_type& graph_;
@@ -77,6 +109,8 @@ namespace saedb
         std::vector<message_type>           messages_;
         std::vector<int>                    active_superstep_;
         std::vector<int>                    active_minorstep_;
+		std::vector<edge_cache>				edges_cache_;
+		std::vector<vertex_cache>			vertices_cache_;
         std::map<string, IAggregator*>      aggregators_;
     };
     
@@ -94,6 +128,7 @@ namespace saedb
         has_msg_.resize(graph.num_local_vertices(), message_type());
         active_superstep_.resize(graph.num_local_vertices(), 0);
         active_minorstep_.resize(graph.num_local_vertices(), 0);
+		clear_modification_cache();
     }
     
     template <typename algorithm_t>
@@ -115,6 +150,9 @@ namespace saedb
             runSynchronous( &SynchronousEngine::executeScatters);
             runSynchronous( &SynchronousEngine::executeAggregate);
             ++iteration_counter_;
+
+			dynamicModification();
+			clear_modification_cache();
 		}
 //        graph_.display();
     }
@@ -262,6 +300,40 @@ namespace saedb
         }
         //        local_vertex_lock[lvid].unlock();
     }
+
+	template <typename algorithm_t>
+	void SynchronousEngine<algorithm_t>::
+		add_edge(vertex_id_type vid_s, vertex_id_type vid_t, edge_data_type e)
+	{
+		edges_cache_.push_back(edge_cache(vid_s, vid_t, e));
+	}
+
+	template <typename algorithm_t>
+	void SynchronousEngine<algorithm_t>::
+		dynamicModification()
+	{
+		while (!vertices_cache_.empty())
+		{
+			vertex_cache vertex = vertices_cache_.back();
+			vertices_cache_.pop_back();
+			graph_.add_vertex(vertex.vid_, vertex.data_);
+		}
+
+		while (!edges_cache_.empty())
+		{
+			edge_cache edge = edges_cache_.back();
+			edges_cache_.pop_back();
+			graph_.add_edge(edge.vid_s_, edge.vid_t_, edge.e_);
+		}
+	}
+
+	template <typename algorithm_t>
+	void SynchronousEngine<algorithm_t>::
+		clear_modification_cache()
+	{
+		edges_cache_.clear();
+		vertices_cache_.clear();
+	}
     
     template <typename algorithm_t>
     IAggregator* SynchronousEngine<algorithm_t>::

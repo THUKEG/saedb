@@ -68,7 +68,7 @@ namespace saedb {
 		void add_edge(vertex_id_type vid_s, vertex_id_type vid_t,
 			edge_data_type e)
 		{
-			
+			engine_.add_edge(vid_s, vid_t, e);
 		}
         
         IAggregator* getAggregator(const string& name) {

@@ -2,6 +2,9 @@
 #include <cmath>
 
 #include "sae_include.hpp"
+#include "sample_data.hpp"
+
+#define INF 1e9
 
 using namespace saedb;
 
@@ -46,9 +49,9 @@ typedef struct gather_type_
 	{
 		cnt_i = false;
 		cnt_j = false;
-		max_del_q = -1e9;
+		max_del_q = -INF;
 	}
-	void operator += (const gather_type_& other)
+	const gather_type_& operator += (const gather_type_& other)
 	{
 		cnt_i |= other.cnt_i;
 		cnt_j |= other.cnt_j;
@@ -61,10 +64,12 @@ typedef struct gather_type_
 			max_del_q = other.max_del_q;
 		}
 		if (other.cnt_j) deltaQ_j_k = other.deltaQ_j_k;
+		return *this;
 	}
 	gather_type_(bool bi, bool bj, float q = 0.0):
 		cnt_i(bi), cnt_j(bj), deltaQ_j_k(q)
 		{
+			max_del_q = -INF;
 		}
 } gather_type;
 
@@ -123,6 +128,7 @@ public:
 		vertex.data().a = float(degree) * 0.5 / float(num_edges);
 		connected_i = false;
 		connected_j = false;
+		max_cache = gather_type();
 	}
 
 	edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const
@@ -159,7 +165,12 @@ public:
 		else if (status_ == FIND_MAX)
 		{
 			if (edge.source().data().alive && edge.target().data().alive)
-				return gather_type(edge.source().id(), edge.target().id(), edge.source().data().a, edge.target().data().a, edge.data().deltaQ);
+				return gather_type(
+					edge.source().id(), 
+					edge.target().id(), 
+					edge.source().data().a, 
+					edge.target().data().a, 
+					edge.data().deltaQ);
 			else 
 				return gather_type();
 		}
@@ -205,7 +216,7 @@ public:
 			size_t j_id = ((gather_type*)(agg->data()))->j_id;
 
 			float del_q = ((gather_type*)(agg->data()))->max_del_q;
-			if (del_q < 0) return NO_EDGES;
+			if (del_q <= 0.0) return NO_EDGES;
 
 			if (i_id != vertex.id() && j_id != vertex.id())
 			{
@@ -247,6 +258,7 @@ public:
 			status_ = UPDATE;
 			IAggregator* agg = context.getAggregator("clauset_newman");
 			agg->reduce(&max_cache);
+			max_cache = gather_type();
 		}
 		else if (status_ == UPDATE)
 		{
@@ -255,17 +267,25 @@ public:
 			size_t i_id = ((gather_type*)(agg->data()))->i_id;
 			float del_q = ((gather_type*)(agg->data()))->max_del_q;
 
-			if (vertex.id() == i_id)
+			connected_i = connected_j = false;
+
+			if (vertex.id() == i_id && del_q > 0.0)
 			{
 				IAggregator* sum_agg = context.getAggregator("QSUM");
 				sum_agg->reduce((void*)(&del_q));
 			}
 
+			IAggregator* merge_cnt_agg = context.getAggregator("merge_cnt");
+			if (del_q > 0.0)
+				merge_cnt_agg->reduce(new float(1.0));
+
+			bool merge_cnt_valid = (*((float*)merge_cnt_agg->data())) < (context.getNumVertices() - 1);
+
 			if (vertex.id() == j_id)
 			{
 				status_ = DEAD;
 			}
-			else if (del_q < 0)
+			else if (del_q <= 0.0 || !merge_cnt_valid)
 				status_ = DEAD;
 			else 	
 				status_ = FIND_MAX;
@@ -277,4 +297,34 @@ public:
 
 int main()
 {
+	graph_type graph = LOAD_SAMPLE_GRAPH<graph_type>();
+	IEngine<ClausetNewman> *engine = new EngineDelegate<ClausetNewman>(graph);
+
+	IAggregator* clauset_newman_agg = new ClausetNewmanAggregator();
+	IAggregator* q_sum_agg = new QSumAggregator();
+	q_sum_agg->init(new float(0.0));
+	IAggregator* merge_cnt_agg = new QSumAggregator();
+	merge_cnt_agg->init(new float(0.0));
+
+	engine->registerAggregator("clauset_newman", clauset_newman_agg);
+	engine->registerAggregator("QSUM", q_sum_agg);
+	engine->registerAggregator("merge_cnt", merge_cnt_agg);
+
+	engine->signalAll();
+	engine->start();
+
+	/*
+	REF: Finding community structure in very large networks. Aaron Clauset, M.E.J. Newman and Cristopher Moore.
+	*/
+
+	float Q = *((float*)q_sum_agg->data());
+	using namespace std;
+	cout << "Modularity Q = " << Q << endl;
+
+	delete clauset_newman_agg;
+	delete q_sum_agg;
+	delete merge_cnt_agg;
+	delete engine;
+
+	return 0;
 }
