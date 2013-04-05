@@ -9,285 +9,283 @@
 
 #include "local_graph.hpp"
 
-using namespace std;
-
 /*
  * need doc
  * */
 namespace saedb
 {
-      template <typename VertexData,
-		typename EdgeData>
-      class sae_graph
-      {
-      public:
-	    typedef VertexData vertex_data_type;
-	    typedef EdgeData   edge_data_type;
-	    typedef saedb::local_graph<VertexData, EdgeData> local_graph_type;
-	    typedef saedb::sae_graph<VertexData, EdgeData> graph_type;
-	    typedef saedb::vertex_id_type vertex_id_type;
-	    typedef saedb::lvid_type lvid_type;
-	    typedef saedb::edge_id_type edge_id_type;
-    
-	    struct vertex_type;
-	    typedef bool edge_list_type;  
-	    class edge_type;
-	    
-	    struct local_vertex_type;
-	    struct local_edge_list_type;
-	    class local_edge_type;
+    template <typename VertexData,
+    typename EdgeData>
+    class sae_graph
+    {
+    public:
+        typedef VertexData vertex_data_type;
+        typedef EdgeData   edge_data_type;
+        typedef saedb::local_graph<VertexData, EdgeData> local_graph_type;
+        typedef saedb::sae_graph<VertexData, EdgeData> graph_type;
+        typedef saedb::vertex_id_type vertex_id_type;
+        typedef saedb::lvid_type lvid_type;
+        typedef saedb::edge_id_type edge_id_type;
 
-	    typedef vector<edge_type> vertex_neighbours;
-	    
-	    set<vertex_id_type> vertex_ids;
-	    map<vertex_id_type, vertex_type> vertex_id_2_vertex;
-	    map<vertex_id_type, vertex_neighbours> vertex_id_2_in_edges;
-	    map<vertex_id_type, vertex_neighbours> vertex_id_2_out_edges;
-	    map<vertex_id_type, vertex_data_type> vertex_id_2_data;
+        struct vertex_type;
+        typedef bool edge_list_type;
+        class edge_type;
 
-	    size_t nvertex;
+        struct local_vertex_type;
+        struct local_edge_list_type;
+        class local_edge_type;
 
-	    size_t nedge;
+        typedef std::vector<edge_type> vertex_neighbours;
 
-	    sae_graph() :
-		  nvertex(0), nedge(0) {/* nop */};
+        std::set<vertex_id_type> vertex_ids;
+        std::map<vertex_id_type, vertex_type> vertex_id_2_vertex;
+        std::map<vertex_id_type, vertex_neighbours> vertex_id_2_in_edges;
+        std::map<vertex_id_type, vertex_neighbours> vertex_id_2_out_edges;
+        std::map<vertex_id_type, vertex_data_type> vertex_id_2_data;
 
-	    void finalize() { /* nop */}
+        size_t nvertex;
 
-	    size_t num_in_edges(const vertex_id_type vid) const {
-		  auto in_neighbours = vertex_id_2_in_edges[vid];
-		  return in_neighbours.size();
-	    }
+        size_t nedge;
 
-	    size_t num_out_edges(const vertex_id_type vid) const {
-		  auto out_neighbours = vertex_id_2_out_edges[vid];
-		  return out_neighbours.size();
-	    }
+        sae_graph() :
+        nvertex(0), nedge(0) {/* nop */};
 
-	    void load() {
-	    }
+        void finalize() { /* nop */}
 
-	    void loadformat ( string filename) {
-	    }
+        size_t num_in_edges(const vertex_id_type vid) const {
+            auto in_neighbours = vertex_id_2_in_edges[vid];
+            return in_neighbours.size();
+        }
 
-	    void save() const {
-	    }
+        size_t num_out_edges(const vertex_id_type vid) const {
+            auto out_neighbours = vertex_id_2_out_edges[vid];
+            return out_neighbours.size();
+        }
 
-	    void display(){
-		  typename map<vertex_id_type, vertex_data_type>::iterator it;
-		  int counter = 0;
-		  std::cout << "show fist 100 vertex data" << std::endl;
-		  for ( it = vertex_id_2_data.begin(); it != vertex_id_2_data.end();++it){
-			std::cout << it->first << " " << it->second << std::endl;
-			counter++;
-			if (counter > 100)
-			      break;
-		  }
-	    }
+        void load() {
+        }
 
-	    void add_vertex(vertex_id_type id, vertex_data_type data) {
-		  std::set<vertex_id_type>::iterator it;
-		  it = vertex_ids.find(id);
-		  if ( it == vertex_ids.end() ){
-			vertex_ids.insert(id);
-			auto vertex = vertex_type(*this, id);
-			vertex_id_2_vertex.insert( std::pair<vertex_id_type, vertex_type>(id, vertex) );
-			vertex_id_2_data.insert( std::pair<vertex_id_type, vertex_data_type>(id, data) );
-			++nvertex;
-		  }
-	    }
+        void loadformat ( std::string filename) {
+        }
 
-	    void add_edge(vertex_id_type source, vertex_id_type target, edge_data_type data) {
-		  // now assum both source and target are inserted
-		  vertex_neighbours& s_out_nbr = vertex_id_2_out_edges[source];
-		  vertex_neighbours& t_in_nbr = vertex_id_2_in_edges[target];
-		  s_out_nbr.push_back( edge_type(*this, source, target) );
-		  t_in_nbr.push_back( edge_type(*this, source, target) );
-		  ++nedge;
-	    }
+        void save() const {
+        }
 
-	    size_t num_vertices() {
-		  return nvertex;
-	    }
+        void display(){
+            typename std::map<vertex_id_type, vertex_data_type>::iterator it;
+            int counter = 0;
+            std::cout << "show fist 100 vertex data" << std::endl;
+            for ( it = vertex_id_2_data.begin(); it != vertex_id_2_data.end();++it){
+                std::cout << it->first << " " << it->second << std::endl;
+                counter++;
+                if (counter > 100)
+                    break;
+            }
+        }
 
-	    size_t num_edges() {
-		  return nedge;
-	    }
+        void add_vertex(vertex_id_type id, vertex_data_type data) {
+            std::set<vertex_id_type>::iterator it;
+            it = vertex_ids.find(id);
+            if ( it == vertex_ids.end() ){
+                vertex_ids.insert(id);
+                auto vertex = vertex_type(*this, id);
+                vertex_id_2_vertex.insert( std::pair<vertex_id_type, vertex_type>(id, vertex) );
+                vertex_id_2_data.insert( std::pair<vertex_id_type, vertex_data_type>(id, data) );
+                ++nvertex;
+            }
+        }
 
-	    size_t num_local_vertices () {
-		  return num_vertices();
-	    }
-	    
-	    struct vertex_type {
-		  sae_graph& graph_ref;
-		  lvid_type lvid;
-		  
-		  vertex_type(sae_graph& graph_ref, lvid_type lvid):
-			graph_ref(graph_ref), lvid(lvid) { }
+        void add_edge(vertex_id_type source, vertex_id_type target, edge_data_type data) {
+            // now assum both source and target are inserted
+            vertex_neighbours& s_out_nbr = vertex_id_2_out_edges[source];
+            vertex_neighbours& t_in_nbr = vertex_id_2_in_edges[target];
+            s_out_nbr.push_back( edge_type(*this, source, target) );
+            t_in_nbr.push_back( edge_type(*this, source, target) );
+            ++nedge;
+        }
 
-		  vertex_type() {}
+        size_t num_vertices() {
+            return nvertex;
+        }
 
-		  bool operator==(vertex_type& v) const {
-			return lvid == v.lvid;
-		  }
-      
-		  const vertex_data_type& data() const {
-			return graph_ref.vertex_id_2_data[lvid];
-		  }
+        size_t num_edges() {
+            return nedge;
+        }
 
-		  vertex_data_type& data() {
-			return graph_ref.vertex_id_2_data[lvid];
-		  }
+        size_t num_local_vertices () {
+            return num_vertices();
+        }
 
-		  size_t num_in_edges() const {
-			auto in_edge = graph_ref.vertex_id_2_in_edges[lvid];
-			return in_edge.size();
-		  }
+        struct vertex_type {
+            sae_graph& graph_ref;
+            lvid_type lvid;
 
-		  size_t num_out_edges() const {
-			auto out_edge = graph_ref.vertex_id_2_out_edges[lvid];
-			return out_edge.size();
-		  }
-      
-		  vertex_id_type id() const {
-			return lvid;
-		  }
- 
-		  vector<edge_type> in_edges() {
-			return graph_ref.vertex_id_2_in_edges[lvid];
-		  }
+            vertex_type(sae_graph& graph_ref, lvid_type lvid):
+            graph_ref(graph_ref), lvid(lvid) { }
 
-		  vector<edge_type> out_edges() {
-			return graph_ref.vertex_id_2_out_edges[lvid];
-		  }
+            vertex_type() {}
 
-		  lvid_type local_id() const {
-			return lvid;
-		  }
-	    };
+            bool operator==(vertex_type& v) const {
+                return lvid == v.lvid;
+            }
 
-	    class edge_type {
-	    private:
-		  graph_type& graph_ref;
-		  
- 		  vertex_id_type source_id;
+            const vertex_data_type& data() const {
+                return graph_ref.vertex_id_2_data[lvid];
+            }
 
- 		  vertex_id_type target_id;
-		  
-		  friend class sae_graph;
-	    public:
+            vertex_data_type& data() {
+                return graph_ref.vertex_id_2_data[lvid];
+            }
 
-		  edge_type(sae_graph& graph, vertex_id_type source, vertex_id_type target):
-			graph_ref(graph), source_id(source), target_id(target){}
+            size_t num_in_edges() const {
+                auto in_edge = graph_ref.vertex_id_2_in_edges[lvid];
+                return in_edge.size();
+            }
 
-		  vertex_type source() const { 
-			return vertex_type(graph_ref, source_id); 
-		  }
+            size_t num_out_edges() const {
+                auto out_edge = graph_ref.vertex_id_2_out_edges[lvid];
+                return out_edge.size();
+            }
 
-		  vertex_type target() const { 
-			return vertex_type(graph_ref, target_id); 
-		  }
-      
-		  const edge_data_type& data() const {  }
-		  
-		  edge_data_type& data() { }
-	    }; 
+            vertex_id_type id() const {
+                return lvid;
+            }
 
+            std::vector<edge_type> in_edges() {
+                return graph_ref.vertex_id_2_in_edges[lvid];
+            }
 
-	    vertex_type vertex(vertex_id_type vid){
-		  return vertex_type(*this, vid);
-	    }
+            std::vector<edge_type> out_edges() {
+                return graph_ref.vertex_id_2_out_edges[lvid];
+            }
+
+            lvid_type local_id() const {
+                return lvid;
+            }
+        };
+
+        class edge_type {
+        private:
+            graph_type& graph_ref;
+
+            vertex_id_type source_id;
+
+            vertex_id_type target_id;
+
+            friend class sae_graph;
+        public:
+
+            edge_type(sae_graph& graph, vertex_id_type source, vertex_id_type target):
+            graph_ref(graph), source_id(source), target_id(target){}
+
+            vertex_type source() const {
+                return vertex_type(graph_ref, source_id);
+            }
+
+            vertex_type target() const {
+                return vertex_type(graph_ref, target_id);
+            }
+
+            const edge_data_type& data() const {  }
+
+            edge_data_type& data() { }
+        };
 
 
-	    struct local_vertex_type {
-		  sae_graph& graph_ref;
-		  lvid_type lvid;
-
-		  local_vertex_type(sae_graph& graph_ref, lvid_type lvid):
-			graph_ref(graph_ref), lvid(lvid) { }
-
-		  explicit local_vertex_type(vertex_type v) :graph_ref(v.graph_ref),lvid(v.lvid) { }
-
-		  operator vertex_type() const {
-			return vertex_type(graph_ref, lvid);
-		  }
-
-		  bool operator==(local_vertex_type& v) const {
-			return lvid == v.lvid;
-		  }
-      
-		  const vertex_data_type& data() const {
-			return graph_ref.get_local_graph().vertex_data(lvid);
-		  }
-
-		  vertex_data_type& data() {
-			return graph_ref.get_local_graph().vertex_data(lvid);
-		  }
-
-		  size_t num_in_edges() const {
-			return graph_ref.get_local_graph().num_in_edges(lvid);
-		  }
-
-		  size_t num_out_edges() const {
-			return graph_ref.get_local_graph().num_out_edges(lvid);
-		  }
-
-		  lvid_type id() const {
-			return lvid;
-		  }
-
-		  vertex_id_type global_id() const {
-			return graph_ref.global_vid(lvid);
-		  }
-
-		  local_edge_list_type in_edges() {
-			return graph_ref.l_in_edges(lvid);
-		  }
-
-		  local_edge_list_type out_edges() {
-			return graph_ref.l_out_edges(lvid);
-		  }
-
-		  size_t global_num_in_edges() const {
-			return graph_ref.l_get_vertex_record(lvid).num_in_edges;
-		  }
+        vertex_type vertex(vertex_id_type vid){
+            return vertex_type(*this, vid);
+        }
 
 
-		  size_t global_num_out_edges() const {
-			return graph_ref.l_get_vertex_record(lvid).num_out_edges;
-		  }
-	    };
+        struct local_vertex_type {
+            sae_graph& graph_ref;
+            lvid_type lvid;
 
-	    class local_edge_type {
-	    private:
-		  sae_graph& graph_ref;
-		  typename local_graph_type::edge_type e;
-	    public:
-		  local_edge_type(sae_graph& graph_ref,
-				  typename local_graph_type::edge_type e):
-			graph_ref(graph_ref), e(e) { }
-                      
-		  explicit local_edge_type(edge_type ge) :graph_ref(ge.graph_ref),e(ge.e) { }
+            local_vertex_type(sae_graph& graph_ref, lvid_type lvid):
+            graph_ref(graph_ref), lvid(lvid) { }
 
-		  operator edge_type() const {
-			return edge_type(graph_ref, e);
-		  }
+            explicit local_vertex_type(vertex_type v) :graph_ref(v.graph_ref),lvid(v.lvid) { }
 
-		  local_vertex_type source() { return local_vertex_type(graph_ref, e.source().id()); }
-      
-		  local_vertex_type target() { return local_vertex_type(graph_ref, e.target().id()); }
+            operator vertex_type() const {
+                return vertex_type(graph_ref, lvid);
+            }
 
-		  const edge_data_type& data() const { return e.data(); }
+            bool operator==(local_vertex_type& v) const {
+                return lvid == v.lvid;
+            }
 
-		  edge_data_type& data() { return e.data(); }
-      
-		  edge_id_type id() const { return e.id(); }
-	    }; 
+            const vertex_data_type& data() const {
+                return graph_ref.get_local_graph().vertex_data(lvid);
+            }
 
-	    struct local_edge_list_type {
-		  // a list of edge in local graph, implement iterator using c++11
-	    }; 	    
-      };
+            vertex_data_type& data() {
+                return graph_ref.get_local_graph().vertex_data(lvid);
+            }
+
+            size_t num_in_edges() const {
+                return graph_ref.get_local_graph().num_in_edges(lvid);
+            }
+
+            size_t num_out_edges() const {
+                return graph_ref.get_local_graph().num_out_edges(lvid);
+            }
+
+            lvid_type id() const {
+                return lvid;
+            }
+
+            vertex_id_type global_id() const {
+                return graph_ref.global_vid(lvid);
+            }
+
+            local_edge_list_type in_edges() {
+                return graph_ref.l_in_edges(lvid);
+            }
+
+            local_edge_list_type out_edges() {
+                return graph_ref.l_out_edges(lvid);
+            }
+
+            size_t global_num_in_edges() const {
+                return graph_ref.l_get_vertex_record(lvid).num_in_edges;
+            }
+
+
+            size_t global_num_out_edges() const {
+                return graph_ref.l_get_vertex_record(lvid).num_out_edges;
+            }
+        };
+
+        class local_edge_type {
+        private:
+            sae_graph& graph_ref;
+            typename local_graph_type::edge_type e;
+        public:
+            local_edge_type(sae_graph& graph_ref,
+                            typename local_graph_type::edge_type e):
+            graph_ref(graph_ref), e(e) { }
+
+            explicit local_edge_type(edge_type ge) :graph_ref(ge.graph_ref),e(ge.e) { }
+
+            operator edge_type() const {
+                return edge_type(graph_ref, e);
+            }
+
+            local_vertex_type source() { return local_vertex_type(graph_ref, e.source().id()); }
+
+            local_vertex_type target() { return local_vertex_type(graph_ref, e.target().id()); }
+
+            const edge_data_type& data() const { return e.data(); }
+
+            edge_data_type& data() { return e.data(); }
+
+            edge_id_type id() const { return e.id(); }
+        };
+
+        struct local_edge_list_type {
+            // a list of edge in local graph, implement iterator using c++11
+        };
+    };
 }
 
 #endif

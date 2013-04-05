@@ -71,7 +71,7 @@ namespace saedb {
 			engine_.add_edge(vid_s, vid_t, e);
 		}
         
-        IAggregator* getAggregator(const string& name) {
+        IAggregator* getAggregator(const std::string& name) {
             return engine_.internalGetAggregator(name);
         }
     };

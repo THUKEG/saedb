@@ -22,12 +22,18 @@ namespace saedb
 
         // mark all vertices as active
         virtual void signalAll() = 0;
+        
+        // mark a vertex as active
+        virtual void signalVertex(vertex_id_type) = 0;
+        
+        // mark some vertices as active
+        virtual void signalVertices(const std::vector<vertex_id_type>&) = 0;
 
 		// add egdes to the graph after each iteration
 		//virtual void add_edge(vertex_type, vertex_id_type, edge_data_type) = 0;
 
         // register an aggregator
-        virtual void registerAggregator(const string& name,
+        virtual void registerAggregator(const std::string& name,
                                         IAggregator* worker) = 0;
 
         virtual ~IEngine() {}
