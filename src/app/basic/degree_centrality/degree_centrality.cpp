@@ -20,7 +20,7 @@ public:
 	}
 	void reduce(void* next)
 	{
-		accu = max(accu, *((float*) next));
+		accu = std::max(accu, *((float*) next));
 	}
 	void* data() const
 	{
@@ -123,7 +123,7 @@ int main()
 	float max_degree = *((float*)max_degree_centrality->data());
 	float sum_degree = *((float*)sum_degree_centrality->data());
 	float num_vertex = (float)graph.num_vertices();
-	cout << "Degree Centrality of the graph: " << (max_degree * num_vertex - sum_degree) / (num_vertex - 1) / (num_vertex - 2) << endl;
+	std::cout << "Degree Centrality of the graph: " << (max_degree * num_vertex - sum_degree) / (num_vertex - 1) / (num_vertex - 2) << std::endl;
 
 	delete engine;
 	return 0;	

@@ -14,7 +14,7 @@ public:
 	SP_dis(float dis_ = MAXFL) : dis(dis_) {}
 	void operator +=(const SP_dis& other)
 	{
-		dis = min(dis, other.dis);
+		dis = std::min(dis, other.dis);
 	}
 };
 

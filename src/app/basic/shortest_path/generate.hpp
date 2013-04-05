@@ -11,7 +11,7 @@ float_graph generate_graph()
 {
 	float_graph graph;
 
-	ifstream fin("sp_input");
+	std::ifstream fin("sp_input");
 	int n;
 	fin >> n;
 	graph.add_vertex(0, 0);
