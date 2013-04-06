@@ -25,6 +25,9 @@ namespace sae {
         struct VertexIterator;
         struct EdgeIterator;
 
+        typedef unique_ptr<VertexIterator> VertexIteratorPtr;
+        typedef unique_ptr<EdgeIterator> EdgeIteratorPtr;
+
         struct VertexIterator {
             virtual vid_t Id() = 0;
             virtual void* Data() = 0;
@@ -32,8 +35,11 @@ namespace sae {
             virtual void MoveTo(vid_t) = 0;
             virtual bool Alive() = 0;
             virtual vid_t Count() = 0;
-            virtual unique_ptr<EdgeIterator> InEdges() = 0;
-            virtual unique_ptr<EdgeIterator> OutEdges() = 0;
+            virtual eid_t InEdgeCount() = 0;
+            virtual eid_t OutEdgeCount() = 0;
+            virtual EdgeIteratorPtr InEdges() = 0;
+            virtual EdgeIteratorPtr OutEdges() = 0;
+            virtual VertexIteratorPtr Clone() = 0;
             VertexIterator(){}
             virtual ~VertexIterator() {};
         };
@@ -42,13 +48,14 @@ namespace sae {
             virtual eid_t Id() = 0;
             virtual vid_t SourceId() = 0;
             virtual vid_t TargetId() = 0;
-            virtual unique_ptr<VertexIterator> Source() = 0;
-            virtual unique_ptr<VertexIterator> Target() = 0;
+            virtual VertexIteratorPtr Source() = 0;
+            virtual VertexIteratorPtr Target() = 0;
             virtual void* Data() = 0;
             virtual void Next() = 0;
             virtual void MoveTo(eid_t) = 0;
             virtual bool Alive() = 0;
             virtual eid_t Count() = 0;
+            virtual EdgeIteratorPtr Clone() = 0;
             EdgeIterator(){}
             virtual ~EdgeIterator() {};
         };
@@ -73,17 +80,17 @@ namespace sae {
             /**
              * Obtain an iterator for vertices.
              */
-            virtual unique_ptr<VertexIterator> Vertices() = 0;
+            virtual VertexIteratorPtr Vertices() = 0;
 
             /**
              * Obtain an iterator for edges, sorted by sources.
              */
-            virtual unique_ptr<EdgeIterator> ForwardEdges() = 0;
+            virtual EdgeIteratorPtr ForwardEdges() = 0;
 
             /**
              * Obtain an iterator for edges, sorted by targets.
              */
-            virtual unique_ptr<EdgeIterator> BackwardEdges() = 0;
+            virtual EdgeIteratorPtr BackwardEdges() = 0;
 
             /**
              * Force sync the mapped files with disk.

@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "io/mgraph.hpp"
-#include "io/graph_builder.hpp"
 
 #include "graph_basic_types.hpp"
 
@@ -35,7 +34,6 @@ namespace saedb
         class edge_type;
 
     private:
-        sae::io::GraphBuilder<int, vertex_data_type, edge_data_type> builder;
         sae::io::MappedGraph* graph;
 
     public:
@@ -44,41 +42,48 @@ namespace saedb
 
         };
 
+        ~sae_graph() {
+            graph->Close();
+            delete graph;
+        }
+
         void finalize() { /* nop */}
 
         size_t num_in_edges(const vertex_id_type vid) const {
-
+            auto ei = graph->Vertices();
+            ei->MoveTo(vid);
+            return ei->InEdges()->Count();
         }
 
         size_t num_out_edges(const vertex_id_type vid) const {
-
+            auto ei = graph->Vertices();
+            ei->MoveTo(vid);
+            return ei->OutEdges()->Count();
         }
 
-        void load(const string& graph_name) {
-
+        void load_mgraph(const string& graph_name) {
+            cout << graph_name << endl;
+            graph = sae::io::MappedGraph::Open(graph_name.c_str());
         }
 
-        void loadformat ( string filename) {
+        void load_format(const string& filename, const string& fmt = "mgraph") {
+            if (fmt == "mgraph")
+                load_mgraph(filename);
         }
 
         void save() const {
+            graph->Sync();
         }
 
-        void display(){
-        }
-
-        void add_vertex(vertex_id_type id, vertex_data_type data) {
-        }
-
-        void add_edge(vertex_id_type source, vertex_id_type target, edge_data_type data) {
+        void display() {
         }
 
         size_t num_vertices() {
-            return 0;
+            return graph->VertexCount();
         }
 
         size_t num_edges() {
-            return 0;
+            return graph->EdgeCount();
         }
 
         size_t num_local_vertices () {
@@ -86,76 +91,75 @@ namespace saedb
         }
 
         struct vertex_type {
-            sae_graph& graph_ref;
-            lvid_type lvid;
+            sae::io::VertexIteratorPtr vi;
 
-            vertex_type(sae_graph& graph_ref, lvid_type lvid):
-            graph_ref(graph_ref), lvid(lvid) { }
-
-            vertex_type() {}
+            vertex_type(sae::io::VertexIteratorPtr&& vi) : vi(std::move(vi)) { }
 
             bool operator==(vertex_type& v) const {
-                return lvid == v.lvid;
+                return vi->Id() == v->vi->Id();
             }
 
             const vertex_data_type& data() const {
+                return *((vertex_data_type *) vi->Data());
             }
 
             vertex_data_type& data() {
+                return *((vertex_data_type *) vi->Data());
             }
 
             size_t num_in_edges() const {
-                auto in_edge = graph_ref.vertex_id_2_in_edges[lvid];
-                return in_edge.size();
+                return vi->InEdgeCount();
             }
 
             size_t num_out_edges() const {
+                return vi->OutEdgeCount();
             }
 
             vertex_id_type id() const {
-                return lvid;
+                return vi->Id();
             }
 
-            vector<edge_type> in_edges() {
+            sae::io::EdgeIteratorPtr in_edges() {
+                return vi->InEdges();
             }
 
-            vector<edge_type> out_edges() {
+            sae::io::EdgeIteratorPtr out_edges() {
+                return vi->OutEdges();
             }
 
             lvid_type local_id() const{
-
+                return id();
             }
         };
 
         class edge_type {
         private:
-            graph_type& graph_ref;
-
-            vertex_id_type source_id;
-
-            vertex_id_type target_id;
-
-            friend class sae_graph;
+            sae::io::EdgeIteratorPtr ei;
         public:
 
-            edge_type(sae_graph& graph, vertex_id_type source, vertex_id_type target):
-            graph_ref(graph), source_id(source), target_id(target){}
+            edge_type(sae::io::EdgeIteratorPtr&& ei) : ei(std::move(ei)) { }
 
             vertex_type source() const {
-                return vertex_type(graph_ref, source_id);
+                return vertex_type(std::move(ei->Source()));
             }
 
             vertex_type target() const {
-                return vertex_type(graph_ref, target_id);
+                return vertex_type(std::move(ei->Target()));
             }
 
-            const edge_data_type& data() const {  }
+            const edge_data_type& data() const {
+                return *(edge_data_type*) ei->Data();
+            }
 
-            edge_data_type& data() { }
+            edge_data_type& data() {
+                return *(edge_data_type*) ei->Data();
+            }
         };
 
         vertex_type vertex(vertex_id_type vid){
-            return vertex_type(*this, vid);
+            sae::io::VertexIteratorPtr v = graph->Vertices();
+            v->MoveTo(vid);
+            return vertex_type(std::move(v));
         }
     };
 }

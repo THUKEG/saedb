@@ -17,7 +17,7 @@ void test_create() {
 
     builder.AddEdge(0, 10, EData{10});
     builder.AddEdge(10, 20, EData{20});
-    builder.AddEdge(20, 10, EData{30});
+    builder.AddEdge(20, 30, EData{30});
     builder.AddEdge(30, 40, EData{40});
 
     builder.AddVertex(0, VData{0.5});
@@ -64,7 +64,7 @@ void test_load() {
     delete g;
 }
 
-int main() {
-    test_create();
-    test_load();
+int main(int argc, const char * argv[]) {
+    if (argc == 1 || (argc > 1 && argv[1][0] == 'c')) test_create();
+    if (argc == 1 || (argc > 1 && argv[1][0] == 'l')) test_load();
 }

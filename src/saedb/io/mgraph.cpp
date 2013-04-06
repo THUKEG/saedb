@@ -66,7 +66,7 @@ struct GraphData {
 
 
 // Evil forward declartion.
-unique_ptr<EdgeIterator> CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list);
+EdgeIteratorPtr CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list);
 
 
 struct VertexIteratorImpl : public VertexIterator {
@@ -98,12 +98,22 @@ struct VertexIteratorImpl : public VertexIterator {
         index = id;
     }
 
-    unique_ptr<EdgeIterator> InEdges() {
+    eid_t InEdgeCount() {
+        vid_t id = Id();
+        return g.bindex[id + 1] - g.bindex[id];
+    }
+
+    eid_t OutEdgeCount() {
+        vid_t id = Id();
+        return g.findex[id + 1] - g.findex[id];
+    }
+
+    EdgeIteratorPtr InEdges() {
         vid_t id = Id();
         return CreateEdgeIterator(g, g.bindex[id], g.bindex[id + 1] - g.bindex[id], g.backward);
     }
 
-    unique_ptr<EdgeIterator> OutEdges() {
+    EdgeIteratorPtr OutEdges() {
         vid_t id = Id();
         return CreateEdgeIterator(g, g.findex[id], g.findex[id + 1] - g.findex[id], g.forward);
     }
@@ -114,6 +124,12 @@ struct VertexIteratorImpl : public VertexIterator {
 
     vid_t Count() {
         return count;
+    }
+
+    VertexIteratorPtr Clone() {
+        auto p = new VertexIteratorImpl(g, base, count);
+        p->index = index;
+        return VertexIteratorPtr(p);
     }
 };
 
@@ -145,12 +161,12 @@ struct EdgeIteratorImpl : public EdgeIterator {
         return list[Id()].target;
     }
 
-    unique_ptr<VertexIterator> Source() {
+    VertexIteratorPtr Source() {
         vid_t source = list[Id()].source;
         return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, source, 1));
     }
 
-    unique_ptr<VertexIterator> Target() {
+    VertexIteratorPtr Target() {
         vid_t target = list[Id()].target;
         return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, target, 1));
     }
@@ -178,11 +194,17 @@ struct EdgeIteratorImpl : public EdgeIterator {
     eid_t Count() {
         return count;
     }
+
+    EdgeIteratorPtr Clone() {
+        auto p = new EdgeIteratorImpl(g, base, count, list);
+        p->index = index;
+        return EdgeIteratorPtr(p);
+    }
 };
 
 
-unique_ptr<EdgeIterator> CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list) {
-    return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, base, count, list));
+EdgeIteratorPtr CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list) {
+    return EdgeIteratorPtr(new EdgeIteratorImpl(g, base, count, list));
 }
 
 
@@ -247,15 +269,15 @@ struct MappedGraphImpl : public MappedGraph {
         return g.meta->edges;
     }
 
-    unique_ptr<VertexIterator> Vertices() {
+    VertexIteratorPtr Vertices() {
         return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, 0, g.meta->vertices));
     }
 
-    unique_ptr<EdgeIterator> ForwardEdges() {
+    EdgeIteratorPtr ForwardEdges() {
         return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.forward));
     }
 
-    unique_ptr<EdgeIterator> BackwardEdges() {
+    EdgeIteratorPtr BackwardEdges() {
         return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.backward));
     }
 
