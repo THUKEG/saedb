@@ -22,35 +22,35 @@ namespace saedb
         typedef typename graph_type::edge_type                    edge_type;
         typedef saedb::edge_dir_type                              edge_dir_type;
         typedef IContext<graph_type, gather_type, message_type>   icontext_type;
-        
+
         // Initilize algorithm state
         virtual void
         init(icontext_type& context, vertex_type& vertex) = 0;
-        
+
         // determine which type of edge to gather information
         virtual edge_dir_type
         gather_edges(icontext_type& context, const vertex_type& vertex) const = 0;
-        
+
         // gather data on an edge
         virtual gather_type
         gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const = 0;
-        
+
         // apply modification on a specific vertex
         virtual void
         apply(icontext_type& context, vertex_type& vertex, const gather_type& total) = 0;
-        
+
         // determine which type of edge to scatter information
         virtual edge_dir_type
         scatter_edges(icontext_type& context, const vertex_type& vertex) const = 0;
-        
+
         // scatter data on an edge
         virtual void
         scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const  = 0;
-        
+
         // aggregate statistics
         virtual void
         aggregate(icontext_type& context, const vertex_type& vertex) = 0;
-        
+
         virtual ~IAlgorithm() { }
     };
 }
