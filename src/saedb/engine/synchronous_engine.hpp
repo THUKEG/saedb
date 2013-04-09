@@ -103,16 +103,15 @@ namespace saedb
 
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::start(){
-        std::cout << "Before running..." << std::endl;
+        iteration_counter_ = 0;
+        
         runSynchronous( &SynchronousEngine::executeInits);
         while ( iteration_counter_ < max_iterations_ ){
-            std::cout << "Iteration " << iteration_counter_ << std::endl;
             // mark vertex which has message as active in this superstep, no it is
             // not parallized
             receiveMessages();
             clearMessages();
             countActiveVertices();
-            std::cout << "num of active vertices: " << num_active_vertices_ << std::endl;
 
             runSynchronous( &SynchronousEngine::executeGathers);
             runSynchronous( &SynchronousEngine::executeApplys);
