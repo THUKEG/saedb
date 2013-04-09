@@ -47,9 +47,9 @@ namespace saedb
         virtual void
         scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const  = 0;
 
-//        // aggregate statistics
-//        virtual void
-//        aggregate(icontext_type& context, const vertex_type& vertex) = 0;
+        // aggregate statistics
+        virtual void
+        aggregate(icontext_type& context, const vertex_type& vertex) = 0;
 
         virtual ~IAlgorithm() { }
     };

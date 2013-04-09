@@ -9,7 +9,7 @@
 
 #include "iengine.hpp"
 #include "context.hpp"
-#include "aggregator/aggregator.hpp"
+#include "aggregator/iaggregator.hpp"
 
 #include "graph_basic_types.hpp"
 
@@ -29,12 +29,6 @@ namespace saedb
         typedef typename graph_type::vertex_type            vertex_type;
         typedef typename graph_type::edge_type              edge_type;
         typedef Context<SynchronousEngine>                  context_type;
-        typedef typename IEngine<algorithm_t>::aggregator_type aggregator_type;
-        /**
-         * \brief The distributed aggregator used to manage background
-         * aggregation.
-         */
-        aggregator_type aggregator;
 
     private:
         /*
@@ -48,18 +42,8 @@ namespace saedb
         void signalVertex(vertex_id_type vid);
         void signalAll();
         void start();
-//        void registerAggregator(const string &, IAggregator*);
+        void registerAggregator(const string &, IAggregator*);
         ~SynchronousEngine();
-
-        /**
-         * \brief Get a pointer to the distributed aggregator object.
-         *
-         * This is currently used by the \ref graphlab::iengine interface to
-         * implement the calls to aggregation.
-         *
-         * @return a pointer to the local aggregator.
-         */
-        aggregator_type* get_aggregator();
 
     private:
         void internalStop();
@@ -72,14 +56,14 @@ namespace saedb
         void executeGathers();
         void executeApplys();
         void executeScatters();
-//        void executeAggregate();
+        void executeAggregate();
 
         // exchange messages signaled last iteration
         void receiveMessages();
 
         void internalSignal(const vertex_type& vertex,
                             const message_type& message = message_type());
-//        IAggregator* internalGetAggregator(const string& name);
+        IAggregator* internalGetAggregator(const string& name);
 
         void clearActiveMinorstep();
         void clearActiveSuperstep();
@@ -98,7 +82,7 @@ namespace saedb
         std::vector<message_type>           messages_;
         std::vector<int>                    active_superstep_;
         std::vector<int>                    active_minorstep_;
-//        std::map<std::string, IAggregator*>      aggregators_;
+        std::map<std::string, IAggregator*>      aggregators_;
     };
 
 
@@ -108,7 +92,7 @@ namespace saedb
      **/
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::SynchronousEngine(graph_type& graph):
-    iteration_counter_(0), max_iterations_(5), graph_(graph),aggregator(graph, new context_type(*this, graph)) {
+    iteration_counter_(0), max_iterations_(5), graph_(graph) {
         vertex_programs_.resize(graph.num_local_vertices());
         gather_accum_.resize(graph.num_local_vertices());
         has_msg_.resize(graph.num_local_vertices(), 0);
@@ -121,9 +105,6 @@ namespace saedb
     void SynchronousEngine<algorithm_t>::start(){
         std::cout << "Before running..." << std::endl;
         runSynchronous( &SynchronousEngine::executeInits);
-
-        aggregator.start();
-
         while ( iteration_counter_ < max_iterations_ ){
             std::cout << "Iteration " << iteration_counter_ << std::endl;
             // mark vertex which has message as active in this superstep, no it is
@@ -136,11 +117,7 @@ namespace saedb
             runSynchronous( &SynchronousEngine::executeGathers);
             runSynchronous( &SynchronousEngine::executeApplys);
             runSynchronous( &SynchronousEngine::executeScatters);
-//            runSynchronous( &SynchronousEngine::executeAggregate);
-
-            // probe the aggregator
-            aggregator.tick_synchronous();
-
+            runSynchronous( &SynchronousEngine::executeAggregate);
             ++iteration_counter_;
         }
     }
@@ -248,17 +225,17 @@ namespace saedb
         }
     }
 
-//    template <typename algorithm_t>
-//    void SynchronousEngine<algorithm_t>::
-//    executeAggregate(){
-//        context_type context(*this, graph_);
-//        for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
-//            auto &vprog = vertex_programs_[vid];
-//            vertex_type vertex(graph_.vertex(vid));
-//            vprog.aggregate(context, vertex);
-//            vid++;
-//        }
-//    }
+    template <typename algorithm_t>
+    void SynchronousEngine<algorithm_t>::
+    executeAggregate(){
+        context_type context(*this, graph_);
+        for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
+            auto &vprog = vertex_programs_[vid];
+            vertex_type vertex(graph_.vertex(vid));
+            vprog.aggregate(context, vertex);
+            vid++;
+        }
+    }
 
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::
@@ -286,11 +263,11 @@ namespace saedb
         //        local_vertex_lock[lvid].unlock();
     }
 
-//    template <typename algorithm_t>
-//    IAggregator* SynchronousEngine<algorithm_t>::
-//    internalGetAggregator(const std::string& name){
-//        return aggregators_[name];
-//    }
+    template <typename algorithm_t>
+    IAggregator* SynchronousEngine<algorithm_t>::
+    internalGetAggregator(const std::string& name){
+        return aggregators_[name];
+    }
 
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::
@@ -346,23 +323,16 @@ namespace saedb
         }
     }
 
-//    template <typename algorithm_t>
-//    void SynchronousEngine<algorithm_t>::
-//    registerAggregator(const std::string &name, IAggregator* worker){
-//        aggregators_[name] = worker;
-//    }
+    template <typename algorithm_t>
+    void SynchronousEngine<algorithm_t>::
+    registerAggregator(const std::string &name, IAggregator* worker){
+        aggregators_[name] = worker;
+    }
 
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::
     ~SynchronousEngine(){
         std::cout << "cleaning SynchonousEngine......" << std::endl;
-    }
-
-
-    template <typename algorithm_t>
-    typename SynchronousEngine<algorithm_t>::aggregator_type*
-    SynchronousEngine<algorithm_t>::get_aggregator(){
-    	return &aggregator;
     }
 }
 #endif

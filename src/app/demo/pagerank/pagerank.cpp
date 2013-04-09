@@ -4,26 +4,26 @@
 
 #include "sae_include.hpp"
 
-//class FloatMaxAggregator: public saedb::IAggregator
-//{
-//public:
-//    void init(void* i){
-//        accu = *((double*)i);
-//    }
-//
-//    void reduce(void* next){
-//        accu = std::max(accu, *((double*)next));
-//    }
-//
-//    void* data() const{
-//        return (void*)(&accu);
-//    }
-//
-//    ~FloatMaxAggregator() {}
-//
-//private:
-//    double accu;
-//};
+class FloatMaxAggregator: public saedb::IAggregator
+{
+public:
+    void init(void* i){
+        accu = *((double*)i);
+    }
+
+    void reduce(void* next){
+        accu = std::max(accu, *((double*)next));
+    }
+
+    void* data() const{
+        return (void*)(&accu);
+    }
+
+    ~FloatMaxAggregator() {}
+
+private:
+    double accu;
+};
 
 
 double RESET_PROB = 0.15;
@@ -33,9 +33,6 @@ typedef double vertex_data_type;
 typedef double edge_data_type;
 typedef saedb::empty message_date_type;
 typedef saedb::sae_graph<vertex_data_type, edge_data_type> graph_type;
-
-
-
 
 class pagerank:
 public saedb::IAlgorithm<graph_type, double>
@@ -72,34 +69,12 @@ public:
         context.signal(edge.target());
     }
 
-//    void aggregate(icontext_type& context, const vertex_type& vertex){
-//        saedb::IAggregator* max_aggregator = context.getAggregator("max_pagerank");
-//        double t = vertex.data();
-//        max_aggregator->reduce(&t);
-//    }
+    void aggregate(icontext_type& context, const vertex_type& vertex){
+        saedb::IAggregator* max_aggregator = context.getAggregator("max_pagerank");
+        double t = vertex.data();
+        max_aggregator->reduce(&t);
+    }
 };
-
-
-struct float_max{
-	float value;
-
-	float_max(): value(0){ }
-	float_max(float value){
-		this->value = value;
-	}
-
-	float_max& operator+=(const float_max& other){
-		this->value = std::max(this->value, other.value);
-		return *this;
-	}
-};
-
-float_max floatMaxAggregator(const graph_type::vertex_type& vertex){
-	return float_max(vertex.data());
-}
-
-
-float_max max_pagerank;
 
 int main(){
     std::string graph_path = "test_graph";
@@ -120,24 +95,22 @@ int main(){
 
     saedb::IEngine<pagerank> *engine = new saedb::EngineDelegate<pagerank>(graph);
 
-    max_pagerank = engine->map_reduce_vertices<float_max>(floatMaxAggregator);
-
     // aggregator
-//    double* init_rank = new double(0);
-//    saedb::IAggregator* max_pagerank = new FloatMaxAggregator();
-//    max_pagerank->init(init_rank);
-//    engine->registerAggregator("max_pagerank", max_pagerank);
+    double* init_rank = new double(0);
+    saedb::IAggregator* max_pagerank = new FloatMaxAggregator();
+    max_pagerank->init(init_rank);
+    engine->registerAggregator("max_pagerank", max_pagerank);
 
     // start engine
     engine->signalAll();
     engine->start();
 
-    std::cout << "max pagerank: " << max_pagerank.value << std::endl;
+    std::cout << "max pagerank: " << *((double*)max_pagerank->data()) << std::endl;
     std::cout << "Done, do some cleaning......" << std::endl;
-//
-//    for (auto i = 0; i < graph.num_local_vertices(); i ++) {
-//        std::cout << "v[" << i << "]: " << graph.vertex(i).data() << endl;
-//    }
+
+    for (auto i = 0; i < graph.num_local_vertices(); i ++) {
+        std::cout << "v[" << i << "]: " << graph.vertex(i).data() << endl;
+    }
     delete engine;
     return 0;
 }

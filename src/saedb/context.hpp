@@ -64,9 +64,9 @@ namespace saedb {
                        const message_type& message = message_type()) {
         }
 
-//        IAggregator* getAggregator(const std::string& name) {
-//            return engine_.internalGetAggregator(name);
-//        }
+        IAggregator* getAggregator(const std::string& name) {
+            return engine_.internalGetAggregator(name);
+        }
     };
 }
 #endif
