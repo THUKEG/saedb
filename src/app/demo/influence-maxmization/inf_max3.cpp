@@ -25,7 +25,7 @@ typedef saedb::sae_graph<VData, EData>  graph_type;
 void test_create() {
     sae::io::GraphBuilder<int, VData, EData> builder;
     
-    for (int i=0; i<=11; ++i){
+    for (int i=0; i<=10; ++i){
         builder.AddVertex(i, VData{false, 0.1});
     }
     
@@ -33,12 +33,14 @@ void test_create() {
     builder.AddEdge(2, 1, EData{false, 0.1});
     builder.AddEdge(3, 1, EData{false, 0.4});
     builder.AddEdge(4, 0, EData{false, 0.6});
+    builder.AddEdge(4, 2, EData{false, 0.6});
     builder.AddEdge(5, 0, EData{false, 0.1});
     builder.AddEdge(6, 2, EData{false, 0.1});
+    builder.AddEdge(4, 6, EData{false, 0.1});
     builder.AddEdge(7, 3, EData{false, 0.2});
     builder.AddEdge(8, 3, EData{false, 0.7});
     builder.AddEdge(9, 3, EData{false, 0.1});
-    builder.AddEdge(11, 4, EData{false, 0.1});
+    builder.AddEdge(10, 4, EData{false, 0.1});
     
     
     
@@ -100,10 +102,15 @@ int main(){
         
 		heap->pop();
         // modify its followees
-		for (int i = 0; i < graph.vertex(max_marginal.second).num_out_edges(); i++) {
-			auto e = graph.vertex(i).out_edges();
+        std::cout << "number out edges="<< graph.vertex(seed_index).num_out_edges()<<std::endl;
+        
+        auto e = graph.vertex(seed_index).out_edges();
+        
+		for (int i = 0; i < graph.vertex(seed_index).num_out_edges(); i++) {
+            
+			e->MoveTo(i);
             auto v = e->TargetId();
-            /// edge source id, target id
+            printf("current =%d\n", v);
             
 			bool flag = false;
 			for (int j = 0; j < seed_list.size(); j++) {
@@ -117,7 +124,7 @@ int main(){
 			t[v]++;
 			int dv = graph.vertex(i).num_in_edges();
 			double marginal = dv - 2 * t[v] - (dv - t[v]) * t[v] * p;
-            //			printf("modify index = %d, dv = %d, tv = %d, p= %lf, marginal= %lf \n", v, dv, t[v], p, dv - 2 * t[v] - (dv - t[v]) * t[v] * p);
+            printf("modify index = %d, dv = %d, tv = %d, p= %lf, marginal= %lf \n", v, dv, t[v], p, dv - 2 * t[v] - (dv - t[v]) * t[v] * p);
 			heap->modify(v, marginal);
             //			heap->print_heap();
 		}
