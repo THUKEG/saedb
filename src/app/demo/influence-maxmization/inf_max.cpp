@@ -5,14 +5,49 @@
 #include <cstdlib>
 #include <queue>
 #include <fstream>
-
 #include "sae_include.hpp"
-#include "sample_data.hpp"
 
-typedef float                                               vertex_data_type;
-typedef float                                               edge_data_type;
+
+using namespace sae::io;
+using namespace std;
+
+
+
+struct VData {
+    float weight;
+};
+
+struct EData {
+    float weight;
+};
+
 typedef saedb::empty                                        message_date_type;
-typedef saedb::sae_graph<vertex_data_type, edge_data_type>  graph_type;
+typedef saedb::sae_graph<VData, EData>  graph_type;
+
+
+void test_create() {
+    sae::io::GraphBuilder<int, VData, EData> builder;
+    
+    for (int i=0; i<=11; ++i){
+        builder.AddVertex(i, VData{0.1});
+    }
+    
+    builder.AddEdge(0, 1, EData{0.1});
+    builder.AddEdge(2, 1, EData{0.1});
+    builder.AddEdge(3, 1, EData{0.4});
+    builder.AddEdge(4, 0, EData{0.6});
+    builder.AddEdge(5, 0, EData{0.1});
+    builder.AddEdge(6, 2, EData{0.1});
+    builder.AddEdge(7, 3, EData{0.2});
+    builder.AddEdge(8, 3, EData{0.7});
+    builder.AddEdge(9, 3, EData{0.1});
+    builder.AddEdge(11, 4, EData{0.1});
+    
+
+    
+    builder.Save("test_graph");
+}
+
 
 // count how many nodes are activated
 class ActivateNodeAggregator: public saedb::IAggregator
@@ -50,7 +85,7 @@ public:
         return saedb::NO_EDGES;
     }
 
-    float gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
+    gather_type gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
         return 0.0;
     }
 
@@ -58,14 +93,17 @@ public:
         // need not apply either
     }
 
-    edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
+    saedb::edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
         return saedb::IN_EDGES;
     }
 
     void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
-        float weight = edge.data();
+        
+        EData ed = edge.data();
+        float weight = ed.weight;
         if ( ((double)rand() / RAND_MAX) < weight){
-            context.signalVid(edge.target().id());
+            context.signalVid(edge.source().id());
+            std::cout << "vertex = "<< edge.source().id() << " is activated"<< std::endl;
         }
     }
 
@@ -73,7 +111,7 @@ public:
         if (!marked) {
             marked = true;
             saedb::IAggregator* active_node = context.getAggregator("active_node");
-            float t = vertex.data();
+            VData t = vertex.data();
             active_node->reduce(&t);
         }
     }
@@ -82,15 +120,13 @@ private:
     bool marked = false;
 };
 
-graph_type sample_graph(){
-    return LOAD_SAMPLE_GRAPH<graph_type>();
-}
+
 
 double *greedy_s;
 bool *mark;
 
 // give a seed u, to estimate how many nodes can be influenced by u
-double simulate(saedb::IEngine<Simulate> *engine, graph_type& graph, const std::vector<uint32_t> &seedset, int round){
+double simulate(saedb::IEngine<Simulate> *engine, const std::vector<uint32_t> &seedset, int round){
     // engine
     double result = 0.0;
 
@@ -103,8 +139,12 @@ double simulate(saedb::IEngine<Simulate> *engine, graph_type& graph, const std::
     for(int i=0;i<round;++i){
         active_node->init(init_rank);
         engine->signalVertices(seedset);
+        for(int j =0 ; j < seedset.size() ; j++){
+            std::cout << "seed " << seedset[j] << std::endl;
+        }
         engine->start();
         result += *((float*)active_node->data()) - seedset.size();
+        std::cout << " result = " << result << std::endl;
     }
 
     // clean
@@ -115,17 +155,20 @@ double simulate(saedb::IEngine<Simulate> *engine, graph_type& graph, const std::
 }
 
 int main(){
-    graph_type graph = sample_graph();
-    // graph.load_format(graph_dir, format);
+    
+    test_create();
+   
+    std::string graph_path = "test_graph";
+    graph_type g;
+    g.load_format(graph_path);
 
-    std::cout << "#vertices: " << graph.num_vertices() << " #edges:" << graph.num_edges() << std::endl;
+    saedb::IEngine<Simulate> *engine = new saedb::EngineDelegate<Simulate>(g);
 
-    saedb::IEngine<Simulate> *engine = new saedb::EngineDelegate<Simulate>(graph);
-
-    size_t n = graph.num_vertices();
+    size_t n = g.num_vertices();
     int round = 1;
     int ss_cnt = 2;
-    std::string outpath = "result";
+    //std::cin >> round >> ss_cnt;
+    std::string outpath = "/Users/zhangjing0544/Dropbox/SAE/saedb/src/app/demo";
 
     // Initilization
     greedy_s = new double [ss_cnt+1];
@@ -134,11 +177,14 @@ int main(){
     std::priority_queue<std::pair<double, std::pair<int,int>>> q;
     std::vector<uint32_t> seed_list;
     // calculate the influenced number of nodes by each node, and store into q
+    
+    // calculate the influenced number of nodes by each node, and store into q
     for (int i = 0; i < n; i++) {
         std::pair<int, int> tp = std::make_pair(i, 1);
         seed_list.push_back(i);
-        std::cout << "simulating ..." << i << std::endl;
-        double val = simulate(engine, graph, seed_list, round);
+        double val = simulate(engine, seed_list, round);
+        std::cout << "veretex=" << i << ", marginal=" << val << std::endl;
+        
         q.push(make_pair(val, tp));
         seed_list.clear();
     }
@@ -159,7 +205,7 @@ int main(){
                 break;
             } else {
                 seed_list.push_back(tp.second.first);
-                double val = simulate(engine, graph, seed_list, round);
+                double val = simulate(engine, seed_list, round);
                 seed_list.pop_back();
                 tp.second.second = ss;
                 tp.first = val - ret;
@@ -173,6 +219,7 @@ int main(){
     for (int i = 1; i <= ss_cnt; i++)
     {
         result_file << greedy_s[i] << std::endl;
+        std::cout << greedy_s[i] << std::endl;
     }
     result_file.close();
     return 0;
