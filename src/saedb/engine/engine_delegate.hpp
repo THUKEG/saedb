@@ -31,8 +31,13 @@ namespace saedb
 		typedef typename graph_type::vertex_type            vertex_type;
 		typedef typename graph_type::edge_type              edge_type;
         typedef Context<EngineDelegate>                     context_type;
-        
-        
+        /**
+         * \brief The type of the distributed aggregator used by each engine to
+         * implement distributed aggregation.
+         */
+        typedef typename IEngine<algorithm_t>::aggregator_type aggregator_type;
+//        aggregator_type aggregator;
+
     public:
         // TODO, add an option to select corresponding engine.
 		EngineDelegate(graph_type& graph);
@@ -48,7 +53,16 @@ namespace saedb
 		void start();
         
         // register related aggregator
-        void registerAggregator(const std::string &, IAggregator*);
+//        void registerAggregator(const std::string &, IAggregator*);
+	    /**
+	     * \brief Get a pointer to the distributed aggregator object.
+	     *
+	     * This is currently used by the \ref graphlab::iengine interface to
+	     * implement the calls to aggregation.
+	     *
+	     * @return a pointer to the local aggregator.
+	     */
+	    aggregator_type* get_aggregator();
         
         ~EngineDelegate();
 
@@ -66,7 +80,7 @@ namespace saedb
         
         void internalSignal(const vertex_type& vertex,
                             const message_type& message = message_type());
-        IAggregator* internalGetAggregator(const std::string& name);
+//        IAggregator* internalGetAggregator(const std::string& name);
         
     private:
         // the real engine pointer
@@ -84,6 +98,7 @@ namespace saedb
         // TODO here is where we select which engine we want, may need
         // an option.
         engine = new SynchronousEngine<algorithm_t>(graph);
+//        aggregator = engine->get_aggregator();
     }
     
     template <typename algorithm_t>
@@ -109,11 +124,16 @@ namespace saedb
         engine->signalVertices(vids);
     }
     
-    template <typename algorithm_t>
-    void EngineDelegate<algorithm_t>::
-    registerAggregator(const std::string &name, IAggregator* worker){
-        engine->registerAggregator(name, worker);
-    }
+//    template <typename algorithm_t>
+//    void EngineDelegate<algorithm_t>::
+//    registerAggregator(const std::string &name, IAggregator* worker){
+//        engine->registerAggregator(name, worker);
+//    }
+    template<typename algorithm_t>
+    typename EngineDelegate<algorithm_t>::aggregator_type*
+    EngineDelegate<algorithm_t>::get_aggregator() {
+      return engine->get_aggregator();
+    } // end of get_aggregator
     
     template <typename algorithm_t>
     EngineDelegate<algorithm_t>::
