@@ -2,15 +2,6 @@
 #define SAE_AGGREGATOR
 
 namespace saedb{
-//	template<typename ReductionType,
-//			 typename VertexMapperType,
-//			 typename EdgeMapperType,
-//			 typename FinalizerType>
-//	struct IAggregator{
-//
-//		//virtual void map()
-//	};
-
 	template<typename Graph, typename IContext>
 	class AggregatorManager
 	{
@@ -26,10 +17,7 @@ namespace saedb{
 	    /* annoyingly the mutable queue is a max heap when I need a min-heap
 	     * to track the next thing to activate. So we need to keep
 	     *  negative priorities... */
-//	    mutable_queue<std::string, float> schedule;
-//	    mutex schedule_lock;
 	    size_t ncpus;
-//	    std::map<std::string, IAggregator> aggregators;
 
 	private:
 
@@ -54,54 +42,11 @@ namespace saedb{
 	     * to be started, this function will perform aggregation.
 	     */
 	    void tick_synchronous(){
-//	    	while(!schedule.empty() && schedule.top().second <= curtime){
-//	    		std::string key = schedule.top().first;
-//	    		aggregate
-//	    	}
 	    }
 
 	    void stop(){
 
 	    }
-
-	    /**
-	     * \copydoc graphlab::iengine::add_vertex_aggregator
-	     */
-//	    template <typename ReductionType,
-//	              typename VertexMapperType,
-//	              typename FinalizerType>
-//	    bool add_vertex_aggregator(const std::string& key,
-//	                               VertexMapperType map_function,
-//	                               FinalizerType finalize_function) {
-//	      if (key.length() == 0) return false;
-//	      if (aggregators.count(key) == 0) {
-//
-//	        if (rmi.procid() == 0) {
-//	          // do a runtime type check
-//	          test_vertex_mapper_type<ReductionType, VertexMapperType>(key);
-//	        }
-//
-//	        aggregators[key] = new map_reduce_type<ReductionType,
-//	                                               VertexMapperType,
-//	                                               typename default_map_types<ReductionType>::edge_map_type,
-//	                                               FinalizerType>(map_function,
-//	                                                             finalize_function);
-//	        return true;
-//	      }
-//	      else {
-//	        // aggregator already exists. fail
-//	        return false;
-//	      }
-//	    }
-
-//	    bool aggregate(const std::string& key){
-//	    	//ASSERT_MSG(graph.is_finalized(), "Graph must be finalized");s
-//	    	for(int i = 0; i < (int)graph.num_local_vertices(); ++i){
-//	    		local_vertex_type lvertex = graph.l_vertex(i);
-//	    		vertex_type vertex(lvertex);
-//	    		local
-//	    	}
-//	    }
 
 	    template <typename ResultType, typename MapFunctionType>
 	    ResultType map_reduce_vertices(MapFunctionType mapfunction) {
