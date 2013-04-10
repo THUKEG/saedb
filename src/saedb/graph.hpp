@@ -88,6 +88,7 @@ namespace saedb
             return num_vertices();
         }
 
+
         struct vertex_type {
             sae::io::VertexIteratorPtr vi;
 
