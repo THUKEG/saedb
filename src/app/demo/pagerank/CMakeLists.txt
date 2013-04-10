@@ -6,3 +6,4 @@ file(GLOB PAGERANK_SOURCES
     )
 
 add_executable(pagerank ${PAGERANK_SOURCES})
+target_link_libraries(pagerank saedb)
