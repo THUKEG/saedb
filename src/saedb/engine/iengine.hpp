@@ -122,65 +122,10 @@ namespace saedb
          template <typename ReductionType, typename VertexMapperType>
          ReductionType map_reduce_vertices(VertexMapperType mapfunction) {
            aggregator_type* aggregator = get_aggregator();
-//           BOOST_CONCEPT_ASSERT((graphlab::Serializable<ReductionType>));
-//           BOOST_CONCEPT_ASSERT((graphlab::OpPlusEq<ReductionType>));
 
-           if(aggregator == NULL) {
-//             logstream(LOG_FATAL) << "Aggregation not supported by this engine!"
-//                                  << std::endl;
-             return ReductionType(); // does not return
-           }
            return aggregator->template map_reduce_vertices<ReductionType>(mapfunction);
          }
 
-
-        /**
-         * \brief An overload of add_edge_aggregator for C++11 which does not
-         *        require the user to provide the reduction type.
-         *
-         * This function is available only if the compiler has C++11 support.
-         * Specifically, it uses C++11's decltype operation to infer the
-         * reduction type, thus eliminating the need for the function
-         * call to be templatized over the reduction type. For instance,
-         * in the add_edge_aggregator() example, it allows the following
-         * code to be written:
-         * \code
-         * engine.add_edge_aggregator("absolute_edge_sum",
-         *                              absolute_edge_data,
-         *                              print_finalize);
-         * \endcode
-         *
-         * \tparam EdgeMapperType The type of the map function.
-         *                          Not generally needed.
-         *                          Can be inferred by the compiler.
-         * \tparam FinalizerType The type of the finalize function.
-         *                       Not generally needed.
-         *                       Can be inferred by the compiler.
-         *
-         * \param [in] key The name of this aggregator. Must be unique.
-         * \param [in] map_function The Map function to use. Must take an
-         *                          \ref icontext_type& as its first argument, and
-         *                          a \ref vertex_type, or a reference to a
-         *                          \ref vertex_type as its second argument.
-         *                          Returns a ReductionType which must be summable
-         *                          and \ref sec_serializable .
-         * \param [in] finalize_function The Finalize function to use. Must take
-         *                               an \ref icontext_type& as its first
-         *                               argument and a ReductionType, or a
-         *                               reference to a ReductionType as its second
-         *                               argument.
-         */
-//        template<typename VertexMapType,
-//        		 typename FinalizerType>
-//        bool add_vertex_aggregator(const std::string& key,
-//        						   VertexMapType map_function,
-//        						   FinalizerType finalize_function){
-//        	aggregator_type* aggregator = get_aggregator();
-////        	if(aggregator == NULL){
-////        		logstream
-////        	}
-//        	return aggregator->add_vertex_aggregator(key, map_function, finalize_function);
-//        }
 
         virtual aggregator_type* get_aggregator() = 0;
 

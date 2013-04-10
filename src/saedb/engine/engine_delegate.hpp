@@ -52,8 +52,6 @@ namespace saedb
         // start engine
 		void start();
         
-        // register related aggregator
-//        void registerAggregator(const std::string &, IAggregator*);
 	    /**
 	     * \brief Get a pointer to the distributed aggregator object.
 	     *
@@ -124,11 +122,6 @@ namespace saedb
         engine->signalVertices(vids);
     }
     
-//    template <typename algorithm_t>
-//    void EngineDelegate<algorithm_t>::
-//    registerAggregator(const std::string &name, IAggregator* worker){
-//        engine->registerAggregator(name, worker);
-//    }
     template<typename algorithm_t>
     typename EngineDelegate<algorithm_t>::aggregator_type*
     EngineDelegate<algorithm_t>::get_aggregator() {

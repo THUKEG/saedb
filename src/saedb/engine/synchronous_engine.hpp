@@ -48,7 +48,6 @@ namespace saedb
         void signalVertex(vertex_id_type vid);
         void signalAll();
         void start();
-//        void registerAggregator(const string &, IAggregator*);
         ~SynchronousEngine();
 
         /**
@@ -72,14 +71,11 @@ namespace saedb
         void executeGathers();
         void executeApplys();
         void executeScatters();
-//        void executeAggregate();
-
         // exchange messages signaled last iteration
         void receiveMessages();
 
         void internalSignal(const vertex_type& vertex,
                             const message_type& message = message_type());
-//        IAggregator* internalGetAggregator(const string& name);
 
         void clearActiveMinorstep();
         void clearActiveSuperstep();
@@ -98,7 +94,6 @@ namespace saedb
         std::vector<message_type>           messages_;
         std::vector<int>                    active_superstep_;
         std::vector<int>                    active_minorstep_;
-//        std::map<std::string, IAggregator*>      aggregators_;
     };
 
 
@@ -136,7 +131,6 @@ namespace saedb
             runSynchronous( &SynchronousEngine::executeGathers);
             runSynchronous( &SynchronousEngine::executeApplys);
             runSynchronous( &SynchronousEngine::executeScatters);
-//            runSynchronous( &SynchronousEngine::executeAggregate);
 
             // probe the aggregator
             aggregator.tick_synchronous();
@@ -248,18 +242,6 @@ namespace saedb
         }
     }
 
-//    template <typename algorithm_t>
-//    void SynchronousEngine<algorithm_t>::
-//    executeAggregate(){
-//        context_type context(*this, graph_);
-//        for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
-//            auto &vprog = vertex_programs_[vid];
-//            vertex_type vertex(graph_.vertex(vid));
-//            vprog.aggregate(context, vertex);
-//            vid++;
-//        }
-//    }
-
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::
     receiveMessages(){
@@ -285,12 +267,6 @@ namespace saedb
         }
         //        local_vertex_lock[lvid].unlock();
     }
-
-//    template <typename algorithm_t>
-//    IAggregator* SynchronousEngine<algorithm_t>::
-//    internalGetAggregator(const std::string& name){
-//        return aggregators_[name];
-//    }
 
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::
@@ -345,12 +321,6 @@ namespace saedb
             }
         }
     }
-
-//    template <typename algorithm_t>
-//    void SynchronousEngine<algorithm_t>::
-//    registerAggregator(const std::string &name, IAggregator* worker){
-//        aggregators_[name] = worker;
-//    }
 
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::
