@@ -25,7 +25,7 @@ namespace saedb
 
         // Initilize algorithm state
         virtual void
-        init(icontext_type& context, vertex_type& vertex) = 0;
+        init(icontext_type& context, vertex_type& vertex, const message_type& msg) = 0;
 
         // determine which type of edge to gather information
         virtual edge_dir_type
