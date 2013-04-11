@@ -1,6 +1,8 @@
 #ifndef SAE_ICONTEX_HPP
 #define SAE_ICONTEX_HPP
 
+#include <string>
+
 /*
  * Interface for communication between vertex programs.
  */
@@ -14,30 +16,27 @@ namespace saedb {
         typedef typename graph_type::vertex_id_type vertex_id_type;
         typedef message_t                           message_type;
         typedef gather_t                            gather_type;
-        
+
     public:
         virtual size_t getNumVertices() const { return 0; }
         virtual size_t getNumEdges() const { return 0; }
         virtual size_t getProcid() const { return 0; }
         virtual size_t getNumProcs() const { return 0; }
-        
+
         // return the current iteration
         virtual int getIteration() const {return -1;}
-        
+
         // force the engine to stop
         virtual void stop() = 0;
-        
+
         // activate vertex
         virtual void
         signal(const vertex_type& vertex, const message_type& message = message_type()) = 0;
-        
+
         // active vertex with its id
         virtual void
         signalVid(vertex_id_type gvid, const message_type& message = message_type()) = 0;
-        
-        // get specific aggregator
-        virtual IAggregator* getAggregator(const string&) = 0;
-        
+
         virtual ~IContext() {}
     };
 }
