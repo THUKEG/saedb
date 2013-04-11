@@ -39,10 +39,9 @@ void test_create() {
 	builder.AddEdge(0, 30, float{10});
 	builder.AddEdge(10, 40, float{10});
 
-
     builder.AddVertex(0, vertex_data_type(1));
     builder.AddVertex(10, vertex_data_type(1));
-    builder.AddVertex(20, vertex_data_type());
+    builder.AddVertex(20, vertex_data_type(1));
     builder.AddVertex(30, vertex_data_type{});
 	builder.AddVertex(40, vertex_data_type());
 

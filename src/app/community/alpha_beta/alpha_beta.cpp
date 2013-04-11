@@ -11,12 +11,10 @@ struct vertex_data_type {
 	bool is_seed;
 	bool inside;
 	bool changed;
-	int alpha;
-	int beta;
+	int alpha_beta;
 
 	vertex_data_type() {
-		alpha = 0;
-		beta = 0;
+		alpha_beta = 0;
 		is_seed = false;
 		inside = false;
 		changed = true;
@@ -25,12 +23,10 @@ struct vertex_data_type {
 
 
 struct gather_data_type {
-	int alpha;
-	int beta;
+	int alpha_beta;
 
 	gather_data_type& operator+=(const gather_data_type& other){
-		this->alpha += other.alpha;
-		this->beta += other.beta;
+		this->alpha_beta += other.alpha_beta;
 		return *this;
 	}
 };
@@ -70,21 +66,18 @@ public:
 	gather_type gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
 		gather_data_type gather_data;
 		vertex_type other = edge.source().id() != vertex.id() ? edge.source() : edge.target();
-		if (other.data().inside) {
-			gather_data.alpha = 0;
-			gather_data.beta = 1;
-		} else {
-			gather_data.alpha = 1;
-			gather_data.beta = 0;
-		}
-		std::cout << vertex.id()<< vertex.data().inside << other.id() << other.data().inside <<" alpha " << gather_data.alpha << " " << "beta " << gather_data.beta << std::endl;
+		if (other.data().inside)
+			gather_data.alpha_beta = 1;
+		else
+			gather_data.alpha_beta = 0;
+		std::cout << vertex.id()<< vertex.data().inside << other.id() << other.data().inside <<" alpha_beta "
+				<< gather_data.alpha_beta << std::endl;
 		return gather_data;
 	}
 
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total) {
-		std::cout<<"id:"<<vertex.id()<<" "<<total.alpha<<" "<<total.beta<<std::endl;
-		vertex.data().alpha = total.alpha;
-		vertex.data().beta = total.beta;
+		std::cout<<"id:"<<vertex.id()<<" "<<total.alpha_beta<<std::endl;
+		vertex.data().alpha_beta = total.alpha_beta;
 	}
 
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
@@ -93,35 +86,45 @@ public:
 
 	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const{
 	}
-
 };
+
 
 struct alpha_beta_type{
 	int alpha;
 	int beta;
-	bool inside;
 
-	alpha_beta_type(): alpha(-1), beta(-1), inside(false) { }
-	alpha_beta_type(int alpha, int beta, bool inside){
-		this->alpha = alpha;
-		this->beta = beta;
-		this->inside = inside;
+	alpha_beta_type(): alpha(-1), beta(-1){ }
+	alpha_beta_type(int alpha_beta, bool inside){
+		alpha = -1;
+		beta = -1;
+		if(inside){
+			beta = alpha_beta;
+		}else{
+			alpha = alpha_beta;
+		}
 	}
 
 	alpha_beta_type& operator+=(const alpha_beta_type& other){
-		std::cout<<"inside:"<<inside<<" alpha:"<<alpha<<" beta:"<<beta<<endl;
-		if(inside){
-			this->beta = std::min(this->beta, other.beta);
-		}else{
-			this->alpha = std::max(this->alpha, other.alpha);
+		if(other.beta > -1){
+			if(beta > -1){
+				beta = std::min(beta, other.beta);
+			}else{
+				beta = other.beta;
+			}
+		}else if(other.alpha > -1){
+			if(alpha > -1){
+				alpha = std::max(alpha, other.alpha);
+			}else{
+				alpha = other.alpha;
+			}
 		}
-		std::cout<<"inside:"<<inside<<" alpha:"<<alpha<<" beta:"<<beta<<endl;
+		std::cout<<" alpha:"<<alpha<<" beta:"<<beta<<endl;
 		return *this;
 	}
 
 	static alpha_beta_type aggregator(graph_type::vertex_type& vertex){
-		std::cout<<"id:"<<vertex.id()<<" inside: "<<vertex.data().inside<<" alpha:"<<vertex.data().alpha<<" beta:"<<vertex.data().beta<<std::endl;
-		return alpha_beta_type(vertex.data().alpha, vertex.data().beta, vertex.data().inside);
+		std::cout<<"id:"<<vertex.id()<<" inside: "<<vertex.data().inside<<" alpha:"<<vertex.data().alpha_beta<<std::endl;
+		return alpha_beta_type(vertex.data().alpha_beta, vertex.data().inside);
 	}
 };
 
@@ -138,15 +141,15 @@ struct find_a_b_pair{
 		finished = false;
 	}
 
-	find_a_b_pair(saedb::vertex_id_type vid, bool inside, int alpha, int beta){
+	find_a_b_pair(saedb::vertex_id_type vid, bool inside, int alpha_beta){
 		finished = false;
 		a = -1;
 		b = -1;
-		if(inside && beta == global_alpha_beta->beta)
+		if(inside && alpha_beta == global_alpha_beta->beta)
 			b = vid;
-		else if(!inside && alpha == global_alpha_beta->alpha)
+		else if(!inside && alpha_beta == global_alpha_beta->alpha)
 			a = vid;
-		std::cout<<"a: "<<this->a<<" b: "<<this->b<<" invalid: "<<saedb::INVALID_ID<<std::endl;
+		std::cout<<"id: "<<vid<<"a: "<<this->a<<" b: "<<this->b<<" invalid: "<<saedb::INVALID_ID<<std::endl;
 	}
 
 	find_a_b_pair& operator+=(const find_a_b_pair& other){
@@ -170,7 +173,7 @@ struct find_a_b_pair{
 	}
 
 	static find_a_b_pair aggregator(graph_type::vertex_type& vertex){
-		return find_a_b_pair(vertex.id(), vertex.data().inside, vertex.data().alpha, vertex.data().beta);
+		return find_a_b_pair(vertex.id(), vertex.data().inside, vertex.data().alpha_beta);
 	}
 };
 
@@ -190,16 +193,16 @@ struct find_a_b_pair_non_neighbor{
 		finished = false;
 	}
 
-	find_a_b_pair_non_neighbor(saedb::vertex_id_type vid, bool inside, int alpha, int beta, const set<saedb::vertex_id_type>& neighbor_set){
+	find_a_b_pair_non_neighbor(saedb::vertex_id_type vid, bool inside, int alpha_beta, const set<saedb::vertex_id_type>& neighbor_set){
 		a = -1;
 		b = -1;
 		finished = false;
 		this->neighbor_set = neighbor_set;
-		if(inside && beta == global_alpha_beta->beta){
+		if(inside && alpha_beta == global_alpha_beta->beta){
 			b = vid;
 			b_set.push_back(vid);
 		}
-		else if(alpha == global_alpha_beta->alpha){
+		if(!inside && alpha_beta == global_alpha_beta->alpha){
 			a = vid;
 			a_set.push_back(vid);
 		}
@@ -243,7 +246,7 @@ struct find_a_b_pair_non_neighbor{
 			neighbor_set.insert(ei->SourceId());
 		for (auto ei = vertex.out_edges(); ei->Alive(); ei->Next())
 			neighbor_set.insert(ei->TargetId());
-		return find_a_b_pair_non_neighbor(vertex.id(), vertex.data().inside, vertex.data().alpha, vertex.data().beta, neighbor_set);
+		return find_a_b_pair_non_neighbor(vertex.id(), vertex.data().inside, vertex.data().alpha_beta, neighbor_set);
 	}
 };
 
@@ -256,15 +259,13 @@ struct find_a{
 		finished = false;
 	}
 
-	find_a(saedb::vertex_id_type vid, bool inside, int alpha){
-		a = -1;
-		if(inside && alpha == global_alpha_beta->alpha)
-			a = vid;
+	find_a(saedb::vertex_id_type vid){
+		a = vid;
 		finished = false;
 	}
 
 	find_a& operator+=(const find_a& other){
-		if(!other.finished && finished){
+		if(!finished){
 			if(other.a != saedb::INVALID_ID){
 				a = other.a;
 				finished = true;
@@ -274,7 +275,30 @@ struct find_a{
 	}
 
 	static find_a aggregator(graph_type::vertex_type& vertex){
-		return find_a(vertex.id(), vertex.data().inside, vertex.data().alpha);
+		if(!vertex.data().inside && vertex.data().alpha_beta == global_alpha_beta->alpha){
+			bool flag = true;
+			for (auto ei = vertex.in_edges(); ei->Alive(); ei->Next()){
+				vertex_data_type* vd = (vertex_data_type*) ei->Target()->Data();
+				if(!vd->inside && vd->alpha_beta == global_alpha_beta->alpha){
+					flag = false;
+					break;
+				}
+			}
+			for (auto ei = vertex.out_edges(); ei->Alive(); ei->Next()){
+				vertex_data_type* vd = (vertex_data_type*) ei->Source()->Data();
+				if(!vd->inside && vd->alpha_beta == global_alpha_beta->alpha){
+					flag = false;
+					break;
+				}
+			}
+			if(flag)
+				return find_a(vertex.id());
+			else
+				return find_a(-1);
+		}
+		else{
+			return find_a(-1);
+		}
 	}
 };
 
@@ -283,10 +307,8 @@ struct find_b{
 	saedb::vertex_id_type b;
 	bool finished;
 
-	find_b(saedb::vertex_id_type vid, bool inside, int beta){
-		b = -1;
-		if(inside && beta == global_alpha_beta->beta)
-			b = vid;
+	find_b(saedb::vertex_id_type vid){
+		b = vid;
 		finished = false;
 	}
 
@@ -296,7 +318,7 @@ struct find_b{
 	}
 
 	find_b& operator+=(const find_b& other){
-		if(!other.finished && finished){
+		if(!finished){
 			if(other.b != saedb::INVALID_ID){
 				b = other.b;
 				finished = true;
@@ -306,7 +328,30 @@ struct find_b{
 	}
 
 	static find_b aggregator(graph_type::vertex_type& vertex){
-		return find_b(vertex.id(), vertex.data().inside, vertex.data().alpha);
+		if(vertex.data().inside && vertex.data().alpha_beta == global_alpha_beta->beta){
+			bool flag = true;
+			for (auto ei = vertex.in_edges(); ei->Alive(); ei->Next()){
+				vertex_data_type* vd = (vertex_data_type*) ei->Target()->Data();
+				if(vd->inside && vd->alpha_beta == global_alpha_beta->beta){
+					flag = false;
+					break;
+				}
+			}
+			for (auto ei = vertex.out_edges(); ei->Alive(); ei->Next()){
+				vertex_data_type* vd = (vertex_data_type*) ei->Source()->Data();
+				if(vd->inside && vd->alpha_beta == global_alpha_beta->beta){
+					flag = false;
+					break;
+				}
+			}
+			if(flag)
+				return find_b(vertex.id());
+			else
+				return find_b(-1);
+		}
+		else{
+			return find_b(-1);
+		}
 	}
 };
 
@@ -329,9 +374,9 @@ struct find_a_set{
 	}
 
 	static find_a_set aggregator(graph_type::vertex_type& vertex){
-		if(!vertex.data().inside && vertex.data().alpha == global_alpha_beta->alpha)
+		if(!vertex.data().inside && vertex.data().alpha_beta == global_alpha_beta->alpha)
 			vertex.data().inside = true;
-		return find_a_set(vertex.id(), vertex.data().inside, vertex.data().alpha);
+		return find_a_set(vertex.id(), vertex.data().inside, vertex.data().alpha_beta);
 	}
 };
 
@@ -368,13 +413,15 @@ void alpha_beta_community_detection(saedb::IEngine<AlphaBeta>* engine, graph_typ
 				signal_vertices.push_back(ei->SourceId());
 			for (auto ei = vertex_b.out_edges(); ei->Alive(); ei->Next())
 				signal_vertices.push_back(ei->TargetId());
-			//caculate global alpha beta
-			cout<<"caculate global alpha beta"<<endl;
 			engine->signalVertices(signal_vertices);
+			engine->start();
+			alpha_beta_result = engine->map_reduce_vertices<alpha_beta_type>(alpha_beta_type::aggregator);
+			global_alpha_beta = &alpha_beta_result;
 		}
 		cout<<"find_a_b_pair_non_neighbor"<<endl;
 		find_a_b_pair_non_neighbor find_a_b_pair_non_neighbor_result = engine->map_reduce_vertices<find_a_b_pair_non_neighbor>(find_a_b_pair_non_neighbor::aggregator);
 		if(find_a_b_pair_non_neighbor_result.finished){
+			cout<<"a: "<<find_a_b_pair_non_neighbor_result.a<<" b: "<<find_a_b_pair_non_neighbor_result.b<<endl;
 			auto vertex_a = graph.vertex(find_a_b_pair_non_neighbor_result.a);
 			auto vertex_b = graph.vertex(find_a_b_pair_non_neighbor_result.b);
 			vertex_a.data().inside = true;
@@ -429,29 +476,13 @@ void alpha_beta_community_detection(saedb::IEngine<AlphaBeta>* engine, graph_typ
 				}
 			}
 		}
+		break;
 
 	}
 }
 
 
-//int reservoirSample(int sample, int* samples, int size, int count) {
-//	if (count < sample)
-//		samples[count] = sample;
-//	else if ((rand() % count) < size)
-//		sample[rand() % size] = sample;
-//	return ++count;
-//}
-
-
-
 int main() {
-	//random choose a subset of K vertices
-	//implemented reservoir sampling
-//	int count = 0;
-//	samples = new int[K];
-//	int sample;
-//	int i = 0;
-//	srand(time(NULL));
 
     std::string graph_path = "alpha_beta_graph";
 
@@ -465,10 +496,6 @@ int main() {
         std::cout << "v[" << i << "]: " << graph.vertex(i).data().inside <<  endl;
     }
 
-//    std::cout << "#vertices: "
-//    << graph.num_vertices()
-//    << " #edges:"
-//    << graph.num_edges() << std::endl;
 	saedb::IEngine<AlphaBeta> *engine = new saedb::EngineDelegate<AlphaBeta>(graph);
 	cout<<"alpha_beta_community_detection"<<endl;
 	alpha_beta_community_detection(engine, graph);

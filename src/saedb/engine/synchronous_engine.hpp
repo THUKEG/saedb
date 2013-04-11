@@ -120,8 +120,7 @@ namespace saedb
         runSynchronous( &SynchronousEngine::executeInits);
 
         aggregator.start();
-
-        while ( iteration_counter_ < max_iterations_ ){
+//        while ( iteration_counter_ < max_iterations_ ){
             std::cout << "Iteration " << iteration_counter_ << std::endl;
             // mark vertex which has message as active in this superstep, no it is
             // not parallized
@@ -138,7 +137,7 @@ namespace saedb
             aggregator.tick_synchronous();
 
             ++iteration_counter_;
-        }
+//        }
     }
 
     template <typename algorithm_t>
@@ -194,7 +193,6 @@ namespace saedb
                 }
             }
             gather_accum_[vid] = accum;
-            vid++;
         }
     }
 
@@ -222,15 +220,14 @@ namespace saedb
                     vprog.scatter(context, vertex, edge);
                 }
             }
-            vid++;
         }
     }
 
     template <typename algorithm_t>
-    void SynchronousEngine<algorithm_t>::
-    executeApplys (){
+    void SynchronousEngine<algorithm_t>::executeApplys (){
         context_type context(*this, graph_);
         for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
+        	cout<<"start apply "<<vid<<endl;
             if (!active_superstep_[vid]) {
                 continue;
             }
@@ -240,7 +237,7 @@ namespace saedb
             vprog.apply(context, vertex, accum);
             // clear gather accum array
             gather_accum_[vid] = gather_type();
-            vid++;
+            cout<<"end apply "<<vid<<endl;
         }
     }
 
