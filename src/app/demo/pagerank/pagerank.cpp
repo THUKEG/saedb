@@ -101,6 +101,9 @@ int main(){
 
     std::cout << "max pagerank: " << max_pagerank.value << std::endl;
     std::cout << "Done, do some cleaning......" << std::endl;
+    for (auto i = 0; i < graph.num_local_vertices(); i ++) {
+        std::cout << "v[" << i << "]: " << graph.vertex(i).data() << endl;
+    }
 
     delete engine;
     return 0;
