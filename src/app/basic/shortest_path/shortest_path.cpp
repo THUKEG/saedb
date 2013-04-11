@@ -19,16 +19,12 @@ struct SP_dis {
     }
 };
 
-template<int S>
-class shortest_path: public IAlgorithm<G, SP_dis>
+class shortest_path: public IAlgorithm<G, SP_dis, SP_dis>
 {
 public:
 
-    void init(icontext_type& context, vertex_type& vertex) const {
-        if (vertex.id() != S)
-            vertex.data() = MAXFL;
-        else
-            vertex.data() = 0;
+    void init(icontext_type& context, vertex_type& vertex, const message_type& msg) const {
+        vertex.data() = msg.dis;
     }
 
     edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const {
@@ -79,10 +75,9 @@ int main()
     graph.load_format(graph_path);
 
     const auto seed = 0;
-    graph.vertex(seed).data() = 0;
 
-    IEngine<shortest_path<seed>> *engine = new EngineDelegate<shortest_path<seed>>(graph);
-    engine->signalVertex(seed);
+    IEngine<shortest_path> *engine = new EngineDelegate<shortest_path>(graph);
+    engine->signalVertex(seed, 0);
     engine->start();
 
     for (auto i = 0; i < graph.num_local_vertices(); i ++) {
