@@ -54,9 +54,6 @@ public:
 		changed =true;
 		cout<<"init vertex program"<<endl;
 	}
-	//random choose a subset of K vertices
-	void init(icontext_type& context, vertex_type& vertex) {
-	}
 
 	edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
 			return saedb::ALL_EDGES;

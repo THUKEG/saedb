@@ -14,7 +14,7 @@
 namespace saedb
 {
     /*
-     * This is the delegator for user to call related 
+     * This is the delegator for user to call related
      * engine(now only SynchronousEngine).
      */
     template <typename algorithm_t>
@@ -23,45 +23,44 @@ namespace saedb
     {
     public:
         typedef algorithm_t                                 vertex_program_type;
-		typedef typename algorithm_t::gather_type           gather_type;
-		typedef typename algorithm_t::message_type          message_type;
-		typedef typename algorithm_t::vertex_data_type      vertex_data_type;
-		typedef typename algorithm_t::edge_data_type        edge_data_type;
-		typedef typename algorithm_t::graph_type            graph_type;
-		typedef typename graph_type::vertex_type            vertex_type;
-		typedef typename graph_type::edge_type              edge_type;
+        typedef typename algorithm_t::gather_type           gather_type;
+        typedef typename algorithm_t::message_type          message_type;
+        typedef typename algorithm_t::vertex_data_type      vertex_data_type;
+        typedef typename algorithm_t::edge_data_type        edge_data_type;
+        typedef typename algorithm_t::graph_type            graph_type;
+        typedef typename graph_type::vertex_type            vertex_type;
+        typedef typename graph_type::edge_type              edge_type;
         typedef Context<EngineDelegate>                     context_type;
         /**
          * \brief The type of the distributed aggregator used by each engine to
          * implement distributed aggregation.
          */
         typedef typename IEngine<algorithm_t>::aggregator_type aggregator_type;
-//        aggregator_type aggregator;
 
     public:
         // TODO, add an option to select corresponding engine.
-		EngineDelegate(graph_type& graph);
-        
+        EngineDelegate(graph_type& graph);
+
         // mark all vertices as active
         void signalAll();
-        
-        void signalVertex(vertex_id_type);
-        
+
+        void signalVertex(vertex_id_type, const message_type&);
+
         void signalVertices(const std::vector<vertex_id_type>&);
-        
+
         // start engine
-		void start();
-        
-	    /**
-	     * \brief Get a pointer to the distributed aggregator object.
-	     *
-	     * This is currently used by the \ref graphlab::iengine interface to
-	     * implement the calls to aggregation.
-	     *
-	     * @return a pointer to the local aggregator.
-	     */
-	    aggregator_type* get_aggregator();
-        
+        void start();
+
+        /**
+         * \brief Get a pointer to the distributed aggregator object.
+         *
+         * This is currently used by the \ref graphlab::iengine interface to
+         * implement the calls to aggregation.
+         *
+         * @return a pointer to the local aggregator.
+         */
+        aggregator_type* get_aggregator();
+
         ~EngineDelegate();
 
     private:
@@ -69,24 +68,22 @@ namespace saedb
          * Friend class
          */
         friend class Context<EngineDelegate>;
-        
+
     private:
-		void internalStop();
-        
+        void internalStop();
+
         // exchange messages signaled last iteration
         void receiveMessages();
-        
+
         void internalSignal(const vertex_type& vertex,
                             const message_type& message = message_type());
-//        IAggregator* internalGetAggregator(const std::string& name);
-        
     private:
         // the real engine pointer
         IEngine<vertex_program_type> *engine;
     };
-    
-    
-    
+
+
+
     /*
      * Implementation of EngineDelegate
      **/
@@ -97,26 +94,25 @@ namespace saedb
         // an option.
 
         engine = new SynchronousEngine<algorithm_t>(graph);
-//        aggregator = engine->get_aggregator();
     }
-    
+
     template <typename algorithm_t>
     void EngineDelegate<algorithm_t>::start(){
         engine->start();
     }
-    
+
     template <typename algorithm_t>
     void EngineDelegate<algorithm_t>::
     signalAll(){
         engine->signalAll();
     }
-    
+
     template <typename algorithm_t>
     void EngineDelegate<algorithm_t>::
-    signalVertex(vertex_id_type vid){
-        engine->signalVertex(vid);
+    signalVertex(vertex_id_type vid, const message_type& msg = message_type()){
+        engine->signalVertex(vid, msg);
     }
-    
+
     template <typename algorithm_t>
     void EngineDelegate<algorithm_t>::
     signalVertices(const std::vector<vertex_id_type> & vids){
