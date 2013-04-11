@@ -8,6 +8,8 @@ namespace saedb{
 
     typedef lvid_type edge_id_type;
 
+    const vertex_id_type INVALID_ID = -1;
+
     enum edge_dir_type {
         NO_EDGES,
         IN_EDGES,
