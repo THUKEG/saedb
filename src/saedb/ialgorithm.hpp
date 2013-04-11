@@ -25,19 +25,19 @@ namespace saedb
 
         // Initilize algorithm state
         virtual void
-        init(icontext_type& context, vertex_type& vertex) { };
+        init(icontext_type& context, vertex_type& vertex, const message_type& msg) { }
 
         // determine which type of edge to gather information
         virtual edge_dir_type
         gather_edges(icontext_type& context, const vertex_type& vertex) {
             return NO_EDGES;
-        };
+        }
 
         // gather data on an edge
         virtual gather_type
         gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
             return gather_type();
-        };
+        }
 
         // apply modification on a specific vertex
         virtual void
