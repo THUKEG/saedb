@@ -96,7 +96,6 @@ namespace saedb
         // TODO here is where we select which engine we want, may need
         // an option.
 
-    	cout<<"engine delegate"<<endl;
         engine = new SynchronousEngine<algorithm_t>(graph);
 //        aggregator = engine->get_aggregator();
     }

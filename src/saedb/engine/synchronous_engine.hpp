@@ -34,7 +34,7 @@ namespace saedb
          * \brief The distributed aggregator used to manage background
          * aggregation.
          */
-        aggregator_type aggregator;
+        aggregator_type* aggregator;
 
     private:
         /*
@@ -94,6 +94,7 @@ namespace saedb
         std::vector<message_type>           messages_;
         std::vector<int>                    active_superstep_;
         std::vector<int>                    active_minorstep_;
+        context_type* context;
     };
 
 
@@ -103,7 +104,7 @@ namespace saedb
      **/
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::SynchronousEngine(graph_type& graph):
-    iteration_counter_(0), max_iterations_(5), graph_(graph),aggregator(graph, new context_type(*this, graph)) {
+    iteration_counter_(0), max_iterations_(5), graph_(graph) {
     	cout<<"sync engine"<<endl;
         vertex_programs_.resize(graph.num_local_vertices());
         gather_accum_.resize(graph.num_local_vertices());
@@ -111,6 +112,8 @@ namespace saedb
         has_msg_.resize(graph.num_local_vertices(), message_type());
         active_superstep_.resize(graph.num_local_vertices(), 0);
         active_minorstep_.resize(graph.num_local_vertices(), 0);
+        context = new context_type(*this, graph);
+        aggregator = new aggregator_type(graph, context);
         cout<<"sync engine init"<<endl;
     }
 
@@ -119,25 +122,25 @@ namespace saedb
         std::cout << "Before running..." << std::endl;
         runSynchronous( &SynchronousEngine::executeInits);
 
-        aggregator.start();
-//        while ( iteration_counter_ < max_iterations_ ){
-            std::cout << "Iteration " << iteration_counter_ << std::endl;
+        aggregator->start();
+        while(true){
             // mark vertex which has message as active in this superstep, no it is
             // not parallized
             receiveMessages();
             clearMessages();
             countActiveVertices();
-            std::cout << "num of active vertices: " << num_active_vertices_ << std::endl;
-
+            if(num_active_vertices_ == 0){
+            	break;
+            }
             runSynchronous( &SynchronousEngine::executeGathers);
             runSynchronous( &SynchronousEngine::executeApplys);
             runSynchronous( &SynchronousEngine::executeScatters);
 
             // probe the aggregator
-            aggregator.tick_synchronous();
+            aggregator->tick_synchronous();
 
             ++iteration_counter_;
-//        }
+        }
     }
 
     template <typename algorithm_t>
@@ -227,7 +230,6 @@ namespace saedb
     void SynchronousEngine<algorithm_t>::executeApplys (){
         context_type context(*this, graph_);
         for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
-        	cout<<"start apply "<<vid<<endl;
             if (!active_superstep_[vid]) {
                 continue;
             }
@@ -237,7 +239,6 @@ namespace saedb
             vprog.apply(context, vertex, accum);
             // clear gather accum array
             gather_accum_[vid] = gather_type();
-            cout<<"end apply "<<vid<<endl;
         }
     }
 
@@ -324,6 +325,7 @@ namespace saedb
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::
     ~SynchronousEngine(){
+    	delete context;
         std::cout << "cleaning SynchonousEngine......" << std::endl;
     }
 
@@ -331,7 +333,7 @@ namespace saedb
     template <typename algorithm_t>
     typename SynchronousEngine<algorithm_t>::aggregator_type*
     SynchronousEngine<algorithm_t>::get_aggregator(){
-    	return &aggregator;
+    	return aggregator;
     }
 }
 #endif
