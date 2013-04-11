@@ -34,7 +34,8 @@ def main():
            cmake_file.write("project(%s)\n\n"%app)
            cmake_file.write("file(GLOB %s_SOURCE\n"%app.upper())
            cmake_file.write('\t"*.hpp"\n\t"*.cpp"\n\t)\n\n')
-           cmake_file.write("add_executable(%s ${%s_SOURCE})"%(app,app.upper()))
+           cmake_file.write("add_executable(%s ${%s_SOURCE})\n"%(app,app.upper()))
+	   cmake_file.write("target_link_libraries(%s saedb)"%(app))
            cmake_file.close()
    cmake_file = open("CMakeLists.txt",'w')
    for app in apps:

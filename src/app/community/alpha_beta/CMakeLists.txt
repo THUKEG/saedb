@@ -6,3 +6,4 @@ file(GLOB ALPHA_BETA_SOURCE
 	)
 
 add_executable(alpha_beta ${ALPHA_BETA_SOURCE})
+target_link_libraries(alpha_beta saedb)

@@ -104,12 +104,14 @@ namespace saedb
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::SynchronousEngine(graph_type& graph):
     iteration_counter_(0), max_iterations_(5), graph_(graph),aggregator(graph, new context_type(*this, graph)) {
+    	cout<<"sync engine"<<endl;
         vertex_programs_.resize(graph.num_local_vertices());
         gather_accum_.resize(graph.num_local_vertices());
         has_msg_.resize(graph.num_local_vertices(), 0);
         has_msg_.resize(graph.num_local_vertices(), message_type());
         active_superstep_.resize(graph.num_local_vertices(), 0);
         active_minorstep_.resize(graph.num_local_vertices(), 0);
+        cout<<"sync engine init"<<endl;
     }
 
     template <typename algorithm_t>

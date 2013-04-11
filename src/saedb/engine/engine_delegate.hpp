@@ -95,6 +95,8 @@ namespace saedb
         // the default is SynchronousEngine
         // TODO here is where we select which engine we want, may need
         // an option.
+
+    	cout<<"engine delegate"<<endl;
         engine = new SynchronousEngine<algorithm_t>(graph);
 //        aggregator = engine->get_aggregator();
     }

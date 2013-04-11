@@ -70,6 +70,7 @@ namespace saedb{
 	    		}
 	    	}
 
+
 	    	if(result_set){
 	    		if(!global_result_set){
 	    			global_result = result;
@@ -79,6 +80,8 @@ namespace saedb{
 	    			global_result += result;
 	    		}
 	    	}
+
+	    	return global_result;
 	    }
 
 	};
