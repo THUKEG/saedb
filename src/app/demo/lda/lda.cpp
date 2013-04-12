@@ -4,51 +4,24 @@
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
-#include <random>
-#include "mgraph.hpp"
 #include "sae_include.hpp"
-
-using  std::vector;
-using  std::string;
-using  std::set;
 using  namespace sae::io;
 #define sz(x) x.size()
 
 
-class FloatMaxAggregator: public saedb::IAggregator
-{
-public:
-    void init(void* i){
-        accu = *((float*)i);
-    }
-    
-    void reduce(void* next){
-        accu = max(accu, *((float*)next));
-    }
-    
-    void* data() const{
-        return (void*)(&accu);
-    }
-    
-    ~FloatMaxAggregator() {}
-    
-private:
-    float accu;
-};
 
 float RESET_PROB = 0.15;
 float TOLERANCE = 1.0E-2;
 
-typedef float vertex_data_type;
-typedef float edge_data_type;
+
 typedef saedb::empty message_date_type;
 /* ===============up is the sae engine============================*/
 
 
 typedef int count_type;// Global Types
 
-//typedef std::vector< sae::atomic<count_type> > factor_type;// 需要原子操作么？
-typedef vector<count_type> factor_type;
+//typedef std::std::vector< sae::atomic<count_type> > factor_type;// 需要原子操作么？
+typedef std::vector<count_type> factor_type;
 
 
 inline factor_type& operator+=(factor_type& lvalue, const factor_type& rvalue) 
@@ -85,7 +58,7 @@ size_t TOPK = 5;
 size_t INTERVAl = 10;
 
 factor_type GLOBAL_TOPIC_COUNT;
-vector<string> DICTIONARY;
+std::vector<std::string> DICTIONARY;
 size_t MAX_COUNT = 10000;
 float BURNIN = -1;  // less than 0 then sampler will run indefinitely.
 
@@ -104,7 +77,7 @@ struct edge_data
 	assignment_type assignment;
 	edge_data(size_t ntokens =0 ) : nchanges(0), assignment(ntokens, NULL_TOPIC){};
 }; // end of edge_data;
-
+typedef saedb::empty message_date_type;
 typedef saedb::sae_graph<vertex_data, edge_data> graph_type;
 
 inline int is_word( graph_type::vertex_type&  vertex)//这个地方没有引用
@@ -127,7 +100,7 @@ inline graph_type::vertex_type get_other_vertex(graph_type::edge_type &edge, con
 	return vertex.id()==edge.source().id()?edge.target():edge.source();
 }
 
-/* ============= the collapsed gibbs sampler======================*/
+/* ============= the collapsed gibbs Fsampler======================*/
 
 struct gather_type
 {
@@ -147,16 +120,24 @@ struct gather_type
 
 
 class cgs_lda_vertex_program:
-	 public saedb::IAlgorithm<graph_type, gather_type>
+public saedb::IAlgorithm<graph_type, gather_type>
 {
+public:
 	static bool DISABLE_SAMPLING;
 	
-	edge_dir_type  gather_edge(icontext_type & context, const vertex_type & vertex)
+	//void init(icontext_type& context, vertex_type& vertex)
+	//{
+      
+    //}//这步初始化可能不对
+    
+	edge_dir_type gather_edges(icontext_type& context,
+                               const vertex_type& vertex) const
 	{
 		return saedb::ALL_EDGES;
 	}	
 	
-	gather_type gather(icontext_type& context, const vertex_type& vertex, edge_type& edge)
+	gather_type gather(icontext_type& context, const vertex_type& vertex,
+                 edge_type& edge) const 
 	{
 		gather_type ret(edge.data().nchanges);
 		const assignment_type& assignment = edge.data().assignment;
@@ -165,18 +146,29 @@ class cgs_lda_vertex_program:
 // end of gather
 
 	
-	void apply(icontext_type& context, vertex_type& vertex,const gather_type&  sum)
-	{
+	void apply(icontext_type& context, vertex_type& vertex,
+               const gather_type& total)
+    {
 		const size_t num_neighbors = vertex.num_in_edges() + vertex.num_out_edges();
 	
 		vertex_data & vdata = vertex.data();
 		vdata.nupdates++;
-		vdata.nchanges = sum.nchanges;
-		vdata.factor = sum.factor;
+		vdata.nchanges = total.nchanges;
+		vdata.factor = total.factor;
 	}// end of apply
 	
-	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge)
+	edge_dir_type scatter_edges(icontext_type& context,
+                                const vertex_type& vertex) const{
+          if(DISABLE_SAMPLING || (BURNIN>0 ||  BURNIN<100 )) 
+		  		return saedb::NO_EDGES;
+		  else return saedb::ALL_EDGES;
+    }//    context.elapsed_seconds();这个值没有
+
+	
+	 void scatter(icontext_type& context, const vertex_type& vertex,
+                 edge_type& edge) const
 	{
+		
 		srandom(time(0));
 		vertex_type vs=	edge.source();
 		
@@ -184,7 +176,7 @@ class cgs_lda_vertex_program:
 		
 		factor_type& word_topic_count = is_doc(vs) ? edge.source().data().factor : edge.target().data().factor;
 
-		vector<double> prob(NTOPICS);
+		std::vector<double> prob(NTOPICS);
 		assignment_type& assignment = edge.data().assignment;
 		edge.data().nchanges =0 ;
 		
@@ -218,7 +210,7 @@ class cgs_lda_vertex_program:
 				break;
 			
 			asg =now;
-			//*根据概率随机抽样*/
+			/*根据概率随机抽样*/
 			
 			--doc_topic_count[asg];
 			--word_topic_count[asg];
@@ -228,9 +220,11 @@ class cgs_lda_vertex_program:
 				++edge.data().nchanges;
 			}
 		}
+		
 		context.signal(get_other_vertex(edge, vertex));
 	}
 };
+
 
 bool cgs_lda_vertex_program::DISABLE_SAMPLING = false;
 
@@ -240,7 +234,7 @@ class topk_aggregator
 {
 	typedef pair<float, saedb::vertex_id_type> cw_pair_type;
 	private:
-		vector< set<cw_pair_type> >top_words;
+		std::vector< std::set<cw_pair_type> >top_words;
 		size_t nchanges, nupdates;
 	public:
 		topk_aggregator(size_t nchanges = 0, size_t nupdates =0 ): nchanges(nchanges), nupdates(nupdates){}
@@ -349,16 +343,25 @@ struct signal_only
 };// end of signal
 
 
-typedef saedb::IEngine<cgs_lda_vertex_program> engine_type;
 
 /*=========下面这是读入普通文件然后传入==================*/
 
-
+void init()
+{
+	
+}
 
 int main()
 {
 	graph_type graph;
 	
 	GLOBAL_TOPIC_COUNT.resize(NTOPICS);
-	graph.map_reduce_edges<size_t>(count_tokens);
+	
+	saedb::IEngine<cgs_lda_vertex_program> *engine = new saedb::EngineDelegate<cgs_lda_vertex_program>(graph);
+	
+	/*===============初始化===============*/
+	NWORDS =  engine ->map_reduce_vertices<size_t>(is_word);
+	NDOCS =  engine ->map_reduce_vertices<size_t>(is_doc);
+	//NTOKENS =  engine ->map_reduce_edges<size_t>(count_tokens);  edge的操作还没有
+	
 }
