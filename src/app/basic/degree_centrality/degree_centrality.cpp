@@ -1,81 +1,43 @@
 #include <iostream>
-#include <cmath>
+#include <cstring>
 
 #include "sae_include.hpp"
-#include "sample_data.hpp"
 
 using namespace saedb;
 
-typedef float vertex_data_type;
-typedef float edge_data_type;
-typedef empty message_data_type;
+typedef int vertex_data_type;
+typedef empty edge_data_type;
 typedef sae_graph<vertex_data_type, edge_data_type> graph_type;
 
-class FloatMaxAggregator: public IAggregator
+enum GRAPH_MODE
 {
-public:
-	void init(void* i)
-	{
-		accu = *((float*) i);
-	}
-	void reduce(void* next)
-	{
-		accu = max(accu, *((float*) next));
-	}
-	void* data() const
-	{
-		return (void*)(&accu);
-	}
-
-private:
-	float accu;
+	UNDIRECTED, DIRECTED
 };
+GRAPH_MODE graph_mode;
 
-class FloatSumAggregator: public IAggregator
+class degree_centrality: public IAlgorithm<graph_type, empty>
 {
 public:
-	void init(void* i)
-	{
-		accu = *((float*) i);
-	}
-	void reduce(void* next)
-	{
-		accu += *((float*) next);
-	}
-	void* data() const
-	{
-		return (void*)(&accu);
-	}
-private:
-	float accu;
-};
-
-class degree_centrality:
-	public IAlgorithm <graph_type, float>
-{
-private:
-	edge_dir_type MODE;
-public:
-	degree_centrality(edge_dir_type MODE_ = ALL_EDGES): MODE(MODE_) {}
-
 	void init(icontext_type& context, vertex_type& vertex)
 	{
-		vertex.data() = 0.0;
+		if (graph_mode == UNDIRECTED)
+			vertex.data() = vertex.num_in_edges() + vertex.num_out_edges();
+		else if (graph_mode == DIRECTED)
+			vertex.data() = vertex.num_out_edges();
 	}
 
 	edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const
 	{
-		return MODE;
+		return NO_EDGES;
 	}
 
-	float gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const
+	empty gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const
 	{
-		return 1.0;
+		return empty();
 	}
 
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total)
 	{
-		vertex.data() = total;
 	}
 
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const
@@ -86,45 +48,72 @@ public:
 	void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const
 	{
 	}
+};
 
-	void aggregate(icontext_type& context, const vertex_type& vertex)
+struct int_max
+{
+	int max_degree;
+	int_max(int max_degree = 0): max_degree(max_degree) {}
+
+	int_max operator += (const int_max& other)
 	{
-		IAggregator* max_aggregator = context.getAggregator("max_degree_centrality");
-		float tmp = vertex.data();
-		max_aggregator->reduce(&tmp);
-
-		IAggregator* sum_aggregator = context.getAggregator("sum_degree_centrality");
-		float t = vertex.data();
-		sum_aggregator->reduce(&t);
+		max_degree = std::max(max_degree, other.max_degree);
+		return *this;
 	}
 };
 
-int main()
+int_max intMaxAggregator(const graph_type::vertex_type& vertex)
 {
-	graph_type graph = LOAD_SAMPLE_GRAPH<graph_type>();
-	IEngine<degree_centrality> *engine = new EngineDelegate<degree_centrality>(graph);
+	return int_max(vertex.data());
+}
 
-	IAggregator* max_degree_centrality = new FloatMaxAggregator();
-	max_degree_centrality->init(new float(0.0));
-	IAggregator* sum_degree_centrality = new FloatSumAggregator();
-	sum_degree_centrality->init(new float(0.0));
+int main(int argc, char* argv[])
+{
+	graph_mode = UNDIRECTED;
+	std::string filepath = "degree_centrality_graph";
 
-	engine->registerAggregator("max_degree_centrality", max_degree_centrality);
-	engine->registerAggregator("sum_degree_centrality", sum_degree_centrality);
+	if (!(argc & 1))
+	{
+		std::cout << "Usage: ./degree_centrality [-m UNDIRECTED|DIRECTED] [-p <file path>]" << std::endl;
+		return -1;
+	}
 
+	for (int i=1; i<argc; i+=2)
+	{
+		if (strcmp(argv[i], "-m") == 0)
+		{
+			if (strcmp(argv[i+1], "UNDIRECTED") == 0)
+				graph_mode = UNDIRECTED;
+			else if (strcmp(argv[i+1], "DIRECTED") == 0)
+				graph_mode = DIRECTED;
+		}
+		else if (strcmp(argv[i], "-p") == 0)
+		{
+			filepath = std::string(argv[i+1]);
+		}
+	}
+
+	graph_type graph;
+	try
+	{
+		graph.load_format(filepath);
+		//TODO throw exception
+	}
+	catch(...)
+	{
+		std::cerr << "[Error] Unknown Graph File Path" << std::endl;
+		return -1;
+	}
+
+	IEngine<degree_centrality>* engine = new EngineDelegate<degree_centrality>(graph);
 	engine->signalAll();
 	engine->start();
 
-	/*
-	Calculation of degree centrality of a given graph.
-	REF: http://en.wikipedia.org/wiki/Centrality#cite_note-2
-	*/
+	double max_degree = engine->map_reduce_vertices<int_max>(intMaxAggregator).max_degree;
+	double sum_degree = graph.num_edges() * 2.0;
+	double num_vertices = graph.num_vertices();
 
-	float max_degree = *((float*)max_degree_centrality->data());
-	float sum_degree = *((float*)sum_degree_centrality->data());
-	float num_vertex = (float)graph.num_vertices();
-	cout << "Degree Centrality of the graph: " << (max_degree * num_vertex - sum_degree) / (num_vertex - 1) / (num_vertex - 2) << endl;
-
-	delete engine;
-	return 0;	
+	double degree_centrality = (max_degree * num_vertices - sum_degree) / (num_vertices - 1.0) / (num_vertices - 2.0);
+	std::cout << max_degree << ' ' << sum_degree << ' ' << num_vertices << std::endl;
+	std::cout << "Degree Centrality of the graph: " << degree_centrality << std::endl;
 }
