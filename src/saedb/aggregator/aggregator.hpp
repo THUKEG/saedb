@@ -79,6 +79,8 @@ namespace saedb{
                     global_result += result;
                 }
             }
+
+			return global_result;
         }
 
     };

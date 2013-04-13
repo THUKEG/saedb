@@ -11,6 +11,7 @@
 struct VData {
     bool active;
     float weight;
+	bool signaled;
 };
 
 struct EData {
@@ -45,31 +46,27 @@ void test_create() {
     builder.Save("test_graph");
 }
 
-
-
-
-
-
 typedef saedb::empty                                        message_date_type;
 typedef saedb::sae_graph<VData, EData>  graph_type;
 
-// count how many nodes are activated
-class ActivateNodeAggregator: public saedb::IAggregator
+//Accumulatpr
+struct double_accu
 {
-public:
-    void init(void* i){
-        accu = *((float*)i);
-    }
-    void reduce(void* next){
-        accu += 1.0;
-    }
-    void* data() const{
-        return (void*)(&accu);
-    }
-    ~ActivateNodeAggregator() {}
-private:
-    float accu;
+	double accu;
+	double_accu(double accu = 0.0): accu(accu) {}
+
+	double_accu operator += (const double_accu& other)
+	{
+		accu += other.accu;
+		return *this;
+	}
 };
+
+double_accu doubleAccuAggregator(const graph_type::vertex_type& vertex)
+{
+	if (vertex.data().signaled) return double_accu(1.0);
+	return double_accu();
+}
 
 
 class UpdateGraph:
@@ -168,6 +165,8 @@ public:
         return 0.0;
     }
     void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
+		vertex.data().signaled = true;
+		std::cout << vertex.id() << " is being activated" << std::endl;
     }
     edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
         return saedb::IN_EDGES;
@@ -175,9 +174,36 @@ public:
     void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
         vertex_data_type vertex_data = edge.target().data();
         if(!vertex_data.active){
-            context.signalVid(edge.source().id());
-            std::cout << "vertex = "<< edge.source().id() <<" is activated" << std::endl;
+            context.signal(edge.source());
+        }
+    }
+    void aggregate(icontext_type& context, const vertex_type& vertex){
+    }
+};
 
+class DFS3:
+public saedb::IAlgorithm<graph_type, saedb::empty>
+{
+public:
+    void init(icontext_type& context, vertex_type& vertex) {
+    }
+    edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
+        return saedb::NO_EDGES;
+    }
+    saedb::empty gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
+		return saedb::empty();
+    }
+    void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
+		vertex.data().signaled = false;
+		std::cout << vertex.id() << " is being cleared" << std::endl;
+    }
+    edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
+        return saedb::IN_EDGES;
+    }
+    void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
+        vertex_data_type vertex_data = edge.target().data();
+        if(!vertex_data.active){
+            context.signal(edge.source());
         }
     }
     void aggregate(icontext_type& context, const vertex_type& vertex){
@@ -197,21 +223,14 @@ void dfs(saedb::IEngine<DFS> *engine, const std::vector<uint32_t> &seedset){
     engine->start();
 }
 
-double dfs2(saedb::IEngine<DFS2> *engine, const std::int32_t &seed){
-    double result = 0.0;
-    // aggregator
-    float* init_rank = new float(0);
-    saedb::IAggregator* active_node = new ActivateNodeAggregator();
-    engine->registerAggregator("active_node", active_node);
-    active_node->init(init_rank);
-    
-
+double dfs2(saedb::IEngine<DFS2> *engine, saedb::IEngine<DFS3> * engine_clear, const std::int32_t &seed){
+	// to count how mant vertices would be activated.
     engine->signalVertex(seed);
     engine->start();
-    result += *((float*)active_node->data()) - 1;
-    // clean
-    delete init_rank;
-    delete active_node;
+	double result = engine->map_reduce_vertices<double_accu>(doubleAccuAggregator).accu - 1.0;
+	// to clear the signaled sign.
+	engine_clear->signalVertex(seed);
+	engine_clear->start();
     return result;
 }
 
@@ -237,6 +256,7 @@ int main(){
     saedb::IEngine<RandomGraph> *random_graph_engine = new saedb::EngineDelegate<RandomGraph>(graph);
     saedb::IEngine<DFS> *dfs_engine = new saedb::EngineDelegate<DFS>(graph);
     saedb::IEngine<DFS2> *dfs2_engine = new saedb::EngineDelegate<DFS2>(graph);
+	saedb::IEngine<DFS3> *dfs3_engine = new saedb::EngineDelegate<DFS3>(graph);
     saedb::IEngine<UpdateGraph> *update_graph_engine = new saedb::EngineDelegate<UpdateGraph>(graph);
     
     
@@ -273,7 +293,8 @@ int main(){
                 if (graph.vertex(i).data().active) {
 					continue;
 				}
-				marginal[i] = dfs2(dfs2_engine, i);
+				// clear signal status
+				marginal[i] = dfs2(dfs2_engine, dfs3_engine, i);
                 std::cout<< "marginal value = " << marginal[i] <<std::endl;
                
 			}
@@ -318,6 +339,7 @@ int main(){
     delete random_graph_engine;
     delete dfs_engine;
     delete dfs2_engine;
+	delete dfs3_engine;
     delete update_graph_engine;
     return 0;
     

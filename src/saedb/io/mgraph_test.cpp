@@ -27,6 +27,14 @@ void test_create() {
     builder.Save("test_graph");
 }
 
+void test_append()
+{
+	MappedGraphWriter* writer = sae::io::MappedGraphWriter::Open("test_graph", 5, 4, sizeof(VData), sizeof(EData));
+	VData vdata{0.8};
+	//writer->AppendVertex(&vdata);
+	writer->Close();
+}
+
 void test_load() {
     MappedGraph* g = MappedGraph::Open("test_graph");
     cout << "loaded, n: " << g->VertexCount() << ", m:" << g->EdgeCount() << endl;
@@ -66,5 +74,6 @@ void test_load() {
 
 int main(int argc, const char * argv[]) {
     if (argc == 1 || (argc > 1 && argv[1][0] == 'c')) test_create();
+	test_append();
     if (argc == 1 || (argc > 1 && argv[1][0] == 'l')) test_load();
 }
