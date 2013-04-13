@@ -36,8 +36,6 @@ GRAPH_MODE graph_mode;
 
 typedef saedb::sae_graph<double, double> double_graph;
 
-using namespace saedb;
-
 template <typename data_type, typename gather_type>
 class shortest_path: public IAlgorithm <sae_graph<data_type, data_type>, gather_type>
 {
@@ -49,8 +47,9 @@ public:
 	typedef typename alg_type::icontext_type icontext_type;
 	typedef typename alg_type::vertex_type vertex_type;
 	typedef typename alg_type::edge_type edge_type;
+	typedef typename alg_type::message_type message_type;
 
-	void init(icontext_type& context, vertex_type& vertex)
+	void init(icontext_type& context, vertex_type& vertex, const message_type& msg)
 	{
 		updated = false;
 		if (vertex.id() == root_id)

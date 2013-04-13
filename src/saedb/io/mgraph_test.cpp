@@ -9,7 +9,8 @@ struct VData {
 };
 
 struct EData {
-    int type;
+    //int type;
+	double type;
 };
 
 void test_create() {
@@ -74,6 +75,6 @@ void test_load() {
 
 int main(int argc, const char * argv[]) {
     if (argc == 1 || (argc > 1 && argv[1][0] == 'c')) test_create();
-	test_append();
+	//test_append();
     if (argc == 1 || (argc > 1 && argv[1][0] == 'l')) test_load();
 }

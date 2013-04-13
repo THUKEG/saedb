@@ -18,7 +18,7 @@ GRAPH_MODE graph_mode;
 class degree_centrality: public IAlgorithm<graph_type, empty>
 {
 public:
-	void init(icontext_type& context, vertex_type& vertex)
+	void init(icontext_type& context, vertex_type& vertex, message_type& msg)
 	{
 		if (graph_mode == UNDIRECTED)
 			vertex.data() = vertex.num_in_edges() + vertex.num_out_edges();
