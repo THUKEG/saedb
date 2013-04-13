@@ -28,7 +28,7 @@ file(GLOB INFMAX3_SOURCES
 
 add_executable(inf-max ${INFMAX_SOURCES})
 add_executable(inf-max2 ${INFMAX2_SOURCES})
-#add_executable(inf-max3 ${INFMAX3_SOURCES})
+add_executable(inf-max3 ${INFMAX3_SOURCES})
 target_link_libraries(inf-max saedb)
 target_link_libraries(inf-max2 saedb)
-#target_link_libraries(inf-max3 saedb)
+target_link_libraries(inf-max3 saedb)

@@ -46,34 +46,10 @@ void test_create() {
     builder.Save("test_graph");
 }
 
-
-
-
-
-
 typedef saedb::empty                                        message_date_type;
 typedef saedb::sae_graph<VData, EData>  graph_type;
 
-// count how many nodes are activated
-/*
-class ActivateNodeAggregator: public saedb::IAggregator
-{
-public:
-    void init(void* i){
-        accu = *((float*)i);
-    }
-    void reduce(void* next){
-        accu += 1.0;
-    }
-    void* data() const{
-        return (void*)(&accu);
-    }
-    ~ActivateNodeAggregator() {}
-private:
-    float accu;
-};
-*/
-
+//Accumulatpr
 struct double_accu
 {
 	double accu;
@@ -248,23 +224,13 @@ void dfs(saedb::IEngine<DFS> *engine, const std::vector<uint32_t> &seedset){
 }
 
 double dfs2(saedb::IEngine<DFS2> *engine, saedb::IEngine<DFS3> * engine_clear, const std::int32_t &seed){
-    //double result = 0.0;
-    // aggregator
-    //float* init_rank = new float(0);
-    //saedb::IAggregator* active_node = new ActivateNodeAggregator();
-    //engine->registerAggregator("active_node", active_node);
-    //active_node->init(init_rank);
-    
-
+	// to count how mant vertices would be activated.
     engine->signalVertex(seed);
     engine->start();
-    //double result = *((float*)active_node->data()) - 1;
 	double result = engine->map_reduce_vertices<double_accu>(doubleAccuAggregator).accu - 1.0;
+	// to clear the signaled sign.
 	engine_clear->signalVertex(seed);
 	engine_clear->start();
-    // clean
-    //delete init_rank;
-    //delete active_node;
     return result;
 }
 

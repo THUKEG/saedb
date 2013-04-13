@@ -84,9 +84,9 @@ int main(){
 		t[i] = 0;
 	}
 
-    vector<int> seed_list;
+    std::vector<int> seed_list;
 
-    Heap* heap = new Heap();
+    std::Heap* heap = new std::Heap();
 
 	for (int i = 0; i < n; i++) {
 		heap->push(i, graph.vertex(i).num_in_edges());
@@ -94,7 +94,7 @@ int main(){
     heap->print_heap();
     for (int ss = 1; ss <= ss_cnt; ss++) {
 
-		pair<double, int> max_marginal = heap->top();
+		std::pair<double, int> max_marginal = heap->top();
 		int seed_index = max_marginal.second;
 		seed_list.push_back(seed_index);
 
@@ -112,7 +112,7 @@ int main(){
 
 			e->MoveTo(i);
             auto v = e->TargetId();
-            printf("current =%d\n", v);
+			std::cout << "current = " << v << std::endl;
 
 			bool flag = false;
 			for (int j = 0; j < seed_list.size(); j++) {
@@ -126,7 +126,9 @@ int main(){
 			t[v]++;
 			int dv = graph.vertex(i).num_in_edges();
 			double marginal = dv - 2 * t[v] - (dv - t[v]) * t[v] * p;
-            printf("modify index = %d, dv = %d, tv = %d, p= %lf, marginal= %lf \n", v, dv, t[v], p, dv - 2 * t[v] - (dv - t[v]) * t[v] * p);
+ //           printf("modify index = %d, dv = %d, tv = %d, p= %lf, marginal= %lf \n", v, dv, t[v], p, dv - 2 * t[v] - (dv - t[v]) * t[v] * p);
+			std::cout << "modify index = " << v << ", dv = " << dv << ", tv = " << t[v] << ", p = " << p
+			<< ", marginal = " << dv - 2 * t[v] - (dv - t[v]) * t[v] * p << std::endl;
 			heap->modify(v, marginal);
             //			heap->print_heap();
 		}
