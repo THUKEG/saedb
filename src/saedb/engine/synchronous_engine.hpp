@@ -45,7 +45,9 @@ namespace saedb
     public:
         SynchronousEngine(graph_type& graph);
         void signalVertices(const std::vector<vertex_id_type>& vids);
-        void signalVertex(vertex_id_type vid);
+
+        // signal a specific vertex with a message, update vertex data.
+        void signalVertex(vertex_id_type vid, const message_type& msg);
         void signalAll();
         void start();
         ~SynchronousEngine();
@@ -75,6 +77,9 @@ namespace saedb
         void receiveMessages();
 
         void internalSignal(const vertex_type& vertex,
+                            const message_type& message = message_type());
+
+        void internalSignal(const lvid_type& lvid,
                             const message_type& message = message_type());
 
         void clearActiveMinorstep();
@@ -107,7 +112,7 @@ namespace saedb
         vertex_programs_.resize(graph.num_local_vertices());
         gather_accum_.resize(graph.num_local_vertices());
         has_msg_.resize(graph.num_local_vertices(), 0);
-        has_msg_.resize(graph.num_local_vertices(), message_type());
+        messages_.resize(graph.num_local_vertices(), message_type());
         active_superstep_.resize(graph.num_local_vertices(), 0);
         active_minorstep_.resize(graph.num_local_vertices(), 0);
     }
@@ -115,8 +120,8 @@ namespace saedb
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::start(){
         iteration_counter_ = 0;
-        
-        runSynchronous( &SynchronousEngine::executeInits);
+
+        runSynchronous(&SynchronousEngine::executeInits);
 
         aggregator.start();
 
@@ -127,9 +132,9 @@ namespace saedb
             clearMessages();
             countActiveVertices();
 
-            runSynchronous( &SynchronousEngine::executeGathers);
-            runSynchronous( &SynchronousEngine::executeApplys);
-            runSynchronous( &SynchronousEngine::executeScatters);
+            runSynchronous(&SynchronousEngine::executeGathers);
+            runSynchronous(&SynchronousEngine::executeApplys);
+            runSynchronous(&SynchronousEngine::executeScatters);
 
             // probe the aggregator
             aggregator.tick_synchronous();
@@ -148,7 +153,7 @@ namespace saedb
             }
             auto &vprog = vertex_programs_[vid];
             vertex_type vertex = graph_.vertex(vid);
-            vprog.init(context, vertex);
+            vprog.init(context, vertex, messages_[vid]);
             vid++;
         }
     }
@@ -257,14 +262,18 @@ namespace saedb
     void SynchronousEngine<algorithm_t>::
     internalSignal(const vertex_type &vertex, const message_type& message){
         lvid_type lvid = vertex.local_id();
-        //        local_vertex_lock[lvid].lock();
+        internalSignal(lvid, message);
+    }
+
+    template <typename algorithm_t>
+    void SynchronousEngine<algorithm_t>::
+    internalSignal(const lvid_type &lvid, const message_type& message){
         if (has_msg_[lvid]) {
             messages_[lvid] += message;
         }else{
             has_msg_[lvid] = 1;
             messages_[lvid] = message;
         }
-        //        local_vertex_lock[lvid].unlock();
     }
 
     template <typename algorithm_t>
@@ -277,10 +286,11 @@ namespace saedb
 
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::
-    signalVertex(vertex_id_type vid){
+    signalVertex(vertex_id_type vid, const message_type& msg = message_type()){
         active_superstep_[vid] = 1;
         active_minorstep_[vid] = 1;
         has_msg_[vid] = 1;
+        internalSignal(vid, msg);
     }
 
     template <typename algorithm_t>

@@ -4,23 +4,22 @@
 
 #include "sae_include.hpp"
 
+using namespace std;
+
 double RESET_PROB = 0.15;
 double TOLERANCE = 1.0E-2;
 
 typedef double vertex_data_type;
 typedef double edge_data_type;
-typedef saedb::empty message_date_type;
+typedef float message_data_type;
 typedef saedb::sae_graph<vertex_data_type, edge_data_type> graph_type;
 
-
-
-
 class pagerank:
-public saedb::IAlgorithm<graph_type, double>
+public saedb::IAlgorithm<graph_type, double, message_data_type>
 {
 public:
-    void init(icontext_type& context, vertex_type& vertex) {
-        vertex.data() = 0.2;
+    void init(icontext_type& context, vertex_type& vertex, const message_type& msg) {
+        vertex.data() = msg;
     }
 
     edge_dir_type gather_edges(icontext_type& context,
@@ -54,21 +53,21 @@ public:
 
 
 struct float_max{
-	float value;
+    float value;
 
-	float_max(): value(0){ }
-	float_max(float value){
-		this->value = value;
-	}
+    float_max(): value(0){ }
+    float_max(float value){
+        this->value = value;
+    }
 
-	float_max& operator+=(const float_max& other){
-		this->value = std::max(this->value, other.value);
-		return *this;
-	}
+    float_max& operator+=(const float_max& other){
+        this->value = std::max(this->value, other.value);
+        return *this;
+    }
 };
 
 float_max floatMaxAggregator(const graph_type::vertex_type& vertex){
-	return float_max(vertex.data());
+    return float_max(vertex.data());
 }
 
 
@@ -91,11 +90,15 @@ int main(){
     << " #edges:"
     << graph.num_edges() << std::endl;
 
+    cout << "Creating engine~" << endl;
     saedb::IEngine<pagerank> *engine = new saedb::EngineDelegate<pagerank>(graph);
     // start engine
     engine->signalAll();
+
+    cout << "Starting engine~" << endl;
     engine->start();
 
+    cout << "engine started~" << endl;
     max_pagerank = engine->map_reduce_vertices<float_max>(floatMaxAggregator);
 
 

@@ -25,27 +25,33 @@ namespace saedb
 
         // Initilize algorithm state
         virtual void
-        init(icontext_type& context, vertex_type& vertex) = 0;
+        init(icontext_type& context, vertex_type& vertex, const message_type& msg) { }
 
         // determine which type of edge to gather information
         virtual edge_dir_type
-        gather_edges(icontext_type& context, const vertex_type& vertex) const = 0;
+        gather_edges(icontext_type& context, const vertex_type& vertex) {
+            return NO_EDGES;
+        }
 
         // gather data on an edge
         virtual gather_type
-        gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const = 0;
+        gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
+            return gather_type();
+        }
 
         // apply modification on a specific vertex
         virtual void
-        apply(icontext_type& context, vertex_type& vertex, const gather_type& total) = 0;
+        apply(icontext_type& context, vertex_type& vertex, const gather_type& total) { }
 
         // determine which type of edge to scatter information
         virtual edge_dir_type
-        scatter_edges(icontext_type& context, const vertex_type& vertex) const = 0;
+        scatter_edges(icontext_type& context, const vertex_type& vertex) const {
+            return NO_EDGES;
+        }
 
         // scatter data on an edge
         virtual void
-        scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const  = 0;
+        scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const { }
 
         virtual ~IAlgorithm() { }
     };

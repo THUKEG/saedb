@@ -1,11 +1,12 @@
 #include <iostream>
 #include <limits>
-#include <fstream>
 #include <algorithm>
 #include <memory>
 #include "sae_include.hpp"
 #include <cstdlib>
 #include <cstring>
+
+using namespace saedb;
 
 #define EPS 1e-3
 #define MAXFL (numeric_limits<double>::max())
@@ -210,5 +211,5 @@ int main(int argc, char*argv[])
 		std::cout << "#" << v.id() << " :\t" << v.data() << std::endl;
 	}
 
-	return 0;
+
 }
