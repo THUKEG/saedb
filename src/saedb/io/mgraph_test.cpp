@@ -9,7 +9,8 @@ struct VData {
 };
 
 struct EData {
-    int type;
+    //int type;
+	double type;
 };
 
 void test_create() {
@@ -25,6 +26,14 @@ void test_create() {
     builder.AddVertex(30, VData{0.7});
 
     builder.Save("test_graph");
+}
+
+void test_append()
+{
+	MappedGraphWriter* writer = sae::io::MappedGraphWriter::Open("test_graph", 5, 4, sizeof(VData), sizeof(EData));
+	VData vdata{0.8};
+	//writer->AppendVertex(&vdata);
+	writer->Close();
 }
 
 void test_load() {
@@ -66,5 +75,6 @@ void test_load() {
 
 int main(int argc, const char * argv[]) {
     if (argc == 1 || (argc > 1 && argv[1][0] == 'c')) test_create();
+	//test_append();
     if (argc == 1 || (argc > 1 && argv[1][0] == 'l')) test_load();
 }

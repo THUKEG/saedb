@@ -79,7 +79,50 @@ namespace saedb{
                     global_result += result;
                 }
             }
+
+			return global_result;
         }
+
+        template <typename ResultType, typename MapFunctionType>
+        ResultType map_reduce_edges(MapFunctionType mapfunction) {
+            bool global_result_set = false;
+            ResultType global_result = ResultType();
+
+            //openmp
+            bool result_set = false;
+            ResultType result = ResultType();
+
+            for (int i = 0; i < (int)graph.num_local_vertices(); ++i){
+				edge_type edge(std::move(graph.vertex(i).in_edges()));
+
+				sae::io::EdgeIteratorPtr p = graph.vertex(i).in_edges();
+
+				for (; p->Alive(); p->Next()) {
+					sae::io::EdgeIteratorPtr q = p->Clone();
+
+					edge_type edge(std::move(q));
+					if (! result_set) {
+						result = mapfunction(std::move(edge));
+						result_set = true;
+					}
+					else
+						result += mapfunction(std::move(edge));
+				}
+
+            }
+
+			if (result_set)
+			{
+				if (! global_result_set)
+				{
+					global_result_set = true;
+					global_result = result;
+				}
+				else global_result += result;
+			}
+			return global_result;
+        }
+
 
     };
 }

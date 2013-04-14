@@ -126,6 +126,12 @@ namespace saedb
            return aggregator->template map_reduce_vertices<ReductionType>(mapfunction);
          }
 
+		 template <typename ReductionType, typename EdgeMapperType>
+		 ReductionType map_reduce_edges(EdgeMapperType mapfunction){
+		 	aggregator_type* aggregator = get_aggregator();
+			return aggregator->template map_reduce_edges<ReductionType>(mapfunction);
+		 }
+
 
         virtual aggregator_type* get_aggregator() = 0;
 
