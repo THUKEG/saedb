@@ -81,6 +81,34 @@ namespace saedb{
             }
         }
 
+        template <typename ResultType, typename MapFunctionType>
+        ResultType map_reduce_edges(MapFunctionType mapfunction){
+            
+            // TODO openmp
+            bool result_set = false;
+            ResultType result;
+
+            for (int i=0; i<(int)graph.num_local_vertices(); i++){
+                sae::io::EdgeIteratorPtr p = graph.vertex(i).out_edges();
+
+                for (; p->Alive(); p->Next())
+                {
+                    sae::io::EdgeIteratorPtr q = p->Clone();
+                    edge_type edge(std::move(q));
+
+                    if (! result_set)
+                    {
+                        result_set = true;
+                        result = mapfunction(std::move(edge));
+                    }
+                    else
+                        result += mapfunction(std::move(edge));
+                }
+            }
+
+            return result;
+        }
+
     };
 }
 
