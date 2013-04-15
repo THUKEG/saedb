@@ -7,10 +7,9 @@
 #include <set>
 #include <vector>
 
-#include "mgraph.hpp"
+#include "io/mgraph.hpp"
 
-// evil include path
-#include "../graph_basic_types.hpp"
+#include "graph_basic_types.hpp"
 using namespace std;
 /*
  * Wrapper for memory mapped graph.

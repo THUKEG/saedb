@@ -1,6 +1,6 @@
 #include <iostream>
-#include "graph.hpp"
-#include "ifilterquery.hpp"
+#include "../graph.hpp"
+#include "../ifilterquery.hpp"
 
 using namespace std;
 using namespace sae::io;
