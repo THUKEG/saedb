@@ -87,6 +87,25 @@ namespace saedb
             return num_vertices();
         }
 
+        template <  typename graph_builder_t,
+                    typename filter_qeury_t>
+        void filter(graph_builder_t& builder,
+                    filter_qeury_t query){
+            // slow implementation
+            for (auto ei = graph->ForwardEdges(); ei->Alive();ei->Next()) {
+                vertex_data_type* source = (vertex_data_type*)(ei->Source()->Data());
+                vertex_data_type* target = (vertex_data_type*)(ei->Target()->Data());
+                if (query.vertex_predicate(source) && query.vertex_predicate(target)) {
+                    auto nsource = query.vertex_transform(source);
+                    auto ntarget = query.vertex_transform(target);
+                    auto nedge   = query.edge_transform((edge_data_type*)ei->Data());
+                    builder.AddVertex(ei->SourceId(), nsource);
+                    builder.AddVertex(ei->TargetId(), ntarget);
+                    builder.AddEdge(ei->SourceId(), ei->TargetId(), nedge);
+                }
+            }
+        }
+
 
         struct vertex_type {
             sae::io::VertexIteratorPtr vi;

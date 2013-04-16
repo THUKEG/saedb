@@ -8,6 +8,7 @@ file(GLOB MGRAPH_LIBRARY_SOURCES
     "mgraph.hpp"
     "mgraph.cpp"
     "mmap_file.hpp"
+    "../graph.hpp"
     )
 
 add_library(mgraph ${MGRAPH_LIBRARY_SOURCES})
