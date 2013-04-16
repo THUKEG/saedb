@@ -58,11 +58,11 @@ public:
 		for (int i = 0; i < (int) graph.num_local_vertices(); ++i) {
 			if (!result_set) {
 				vertex_type vtx(graph.vertex(i));
-				result = mapfunction(vtx); //(*context, vtx);
+				result = mapfunction(*context, vtx);
 				result_set = true;
 			} else if (result_set) {
 				vertex_type vtx(graph.vertex(i));
-				result += mapfunction(vtx); //(*context, vtx);
+				result += mapfunction(*context, vtx);
 
 			}
 		}

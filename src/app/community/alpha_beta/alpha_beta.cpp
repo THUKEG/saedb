@@ -41,6 +41,7 @@ typedef float edge_data_type;
 typedef gather_data_type gather_type;
 typedef saedb::sae_graph<vertex_data_type, edge_data_type> graph_type;
 
+
 //caculate current global alpha beta
 class AlphaBeta: public saedb::IAlgorithm<graph_type, gather_type> {
 private:
@@ -91,6 +92,8 @@ public:
 	}
 };
 
+typedef AlphaBeta::icontext_type icontext_type;
+
 struct alpha_beta_type {
 	int alpha;
 	int beta;
@@ -115,7 +118,7 @@ struct alpha_beta_type {
 			} else {
 				beta = other.beta;
 			}
-		} else if (other.alpha > -1) {qn
+		} else if (other.alpha > -1) {
 			if (alpha > -1) {
 				alpha = std::max(alpha, other.alpha);
 			} else {
@@ -126,7 +129,7 @@ struct alpha_beta_type {
 		return *this;
 	}
 
-	static alpha_beta_type aggregator(graph_type::vertex_type& vertex) {
+	static alpha_beta_type aggregator(icontext_type& context, graph_type::vertex_type& vertex) {
 		std::cout << "id:" << vertex.id() << " inside: " << vertex.data().inside
 				<< " alpha:" << vertex.data().alpha_beta << std::endl;
 		return alpha_beta_type(vertex.data().alpha_beta, vertex.data().inside);
@@ -178,7 +181,7 @@ struct find_a_b_pair {
 		return *this;
 	}
 
-	static find_a_b_pair aggregator(graph_type::vertex_type& vertex) {
+	static find_a_b_pair aggregator(icontext_type& context, graph_type::vertex_type& vertex) {
 		return find_a_b_pair(vertex.id(), vertex.data().inside,
 				vertex.data().alpha_beta);
 	}
@@ -249,7 +252,7 @@ struct find_a_b_pair_non_neighbor {
 		return *this;
 	}
 
-	static find_a_b_pair_non_neighbor aggregator(
+	static find_a_b_pair_non_neighbor aggregator(icontext_type& context,
 			graph_type::vertex_type& vertex) {
 		std::set<saedb::vertex_id_type> neighbor_set;
 		for (auto ei = vertex.in_edges(); ei->Alive(); ei->Next())
@@ -285,7 +288,7 @@ struct find_a {
 		return *this;
 	}
 
-	static find_a aggregator(graph_type::vertex_type& vertex) {
+	static find_a aggregator(icontext_type& context, graph_type::vertex_type& vertex) {
 		if (!vertex.data().inside
 				&& vertex.data().alpha_beta == global_alpha_beta->alpha) {
 			bool flag = true;
@@ -337,7 +340,7 @@ struct find_b {
 		return *this;
 	}
 
-	static find_b aggregator(graph_type::vertex_type& vertex) {
+	static find_b aggregator(icontext_type& context, graph_type::vertex_type& vertex) {
 		if (vertex.data().inside
 				&& vertex.data().alpha_beta == global_alpha_beta->beta) {
 			bool flag = true;
@@ -384,7 +387,7 @@ struct find_a_set {
 		return *this;
 	}
 
-	static find_a_set aggregator(graph_type::vertex_type& vertex) {
+	static find_a_set aggregator(icontext_type& context, graph_type::vertex_type& vertex) {
 		if (!vertex.data().inside
 				&& vertex.data().alpha_beta == global_alpha_beta->alpha)
 			vertex.data().inside = true;

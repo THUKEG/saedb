@@ -66,7 +66,7 @@ struct float_max {
 	}
 };
 
-float_max floatMaxAggregator(const graph_type::vertex_type& vertex) {
+float_max floatMaxAggregator(pagerank::icontext_type& context, const graph_type::vertex_type& vertex) {
 	return float_max(vertex.data());
 }
 
