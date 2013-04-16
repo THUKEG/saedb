@@ -77,7 +77,6 @@ namespace saedb
 
         void internalSignal(const vertex_type& vertex,
                             const message_type& message = message_type());
-
     private:
         // the real engine pointer
         IEngine<vertex_program_type> *engine;
@@ -93,8 +92,8 @@ namespace saedb
         // the default is SynchronousEngine
         // TODO here is where we select which engine we want, may need
         // an option.
+
         engine = new SynchronousEngine<algorithm_t>(graph);
-        std::cout << "EngineDelegate init done." << std::endl;
     }
 
     template <typename algorithm_t>
@@ -119,13 +118,13 @@ namespace saedb
     signalVertices(const std::vector<vertex_id_type> & vids){
         engine->signalVertices(vids);
     }
-
+    
     template<typename algorithm_t>
     typename EngineDelegate<algorithm_t>::aggregator_type*
     EngineDelegate<algorithm_t>::get_aggregator() {
       return engine->get_aggregator();
     } // end of get_aggregator
-
+    
     template <typename algorithm_t>
     EngineDelegate<algorithm_t>::
     ~EngineDelegate(){
