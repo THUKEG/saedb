@@ -83,7 +83,7 @@ int main(){
     graph.load_format(graph_path);
 
     for (auto i = 0; i < graph.num_local_vertices(); i ++) {
-        std::cout << "v[" << i << "]: " << graph.vertex(i).data() << endl;
+        std::cout << "v[" << i << "]: " << graph.vertex(i).data() << std::endl;
     }
 
     std::cout << "#vertices: "
