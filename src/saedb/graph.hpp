@@ -10,7 +10,6 @@
 #include "io/mgraph.hpp"
 
 #include "graph_basic_types.hpp"
-using namespace std;
 /*
  * Wrapper for memory mapped graph.
  * */
@@ -59,12 +58,12 @@ namespace saedb
             return ei->OutEdges()->Count();
         }
 
-        void load_mgraph(const string& graph_name) {
-            cout << graph_name << endl;
+        void load_mgraph(const std::string& graph_name) {
+            std::cout << graph_name << std::endl;
             graph = sae::io::MappedGraph::Open(graph_name.c_str());
         }
 
-        void load_format(const string& filename, const string& fmt = "mgraph") {
+        void load_format(const std::string& filename, const std::string& fmt = "mgraph") {
             if (fmt == "mgraph")
                 load_mgraph(filename);
         }

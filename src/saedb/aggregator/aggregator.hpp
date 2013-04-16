@@ -101,6 +101,8 @@ public:
                 else
                     result += mapfunction(*context, edge);
             }
+
+			return global_result;
         }
         return result;
     }
