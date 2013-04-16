@@ -336,6 +336,7 @@ namespace saedb
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::
     ~SynchronousEngine(){
+        delete aggregator;
         std::cout << "cleaning SynchonousEngine......" << std::endl;
     }
 
