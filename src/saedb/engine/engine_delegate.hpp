@@ -94,7 +94,6 @@ namespace saedb
         // TODO here is where we select which engine we want, may need
         // an option.
         engine = new SynchronousEngine<algorithm_t>(graph);
-        std::cout << "EngineDelegate init done." << std::endl;
     }
 
     template <typename algorithm_t>

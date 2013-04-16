@@ -7,6 +7,8 @@
 #include <fstream>
 #include "sae_include.hpp"
 
+using namespace std;
+
 
 struct VData {
     bool active;
@@ -50,31 +52,10 @@ void test_create() {
 typedef saedb::empty                                        message_date_type;
 typedef saedb::sae_graph<VData, EData>  graph_type;
 
-
-struct double_sum
-{
-    double value;
-    double_sum(double value = 0.0): value(value) {}
-    double_sum operator +=(const double_sum& other)
-    {
-        value += other.value;
-        return *this;
-    }
-};
-
-double_sum DoubleSumAggregator(graph_type::vertex_type& vertex)
-{
-    if (vertex.data().signaled) return double_sum(1.0);
-    return double_sum(0.0);
-}
-
-
 class UpdateGraph:
 public saedb::IAlgorithm<graph_type, float>
 {
 public:
-    void init(icontext_type& context, vertex_type& vertex) {
-    }
     edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
         return saedb::NO_EDGES;
     }
@@ -98,8 +79,6 @@ class RandomGraph:
 public saedb::IAlgorithm<graph_type, float>
 {
 public:    
-    void init(icontext_type& context, vertex_type& vertex) {        
-    } 
     edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
         return saedb::NO_EDGES;        
     }
@@ -121,16 +100,12 @@ public:
         }
         std::cout << "source id=" << edge.source().id() << ",target id=" << edge.target().id() << std::endl;
     }
-    void aggregate(icontext_type& context, const vertex_type& vertex){
-    }
 };
 
 class DFS:
 public saedb::IAlgorithm<graph_type, float>
 {
 public:
-    void init(icontext_type& context, vertex_type& vertex) {
-    }
     edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
         return saedb::NO_EDGES;
     }
@@ -148,16 +123,12 @@ public:
     void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
         context.signalVid(edge.target().id());
     }
-    void aggregate(icontext_type& context, const vertex_type& vertex){
-    }
 };
 
 class DFS2:
 public saedb::IAlgorithm<graph_type, float>
 {
 public:
-    void init(icontext_type& context, vertex_type& vertex) {
-    }
     edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
         return saedb::NO_EDGES;
     }
@@ -178,8 +149,6 @@ public:
 
         }
     }
-    void aggregate(icontext_type& context, const vertex_type& vertex){
-    }
 };
 
 // to clear the "signaled" sign.
@@ -187,8 +156,6 @@ class DFS3:
 public saedb::IAlgorithm<graph_type, float>
 {
 public:
-    void init(icontext_type& context, vertex_type& vertex) {
-    }
     edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
         return saedb::NO_EDGES;
     }
@@ -209,11 +176,24 @@ public:
 
         }
     }
-    void aggregate(icontext_type& context, const vertex_type& vertex){
+};
+
+struct double_sum
+{
+    double value;
+    double_sum(double value = 0.0): value(value) {}
+    double_sum operator +=(const double_sum& other)
+    {
+        value += other.value;
+        return *this;
     }
 };
 
-
+double_sum DoubleSumAggregator(DFS2::icontext_type& context, graph_type::vertex_type& vertex)
+{
+    if (vertex.data().signaled) return double_sum(1.0);
+    return double_sum(0.0);
+}
 
 
 // randomly generate a graph from the original graph

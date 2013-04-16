@@ -44,24 +44,6 @@ void test_create() {
 }
 
 
-struct ActiveNode {
-    float num;
-
-    ActiveNode(): num(0.0) {}
-    ActiveNode(float f){
-        this->num = f;
-    }
-
-    ActiveNode& operator+=(const ActiveNode& other){
-        this->num += other.num;
-        return *this;
-    }
-};
-
-ActiveNode ActiveNodeAggregator(const graph_type::vertex_type& vertex){
-    return ActiveNode(1.0);
-}
-
 class Simulate:
 public saedb::IAlgorithm<graph_type, float>
 {
@@ -69,9 +51,6 @@ public saedb::IAlgorithm<graph_type, float>
      * Simulate does not need gather.
      */
 public:
-    void init(icontext_type& context, vertex_type& vertex) {
-    }
-
     edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
         return saedb::NO_EDGES;
     }
@@ -99,6 +78,24 @@ public:
     }
 };
 
+
+struct ActiveNode {
+    float num;
+
+    ActiveNode(): num(0.0) {}
+    ActiveNode(float f){
+        this->num = f;
+    }
+
+    ActiveNode& operator+=(const ActiveNode& other){
+        this->num += other.num;
+        return *this;
+    }
+};
+
+ActiveNode ActiveNodeAggregator(Simulate::icontext_type& context, const graph_type::vertex_type& vertex){
+    return ActiveNode(1.0);
+}
 
 
 double *greedy_s;

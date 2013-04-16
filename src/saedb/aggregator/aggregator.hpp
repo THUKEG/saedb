@@ -78,38 +78,31 @@ public:
         return global_result;
     }
 
-    template <typename ResultType, typename MapFunctionType>
-    ResultType map_reduce_edges(MapFunctionType mapfunction){
+    template<typename ResultType, typename MapFunctionType>
+    ResultType map_reduce_edges(MapFunctionType mapfunction) {
 
         // TODO openmp
         bool result_set = false;
         ResultType result;
 
-        for (int i=0; i<(int)graph.num_local_vertices(); i++){
+        for (int i = 0; i < (int) graph.num_local_vertices(); i++) {
             sae::io::EdgeIteratorPtr p = graph.vertex(i).out_edges();
 
-            for (; p->Alive(); p->Next())
-            {
+            for (; p->Alive(); p->Next()) {
                 sae::io::EdgeIteratorPtr q = p->Clone();
                 edge_type edge(std::move(q));
 
-                if (! result_set)
-                {
+                if (!result_set) {
                     result_set = true;
                     result = mapfunction(*context, edge);
-                }
-                else
+                } else
                     result += mapfunction(*context, edge);
             }
-
-			return global_result;
         }
+
         return result;
     }
-
 };
-};
->>>>>>> added context in mapreduce interface
 }
 
 #endif

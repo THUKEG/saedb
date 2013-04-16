@@ -4,6 +4,7 @@
 #include "sae_include.hpp"
 
 using namespace saedb;
+using namespace std;
 
 #define MAXFL (numeric_limits<float>::max())
 
