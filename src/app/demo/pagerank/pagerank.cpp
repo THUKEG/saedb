@@ -74,7 +74,7 @@ struct int_sum
 {
     int value;
     int_sum(int value = 0): value(value) {}
-    int_sum operator += (const int_sum& other){
+    int_sum& operator += (const int_sum& other){
         value += other.value;
         return *this;
     }

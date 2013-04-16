@@ -99,10 +99,10 @@ namespace saedb{
                     if (! result_set)
                     {
                         result_set = true;
-                        result = mapfunction(std::move(edge));
+                        result = mapfunction(edge);
                     }
                     else
-                        result += mapfunction(std::move(edge));
+                        result += mapfunction(edge);
                 }
             }
 
