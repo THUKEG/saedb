@@ -66,8 +66,8 @@ struct float_max{
     }
 };
 
-float_max floatMaxAggregator(const graph_type::vertex_type& vertex){
-    return float_max(vertex.data());
+float_max floatMaxAggregator(pagerank::icontext_type& context, const graph_type::vertex_type& vertex) {
+	return float_max(vertex.data());
 }
 
 struct int_sum
@@ -80,7 +80,7 @@ struct int_sum
     }
 };
 
-int_sum intSumAggregator(const graph_type::edge_type& edge){
+int_sum intSumAggregator(pagerank::icontext_type& context, const graph_type::edge_type& edge){
     return int_sum(1);
 }
 
