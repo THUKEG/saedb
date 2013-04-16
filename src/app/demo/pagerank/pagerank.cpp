@@ -70,6 +70,20 @@ float_max floatMaxAggregator(const graph_type::vertex_type& vertex){
     return float_max(vertex.data());
 }
 
+struct int_sum
+{
+    int value;
+    int_sum(int value = 0): value(value) {}
+    int_sum& operator += (const int_sum& other){
+        value += other.value;
+        return *this;
+    }
+};
+
+int_sum intSumAggregator(const graph_type::edge_type& edge){
+    return int_sum(1);
+}
+
 
 float_max max_pagerank;
 
@@ -101,8 +115,11 @@ int main(){
     cout << "engine started~" << endl;
     max_pagerank = engine->map_reduce_vertices<float_max>(floatMaxAggregator);
 
+    int_sum edge_count = engine->map_reduce_edges<int_sum>(intSumAggregator);
+
 
     std::cout << "max pagerank: " << max_pagerank.value << std::endl;
+    std::cout << "edge count: " << edge_count.value << std::endl;
     std::cout << "Done, do some cleaning......" << std::endl;
 
     delete engine;
