@@ -18,6 +18,7 @@
 *.out
 
 *.swp
+*.py
 
 build/
 xcode-sae/xcode-sae.xcodeproj/xcuserdata/
