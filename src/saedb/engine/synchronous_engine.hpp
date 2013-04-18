@@ -198,7 +198,6 @@ namespace saedb
                 }
             }
             gather_accum_[vid] = accum;
-            vid++;
         }
     }
 
@@ -226,7 +225,6 @@ namespace saedb
                     vprog.scatter(context, vertex, edge);
                 }
             }
-            vid++;
         }
     }
 
@@ -244,7 +242,6 @@ namespace saedb
             vprog.apply(context, vertex, accum);
             // clear gather accum array
             gather_accum_[vid] = gather_type();
-            vid++;
         }
     }
 
