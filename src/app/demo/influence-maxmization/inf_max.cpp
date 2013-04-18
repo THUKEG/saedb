@@ -12,6 +12,7 @@ using namespace std;
 
 struct VData {
     float weight;
+    bool actived;
 };
 
 struct EData {
@@ -29,16 +30,16 @@ void test_create() {
         builder.AddVertex(i, VData{0.1});
     }
 
-    builder.AddEdge(0, 1, EData{0.1});
-    builder.AddEdge(2, 1, EData{0.1});
-    builder.AddEdge(3, 1, EData{0.4});
-    builder.AddEdge(4, 0, EData{0.6});
-    builder.AddEdge(5, 0, EData{0.1});
-    builder.AddEdge(6, 2, EData{0.1});
-    builder.AddEdge(7, 3, EData{0.2});
-    builder.AddEdge(8, 3, EData{0.7});
-    builder.AddEdge(9, 3, EData{0.1});
-    builder.AddEdge(11, 4, EData{0.1});
+    builder.AddEdge(0, 1, EData{1.1});
+    builder.AddEdge(2, 1, EData{1.1});
+    builder.AddEdge(3, 1, EData{1.4});
+    builder.AddEdge(4, 0, EData{1.6});
+    builder.AddEdge(5, 0, EData{1.1});
+    builder.AddEdge(6, 2, EData{1.1});
+    builder.AddEdge(7, 3, EData{1.2});
+    builder.AddEdge(8, 3, EData{1.7});
+    builder.AddEdge(9, 3, EData{1.1});
+    builder.AddEdge(11, 4, EData{1.1});
 
     builder.Save("test_graph");
 }
@@ -60,7 +61,8 @@ public:
     }
 
     void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
-        // need not apply either
+        vertex.data().actived = true;
+        std::cout << vertex.id() << std::endl;
     }
 
     saedb::edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
@@ -72,12 +74,38 @@ public:
         EData ed = edge.data();
         float weight = ed.weight;
         if ( ((double)rand() / RAND_MAX) < weight){
-            context.signalVid(edge.source().id());
+            context.signal(edge.source());
             std::cout << "vertex = "<< edge.source().id() << " is activated"<< std::endl;
         }
     }
 };
 
+class Clear:
+public saedb::IAlgorithm<graph_type, float>
+{
+    /**
+     * Simulate does not need gather.
+     */
+public:
+    edge_dir_type gather_edges(icontext_type& context, const vertex_type& vertex) const{
+        return saedb::NO_EDGES;
+    }
+
+    gather_type gather(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
+        return 0.0;
+    }
+
+    void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
+        vertex.data().actived = false;
+    }
+
+    saedb::edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
+        return saedb::NO_EDGES;
+    }
+
+    void scatter(icontext_type& context, const vertex_type& vertex, edge_type& edge) const {
+    }
+};
 
 struct ActiveNode {
     float num;
@@ -94,21 +122,28 @@ struct ActiveNode {
 };
 
 ActiveNode ActiveNodeAggregator(Simulate::icontext_type& context, const graph_type::vertex_type& vertex){
-    return ActiveNode(1.0);
+    if (vertex.data().actived) 
+    {
+        std::cout << vertex.id() << " is being counted" << std::endl;
+        return ActiveNode(1.0);
+    }
+    return ActiveNode();
 }
-
 
 double *greedy_s;
 bool *mark;
 
 // give a seed u, to estimate how many nodes can be influenced by u
-double simulate(saedb::IEngine<Simulate> *engine, const std::vector<uint32_t> &seedset, int round){
+double simulate(saedb::IEngine<Simulate> *engine, saedb::IEngine<Clear> *clear_engine, const std::vector<uint32_t> &seedset, int round){
     // engine
     double result = 0.0;
 
     ActiveNode active_node_counter;
 
     for(int i=0;i<round;++i){
+        clear_engine->signalAll();
+        clear_engine->start();
+
         engine->signalVertices(seedset);
         for(int j =0 ; j < seedset.size() ; j++){
             std::cout << "seed " << seedset[j] << std::endl;
@@ -132,6 +167,7 @@ int main(){
     g.load_format(graph_path);
 
     saedb::IEngine<Simulate> *engine = new saedb::EngineDelegate<Simulate>(g);
+    saedb::IEngine<Clear> *clear_engine = new saedb::EngineDelegate<Clear>(g);
 
     size_t n = g.num_vertices();
     int round = 1;
@@ -145,13 +181,12 @@ int main(){
 
     std::priority_queue<std::pair<double, std::pair<int,int>>> q;
     std::vector<uint32_t> seed_list;
-    // calculate the influenced number of nodes by each node, and store into q
 
     // calculate the influenced number of nodes by each node, and store into q
     for (int i = 0; i < n; i++) {
         std::pair<int, int> tp = std::make_pair(i, 1);
         seed_list.push_back(i);
-        double val = simulate(engine, seed_list, round);
+        double val = simulate(engine, clear_engine, seed_list, round);
         std::cout << "veretex=" << i << ", marginal=" << val << std::endl;
 
         q.push(make_pair(val, tp));
@@ -174,7 +209,7 @@ int main(){
                 break;
             } else {
                 seed_list.push_back(tp.second.first);
-                double val = simulate(engine, seed_list, round);
+                double val = simulate(engine, clear_engine, seed_list, round);
                 seed_list.pop_back();
                 tp.second.second = ss;
                 tp.first = val - ret;
