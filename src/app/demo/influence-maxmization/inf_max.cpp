@@ -30,16 +30,16 @@ void test_create() {
         builder.AddVertex(i, VData{0.1});
     }
 
-    builder.AddEdge(0, 1, EData{1.1});
-    builder.AddEdge(2, 1, EData{1.1});
-    builder.AddEdge(3, 1, EData{1.4});
-    builder.AddEdge(4, 0, EData{1.6});
-    builder.AddEdge(5, 0, EData{1.1});
-    builder.AddEdge(6, 2, EData{1.1});
-    builder.AddEdge(7, 3, EData{1.2});
-    builder.AddEdge(8, 3, EData{1.7});
-    builder.AddEdge(9, 3, EData{1.1});
-    builder.AddEdge(11, 4, EData{1.1});
+    builder.AddEdge(0, 1, EData{0.5});
+    builder.AddEdge(2, 1, EData{0.6});
+    builder.AddEdge(3, 1, EData{0.8});
+    builder.AddEdge(4, 0, EData{0.6});
+    builder.AddEdge(5, 0, EData{0.8});
+    builder.AddEdge(6, 2, EData{0.7});
+    builder.AddEdge(7, 3, EData{0.2});
+    builder.AddEdge(8, 3, EData{0.9});
+    builder.AddEdge(9, 3, EData{0.1});
+    builder.AddEdge(11, 4, EData{0.7});
 
     builder.Save("test_graph");
 }
@@ -62,7 +62,6 @@ public:
 
     void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
         vertex.data().actived = true;
-        std::cout << vertex.id() << std::endl;
     }
 
     saedb::edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
@@ -122,11 +121,7 @@ struct ActiveNode {
 };
 
 ActiveNode ActiveNodeAggregator(Simulate::icontext_type& context, const graph_type::vertex_type& vertex){
-    if (vertex.data().actived) 
-    {
-        std::cout << vertex.id() << " is being counted" << std::endl;
-        return ActiveNode(1.0);
-    }
+    if (vertex.data().actived) return ActiveNode(1.0);
     return ActiveNode();
 }
 
