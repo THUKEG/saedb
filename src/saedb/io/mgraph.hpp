@@ -27,6 +27,7 @@ namespace sae {
 
         typedef unique_ptr<VertexIterator> VertexIteratorPtr;
         typedef unique_ptr<EdgeIterator> EdgeIteratorPtr;
+        typedef unique_ptr<DataTypeAccessor> DataTypePtr;
 
         struct VertexIterator {
             virtual vid_t Id() = 0;
@@ -93,6 +94,16 @@ namespace sae {
             virtual EdgeIteratorPtr BackwardEdges() = 0;
 
             /**
+             * get data type accessor by name
+             */
+            virtual DataTypeAccessor* DataType(const char * name) = 0;
+
+            /**
+             * Get all meta information about all data types
+             */
+            virtual std::vector<DataTypeAccessor*> DataTypes() = 0;
+
+            /**
              * Force sync the mapped files with disk.
              *
              * Note that operating system will sync with disk even you have
@@ -117,7 +128,7 @@ namespace sae {
         };
 
         struct MappedGraphWriter : public GraphWriter {
-            static MappedGraphWriter* Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_size, uint32_t edge_data_size);
+            static MappedGraphWriter* Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_size, uint32_t edge_data_size, uint32_t type_count, uint32_t type_total_size);
         };
     }
 }

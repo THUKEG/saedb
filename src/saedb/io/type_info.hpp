@@ -28,7 +28,6 @@ struct FieldInfo {
 struct DataTypeInfo {
     char                         type_name[MAX_TYPE_NAME_LEN];
     uint32_t                     field_num;
-    std::vector<FieldInfo>       fields;
 };
 
 FieldInfo* CreateFieldInfo(const char*);
@@ -38,50 +37,69 @@ DataTypeInfo* CreateDataTypeInfo(const char*);
 struct DataTypeAccessor {
 
     DataTypeAccessor(const char* n) {
-        strcpy(name, n);
         dt = CreateDataTypeInfo(n);
         dt->field_num = 0;
         position = 0;
     }
+
+    DataTypeAccessor(DataTypeInfo* ti, FieldInfo* fi) {
+        dt = ti;
+        uint32_t field_count = dt->field_num;
+        while (field_count > 0) {
+            fields.push_back(fi);
+            fi++;
+            field_count--;
+        }
+    }
+
     // append field definition to current data type definition
     void appendField(const char* fname, FieldType type) {
-        FieldInfo fi = FieldInfo();
-        strcpy(fi.field_name, fname);
-        fi.offset = position;
-        fi.type = type;
+        FieldInfo* fi = new FieldInfo;
+        strcpy(fi->field_name, fname);
+        fi->offset = position;
+        fi->type = type;
 
         switch (type) {
             case INT_T:
-                fi.size = sizeof(int32_t);
+                fi->size = sizeof(int32_t);
                 position += sizeof(int32_t);
                 break;
             case FLOAT_T:
-                fi.size = sizeof(float);
+                fi->size = sizeof(float);
                 position += sizeof(float);
                 break;
             case DOUBLE_T:
-                fi.size = sizeof(double);
+                fi->size = sizeof(double);
                 position += sizeof(double);
                 break;
         }
-        dt->fields.push_back(std::move(fi));
+        fields.push_back(fi);
         dt->field_num += 1;
     }
 
+    void appendField(FieldInfo* fi) {
+        fields.push_back(fi);
+    }
+
     // get a vector of all field definitions
-    std::vector<FieldInfo> getAllFields() {
-        return dt->fields;
+    std::vector<FieldInfo*> getAllFields() {
+        return fields;
     }
 
 
-    uint32_t getFieldNum() {
+    uint32_t getFieldCount() {
         return dt->field_num;
     }
 
+    size_t Size() {
+        return sizeof(DataTypeInfo) + fields.size() * sizeof(FieldInfo);
+    }
+
     void print() {
-        std::cout << "struct " << name << std::endl;
-        for (auto ft : dt->fields) {
-            std::cout << "\tname:" << ft.field_name << ", " << "offset: " << ft.offset << ", size: " << ft.size << std::endl;
+        std::cout << "struct " << dt->type_name << std::endl;
+        for (auto ft : fields) {
+            std::cout << "\tname:" << ft->field_name << ", " << "offset: "
+                      << ft->offset << ", size: " << ft->size << std::endl;
         }
     }
     // get a field by name
@@ -89,20 +107,28 @@ struct DataTypeAccessor {
     template < typename field_t >
     field_t getField(void* base, const char* name) {
         // quick impl
-        for (auto ft : dt->fields) {
-            if (strcmp(ft.field_name, name) == 0) {
-                std::cout << "match name: " << ft.field_name << " and " << name << ", offset: " << ft.offset << std::endl;
-                return *((field_t*)((char*)base + ft.offset));
+        for (auto ft : fields) {
+            if (strcmp(ft->field_name, name) == 0) {
+                std::cout << "match name: " << ft->field_name << " and " << name << ", offset: " << ft->offset << std::endl;
+                return *((field_t*)((char*)base + ft->offset));
             }
         }
         std::cout << "can not find field" << std::endl;
         return field_t();
     }
 
-    private:
-    char name[MAX_TYPE_NAME_LEN];
+    ~DataTypeAccessor() {
+        delete dt;
+        for (auto p : fields) {
+            delete p;
+        }
+    }
+
     DataTypeInfo* dt;
+
+    private:
     uint32_t position;
+    std::vector<FieldInfo*> fields;
 };
 
 // Build a builder
