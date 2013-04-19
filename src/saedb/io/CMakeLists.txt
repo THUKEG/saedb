@@ -8,6 +8,7 @@ file(GLOB MGRAPH_LIBRARY_SOURCES
     "mgraph.hpp"
     "mgraph.cpp"
     "mmap_file.hpp"
+    "type_info.cpp"
     "../graph.hpp"
     )
 
@@ -15,3 +16,4 @@ add_library(mgraph ${MGRAPH_LIBRARY_SOURCES})
 add_executable(mgraph_test mgraph_test.cpp)
 target_link_libraries(mgraph_test mgraph)
 add_executable(mmap_test mmap_file.hpp mmap_test.cpp)
+add_executable(type_info_test type_info_test.cpp type_info.cpp)
