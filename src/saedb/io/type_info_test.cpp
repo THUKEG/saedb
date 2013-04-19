@@ -30,9 +30,9 @@ void test() {
 
     cout << "original data " << "i: " << t->i << ", j: " << t->j << ", k: " << t->k << endl;
     void* p = (void*)t;
-    auto i_val = builder->getFieldAccessor(p, "i");
-    auto j_val = builder->getFieldAccessor(p, "j");
-    auto k_val = builder->getFieldAccessor(p, "k");
+    auto* i_val = builder->getFieldAccessor(p, "i");
+    auto* j_val = builder->getFieldAccessor(p, "j");
+    auto* k_val = builder->getFieldAccessor(p, "k");
 
     if (!i_val || !j_val || !k_val) {
         cout << "Bug here. Can not find a field." << endl;
@@ -45,6 +45,9 @@ void test() {
     builder->ClearAfterBuild();
     delete builder;
 
+    delete i_val;
+    delete j_val;
+    delete k_val;
     cout << "after data " << "i: " << t->i << ", j: " << t->j << ", k: " << t->k << endl;
 }
 

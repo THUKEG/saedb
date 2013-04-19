@@ -60,8 +60,6 @@ DataTypeInfo* CreateDataTypeInfo(const char*);
  */
 struct DataTypeAccessor {
 
-    typedef std::unique_ptr<FieldAccessor> FieldAccessorPtr;
-
     // append field definition to current data type definition
     virtual void appendField(const char* fname, FieldType type) = 0;
 
@@ -80,7 +78,7 @@ struct DataTypeAccessor {
 
     // get a field by name
     // its actual job is just move forward void* and do type cast
-    virtual FieldAccessorPtr getFieldAccessor(void* base, const char* name) = 0;
+    virtual FieldAccessor* getFieldAccessor(void* base, const char* name) = 0;
 
     /**
      * After building the type, clear allocated pointer

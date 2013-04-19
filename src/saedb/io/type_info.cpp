@@ -87,12 +87,12 @@ struct DataTypeAccessorImpl: public DataTypeAccessor {
     }
     // get a field by name
     // its actual job is just move forward void* and do type cast
-    FieldAccessorPtr getFieldAccessor(void* base, const char* name) {
+    FieldAccessor* getFieldAccessor(void* base, const char* name) {
         // quick impl
         for (auto ft : fields) {
             if (strcmp(ft->field_name, name) == 0) {
                 std::cout << "match name: " << ft->field_name << " and " << name << ", offset: " << ft->offset << std::endl;
-                return std::unique_ptr<FieldAccessor>(new FieldAccessor(base, ft));
+                return new FieldAccessor(base, ft);
             }
         }
         return nullptr;

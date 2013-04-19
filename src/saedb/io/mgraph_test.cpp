@@ -42,10 +42,10 @@ void test_load(const char* graph_name) {
     MappedGraph* g = MappedGraph::Open(graph_name);
     cout << "loaded, n: " << g->VertexCount() << ", m:" << g->EdgeCount() << endl;
 
-    auto vtype = g->DataType("VData");
+    auto* vtype = g->DataType("VData");
     for (auto vs = g->Vertices(); vs->Alive(); vs->Next()) {
         void* vd = vs->Data();
-        auto pagerank_val = vtype->getFieldAccessor(vd, "pagerank");
+        auto* pagerank_val = vtype->getFieldAccessor(vd, "pagerank");
         if (!pagerank_val) {
             cout << "ERROR: can not find the field pagerank" << endl;
             return;
@@ -80,6 +80,7 @@ void test_load(const char* graph_name) {
 
     g->Close();
     delete g;
+    delete vtype;
 }
 
 void test_show_meta_information(const char* graph_name) {
