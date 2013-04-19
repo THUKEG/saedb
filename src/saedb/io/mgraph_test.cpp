@@ -26,12 +26,12 @@ void test_create() {
     builder.AddVertex(30, VData{0.7});
 
     DataTypeAccessor* vd = builder.CreateType("VData");
-    std::cout << "Building type : " << vd->dt->type_name << std::endl;
+    std::cout << "Building type : " << vd->getTypeName() << std::endl;
     vd->appendField("pagerank", DOUBLE_T);
     builder.SaveDataType(vd);
 
     DataTypeAccessor* ed = builder.CreateType("EData");
-    std::cout << "Building type : " << ed->dt->type_name << std::endl;
+    std::cout << "Building type : " << ed->getTypeName() << std::endl;
     ed->appendField("type", INT_T);
     builder.SaveDataType(ed);
 
@@ -45,7 +45,12 @@ void test_load(const char* graph_name) {
     auto vtype = g->DataType("VData");
     for (auto vs = g->Vertices(); vs->Alive(); vs->Next()) {
         void* vd = vs->Data();
-        cout << vs->Id() << ": " << vtype->getField<double>(vd, "pagerank") << endl;
+        auto pagerank_val = vtype->getFieldAccessor(vd, "pagerank");
+        if (!pagerank_val) {
+            cout << "ERROR: can not find the field pagerank" << endl;
+            return;
+        }
+        cout << vs->Id() << ": " << pagerank_val->getValue<double>() << endl;
 
         cout << "In Edges:" << endl;
         for (auto ei = vs->InEdges(); ei->Alive(); ei->Next()) {
@@ -83,7 +88,7 @@ void test_show_meta_information(const char* graph_name) {
 
     std::vector<DataTypeAccessor*> dataTypes = g->DataTypes();
     for (auto p : dataTypes) {
-        cout << "struct " << p->dt->type_name << " :" << endl;
+        cout << "struct " << p->getTypeName() << " :" << endl;
         auto fields = p->getAllFields();
         for (auto f : fields) {
             cout << "\tname:" << f->field_name << " offset:" << f->offset << " size:" << f->size << endl;

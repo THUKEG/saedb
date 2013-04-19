@@ -1,6 +1,7 @@
 #ifndef SAE_TYPE_INFO_HPP
 #define SAE_TYPE_INFO_HPP
 #include <vector>
+#include <memory>
 #include <iostream>
 #include <cstdint>
 #include <cstring>
@@ -30,109 +31,73 @@ struct DataTypeInfo {
     uint32_t                     field_num;
 };
 
+/**
+ * Access a field in a void* pointer
+ */
+struct FieldAccessor {
+
+    FieldAccessor(void* base_ptr, const FieldInfo* field_info):
+        fi(field_info)
+    {
+        base  = (char*)base_ptr;
+    }
+
+    template < typename field_t >
+    field_t& getValue() {
+        return *((field_t*)(base + fi->offset));
+    }
+
+    private:
+    char* base;
+    const FieldInfo* fi;
+};
+
 FieldInfo* CreateFieldInfo(const char*);
 DataTypeInfo* CreateDataTypeInfo(const char*);
 
-// now it can build and access type. Superman.
+/*
+ * now it can build and access type. Superman.
+ */
 struct DataTypeAccessor {
 
-    DataTypeAccessor(const char* n) {
-        dt = CreateDataTypeInfo(n);
-        dt->field_num = 0;
-        position = 0;
-    }
-
-    DataTypeAccessor(DataTypeInfo* ti, FieldInfo* fi) {
-        dt = ti;
-        uint32_t field_count = dt->field_num;
-        while (field_count > 0) {
-            fields.push_back(fi);
-            fi++;
-            field_count--;
-        }
-    }
+    typedef std::unique_ptr<FieldAccessor> FieldAccessorPtr;
 
     // append field definition to current data type definition
-    void appendField(const char* fname, FieldType type) {
-        FieldInfo* fi = new FieldInfo;
-        strcpy(fi->field_name, fname);
-        fi->offset = position;
-        fi->type = type;
+    virtual void appendField(const char* fname, FieldType type) = 0;
 
-        switch (type) {
-            case INT_T:
-                fi->size = sizeof(int32_t);
-                position += sizeof(int32_t);
-                break;
-            case FLOAT_T:
-                fi->size = sizeof(float);
-                position += sizeof(float);
-                break;
-            case DOUBLE_T:
-                fi->size = sizeof(double);
-                position += sizeof(double);
-                break;
-        }
-        fields.push_back(fi);
-        dt->field_num += 1;
-    }
-
-    void appendField(FieldInfo* fi) {
-        fields.push_back(fi);
-    }
+    virtual void appendField(FieldInfo* fi) = 0;
 
     // get a vector of all field definitions
-    std::vector<FieldInfo*> getAllFields() {
-        return fields;
-    }
+    virtual std::vector<FieldInfo*> getAllFields() = 0;
 
+    virtual uint32_t getFieldCount() = 0;
 
-    uint32_t getFieldCount() {
-        return dt->field_num;
-    }
+    virtual const char* getTypeName() = 0;
 
-    size_t Size() {
-        return sizeof(DataTypeInfo) + fields.size() * sizeof(FieldInfo);
-    }
+    virtual size_t Size() = 0;
 
-    void print() {
-        std::cout << "struct " << dt->type_name << std::endl;
-        for (auto ft : fields) {
-            std::cout << "\tname:" << ft->field_name << ", " << "offset: "
-                      << ft->offset << ", size: " << ft->size << std::endl;
-        }
-    }
+    virtual void print() = 0;
+
     // get a field by name
     // its actual job is just move forward void* and do type cast
-    template < typename field_t >
-    field_t getField(void* base, const char* name) {
-        // quick impl
-        for (auto ft : fields) {
-            if (strcmp(ft->field_name, name) == 0) {
-                std::cout << "match name: " << ft->field_name << " and " << name << ", offset: " << ft->offset << std::endl;
-                return *((field_t*)((char*)base + ft->offset));
-            }
-        }
-        std::cout << "can not find field" << std::endl;
-        return field_t();
-    }
+    virtual FieldAccessorPtr getFieldAccessor(void* base, const char* name) = 0;
 
-    ~DataTypeAccessor() {
-        delete dt;
-        for (auto p : fields) {
-            delete p;
-        }
-    }
-
-    DataTypeInfo* dt;
-
-    private:
-    uint32_t position;
-    std::vector<FieldInfo*> fields;
+    /**
+     * After building the type, clear allocated pointer
+     * This should not be called when we are reading graph.
+     */
+    virtual void ClearAfterBuild() = 0;
 };
 
-// Build a builder
-DataTypeAccessor* DataTypeAccessorFactory(const char* name);
+/*
+ * data type builder for user
+ */
+DataTypeAccessor* DataTypeAccessorFactory(const char*);
+
+/*
+ * data type build loaded from disk
+ */
+DataTypeAccessor* DataTypeAccessorFactory(DataTypeInfo*, FieldInfo*);
 
 }}
 #endif

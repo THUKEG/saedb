@@ -10,6 +10,7 @@
 
 #include "mmap_file.hpp"
 #include "mgraph.hpp"
+#include "type_info.hpp"
 
 namespace sae {
 namespace io {
@@ -244,7 +245,7 @@ struct MappedGraphImpl : public MappedGraph {
             FieldInfo* fi = (FieldInfo*)(start + 1);
 
             start = (DataTypeInfo*) (fi + fc);
-            DataTypeAccessor* dt = new DataTypeAccessor(dti, fi);
+            DataTypeAccessor* dt = DataTypeAccessorFactory(dti, fi);
             mg->dataTypes.push_back(dt);
         }
 
@@ -303,7 +304,7 @@ struct MappedGraphImpl : public MappedGraph {
 
     DataTypeAccessor* DataType(const char * name) {
         for (auto p : dataTypes) {
-            if (strcmp(p->dt->type_name, name) == 0) {
+            if (strcmp(p->getTypeName(), name) == 0) {
                 return p;
             }
         }
@@ -376,7 +377,7 @@ struct MappedGraphWriterImpl : public MappedGraphWriter {
     }
 
     void AppendDataType(DataTypeAccessor* accessor) {
-        memcpy(g->types + type_file_offset, accessor->dt, sizeof(DataTypeInfo));
+        memcpy(g->types + type_file_offset, accessor->getTypeName(), sizeof(DataTypeInfo));
         type_file_offset += sizeof(DataTypeInfo);
         for (auto fi : accessor->getAllFields()) {
             memcpy(g->types + type_file_offset, fi, sizeof(FieldInfo));

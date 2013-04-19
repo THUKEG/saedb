@@ -30,9 +30,20 @@ void test() {
 
     cout << "original data " << "i: " << t->i << ", j: " << t->j << ", k: " << t->k << endl;
     void* p = (void*)t;
-    cout << builder->getField<uint32_t>(p, "i") << endl;
-    cout << builder->getField<float>(p, "j") << endl;
-    cout << builder->getField<double>(p, "k") << endl;
+    auto i_val = builder->getFieldAccessor(p, "i");
+    auto j_val = builder->getFieldAccessor(p, "j");
+    auto k_val = builder->getFieldAccessor(p, "k");
+
+    if (!i_val || !j_val || !k_val) {
+        cout << "Bug here. Can not find a field." << endl;
+        return;
+    }
+    cout << i_val->getValue<uint32_t>() << endl;
+    cout << j_val->getValue<float>() << endl;
+    cout << k_val->getValue<double>() << endl;
+
+    builder->ClearAfterBuild();
+    delete builder;
 
     cout << "after data " << "i: " << t->i << ", j: " << t->j << ", k: " << t->k << endl;
 }
