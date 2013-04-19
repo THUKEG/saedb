@@ -1,11 +1,6 @@
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <err.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <memory>
 
 #include "mmap_file.hpp"
@@ -38,7 +33,7 @@ namespace {
 
     const char * concat(const char * a, const char * b) {
         static char buf[1024];
-        snprintf(buf, sizeof(buf), "%s%s", a, b);
+        std::snprintf(buf, sizeof(buf), "%s%s", a, b);
         return buf;
     }
 
@@ -343,8 +338,8 @@ struct MappedGraphWriterImpl : public MappedGraphWriter {
         eid_t m = g->meta->edges;
 
         // sort forward and backword edge lists
-        qsort(g->forward, g->meta->edges, sizeof(EdgeListItem), source_comparer);
-        qsort(g->backward, g->meta->edges, sizeof(EdgeListItem), target_comparer);
+        std::qsort(g->forward, g->meta->edges, sizeof(EdgeListItem), source_comparer);
+        std::qsort(g->backward, g->meta->edges, sizeof(EdgeListItem), target_comparer);
 
         // build index
         vid_t *f = g->findex;
