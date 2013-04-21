@@ -8,6 +8,7 @@
 #ifndef SAEDB_TESTHARNESS_H_
 #define SAEDB_TESTHARNESS_H_
 
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -55,7 +56,7 @@ class Tester {
   ~Tester() {
     if (!ok_) {
       std::cerr << fname_ << ":" << line_ << ":" << ss_.str().c_str() << std::endl;
-      exit(1);
+      std::exit(1);
     }
   }
 

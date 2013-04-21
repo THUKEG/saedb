@@ -37,7 +37,7 @@ bool RegisterTest(const char* base, const char* name, void (*func)()) {
 }
 
 int RunAllTests() {
-  const char* matcher = getenv("SAE_TESTS");
+  const char* matcher = std::getenv("SAE_TESTS");
 
   int num = 0;
   if (tests != NULL) {
@@ -63,13 +63,13 @@ int RunAllTests() {
 std::string TempDir() {
   const char * dir;
 
-  dir = getenv("SAE_TMP_DIR");
+  dir = std::getenv("SAE_TMP_DIR");
   if (dir) return dir;
 
-  dir = getenv("TMP");
+  dir = std::getenv("TMP");
   if (dir) return dir;
 
-  dir = getenv("TEMP");
+  dir = std::getenv("TEMP");
   if (dir) return dir;
 
   // default to current directory
@@ -79,7 +79,10 @@ std::string TempDir() {
 
 std::string TempFileName() {
   char tmp[L_tmpnam];
-  return tmpnam(tmp);
+  tmpnam(tmp);
+  // Windows quirk: it returns a '\\' prefixed name in current dir
+  if (tmp[0] == '\\') return tmp + 1;
+  else return tmp;
 }
 
 int RandomSeed() {
