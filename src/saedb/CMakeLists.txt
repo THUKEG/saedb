@@ -1,6 +1,9 @@
 project(saedb)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
 add_subdirectory(io)
+add_subdirectory(test)
 
 file(GLOB SAE_SOURCES
     "*.hpp"

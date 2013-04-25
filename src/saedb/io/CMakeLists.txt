@@ -19,7 +19,8 @@ set(MGRAPH_LIBRARY_SOURCES
 
 add_library(mmap_file ${MMAP_FILE_SOURCES})
 add_executable(mmap_test mmap_file.hpp mmap_test.cpp)
-target_link_libraries(mmap_test mmap_file)
+target_link_libraries(mmap_test mmap_file sae_test)
+add_test(NAME mmap_test COMMAND mmap_test)
 
 add_library(mgraph ${MGRAPH_LIBRARY_SOURCES})
 target_link_libraries(mgraph mmap_file)

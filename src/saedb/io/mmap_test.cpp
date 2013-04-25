@@ -1,43 +1,58 @@
+#include <cstdlib>
 #include <iostream>
+#include <string>
+#include "test/testharness.hpp"
 #include "mmap_file.hpp"
 
 using namespace std;
 
-void test_create() {
-    int count = 17;
-    int size = count * sizeof(int);
-    MMapFile* f = MMapFile::Create("mapped", size);
-    if (f) {
+struct MMapFileTest {
+    MMapFileTest() {
+        filepath = saedb::test::TempFileName();
+    }
+
+    ~MMapFileTest() {
+        int ret = remove(filepath.c_str());
+        ASSERT_TRUE(ret == 0) << "removing temp file: " << filepath;
+    }
+
+protected:
+    string filepath;
+};
+
+
+TEST(MMapFileTest, CreateAndRead) {
+    int COUNT = 17;
+    // Test Create
+    {
+        int count = COUNT;
+        int size = count * sizeof(int);
+        MMapFile* f = MMapFile::Create(filepath.c_str(), size);
+        ASSERT_TRUE(f) << "creating mmap file";
         int* d = (int*) f->Data();
         for (int i = 0; i < count; i++) {
             d[i] = i;
         }
-        cout << "data: " << f->Data() << endl;
-        cout << "size: " << f->Size() << endl;
         f->Close();
-    } else {
-        cout << "mmap failed" << endl;
+        delete f;
     }
-    delete f;
-}
 
-void test_read() {
-    MMapFile* f = MMapFile::Open("mapped");
-    if (f) {
+    // Test Read
+    {
+        MMapFile* f = MMapFile::Open(filepath.c_str());
+        ASSERT_TRUE(f) << "reading mmap file";
+
         int* d = (int*) f->Data();
         int count = f->Size() / sizeof(int);
+        ASSERT_EQ(count, COUNT);
         for (int i = 0; i < count; i++) {
-            cout << d[i] << endl;
+            ASSERT_EQ(d[i], i);
         }
-    } else {
-        cout << "mmap failed" << endl;
+        f->Close();
+        delete f;
     }
-    f->Close();
-    delete f;
 }
 
 int main() {
-    test_create();
-    test_read();
-    return 0;
+    return ::saedb::test::RunAllTests();
 }

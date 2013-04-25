@@ -5,5 +5,6 @@
 #include "engine/iengine.hpp"
 #include "engine/engine_delegate.hpp"
 #include "ialgorithm.hpp"
+#include "test/testharness.hpp"
 
 #endif
