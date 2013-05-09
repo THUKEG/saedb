@@ -49,7 +49,7 @@ class ISerializeStream {
 namespace custom_serialization_impl {
 
     template <typename serialize_stream_t, typename T>
-    struct serialize_impl {
+    struct deserialize_impl {
         inline static void run(serialize_stream_t& instr, T& t) {
             if (std::is_pod<T>::value) {
                 instr.read(reinterpret_cast<char*>(&t), sizeof(T));
@@ -62,7 +62,7 @@ namespace custom_serialization_impl {
 
 template <typename T>
 inline ISerializeStream& operator>>(ISerializeStream& istream, T& t) {
-    ::sae::serialization::custom_serialization_impl::serialize_impl< ISerializeStream, T >::run(istream, t);
+    ::sae::serialization::custom_serialization_impl::deserialize_impl< ISerializeStream, T >::run(istream, t);
     return istream;
 }
 

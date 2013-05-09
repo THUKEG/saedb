@@ -21,7 +21,7 @@ class OSerializeStream {
         /*
          * write bytes to stream
          */
-        void write(char* source, size_t len) {
+        void write(const char* source, size_t len) {
             ostr->write(source, len);
         }
 
@@ -36,7 +36,7 @@ class OSerializeStream {
 namespace custom_serialization_impl {
 
     template <typename stream_t, typename T>
-    struct deserialize_impl {
+    struct serialize_impl {
         static void run(stream_t& ostr, T& t) {
             if (std::is_pod<T>::value) {
                 ostr.write(reinterpret_cast<char*>(&t), sizeof(T));
@@ -50,7 +50,7 @@ namespace custom_serialization_impl {
 
 template <typename T>
 OSerializeStream& operator<<(OSerializeStream& ostream, T& t) {
-    custom_serialization_impl::deserialize_impl< OSerializeStream, T >::run(ostream, t);
+    custom_serialization_impl::serialize_impl< OSerializeStream, T >::run(ostream, t);
     return ostream;
 }
 
