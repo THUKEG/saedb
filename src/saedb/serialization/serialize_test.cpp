@@ -3,6 +3,8 @@
 #include <fstream>
 #include <cstring>
 #include <cstdio>
+#include <list>
+#include <vector>
 
 using namespace std;
 using namespace sae::serialization;
@@ -18,6 +20,8 @@ struct SerializationTest {
         remove("char-star.bin");
         remove("string.bin");
         remove("char-array.bin");
+        remove("list.bin");
+        remove("vector.bin");
     }
 };
 
@@ -89,6 +93,63 @@ TEST(SerializationTest, BasicTypes) {
         ASSERT_TRUE(memcmp(c, d, sizeof(c)) == 0);
     }
 }
+
+TEST(SerializationTest, List) {
+    list<int> s;
+    list<int> t;
+    s.push_back(1);
+    s.push_back(2);
+
+    {
+        ofstream fout("list.bin", std::fstream::binary);
+        OSerializeStream encoder(&fout);
+        encoder << s;
+        fout.close();
+    }
+
+    {
+        ifstream fin("list.bin", fstream::binary);
+        ISerializeStream decoder(&fin);
+        decoder >> t;
+        ASSERT_EQ(t.size(), s.size());
+        auto sbegin = s.begin();
+        auto tbegin = t.begin();
+        for (size_t i = 0;i < s.size(); ++i) {
+            ASSERT_EQ(*sbegin, *tbegin);
+            sbegin++;
+            tbegin++;
+        }
+    }
+}
+
+TEST(SerializationTest, Vector) {
+    vector<int> s;
+    vector<int> t;
+    s.push_back(1);
+    s.push_back(2);
+
+    {
+        ofstream fout("vector.bin", fstream::binary);
+        OSerializeStream encoder(&fout);
+        encoder << s;
+        fout.close();
+    }
+
+    {
+        ifstream fin("vector.bin", fstream::binary);
+        ISerializeStream decoder(&fin);
+        decoder >> t;
+        ASSERT_EQ(t.size(), s.size());
+        auto sbegin = s.begin();
+        auto tbegin = t.begin();
+        for (size_t i = 0;i < s.size(); ++i) {
+            ASSERT_EQ(*sbegin, *tbegin);
+            sbegin++;
+            tbegin++;
+        }
+    }
+}
+
 
 int main(){
     return ::saedb::test::RunAllTests();
