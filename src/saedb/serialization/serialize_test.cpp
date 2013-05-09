@@ -22,6 +22,7 @@ struct SerializationTest {
         remove("char-array.bin");
         remove("list.bin");
         remove("vector.bin");
+        remove("data.bin");
     }
 };
 
@@ -150,6 +151,63 @@ TEST(SerializationTest, Vector) {
     }
 }
 
+
+class Data {
+    public:
+    int i;
+    vector<int> j;
+
+    Data() {
+    }
+};
+
+namespace sae{
+namespace serialization{
+
+namespace custom_serialization_impl{
+
+    template <>
+    struct serialize_impl<OSerializeStream, Data> {
+        static void run(OSerializeStream& ostr, Data& d) {
+            ostr << d.i << d.j;
+        }
+    };
+
+    template <>
+    struct deserialize_impl<ISerializeStream, Data> {
+        static void run(ISerializeStream& istr, Data& d) {
+            istr >> d.i >> d.j;
+        }
+    };
+}}}
+
+TEST(SerializationTest, CustomData) {
+    Data a;
+    a.i = 42;
+    a.j.push_back(1);
+    a.j.push_back(2);
+    Data b;
+    {
+        ofstream fout("data.bin", fstream::binary);
+        OSerializeStream encoder(&fout);
+        encoder << a;
+    }
+
+    {
+        ifstream fin("data.bin", fstream::binary);
+        ISerializeStream decoder(&fin);
+        decoder >> b;
+        ASSERT_EQ(a.i, b.i);
+        ASSERT_EQ(a.j.size(), b.j.size());
+        auto abegin = a.j.begin();
+        auto bbegin = b.j.begin();
+        for (size_t i = 0;i < a.j.size(); ++i){
+            ASSERT_EQ(*(abegin), *(bbegin));
+            abegin++;
+            bbegin++;
+        }
+    }
+}
 
 int main(){
     return ::saedb::test::RunAllTests();
