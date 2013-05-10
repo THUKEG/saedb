@@ -7,7 +7,7 @@ namespace sae{
 namespace serialization{
 
     template <typename iterator_t>
-    void serializa_iterator(OSerializeStream& ostr, iterator_t begin, iterator_t end) {
+    void serialize_iterator(OSerializeStream& ostr, iterator_t begin, iterator_t end) {
         size_t len = std::distance(begin, end);
         ostr << len;
 

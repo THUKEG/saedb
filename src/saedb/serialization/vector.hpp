@@ -12,7 +12,7 @@ namespace custom_serialization_impl {
     template <typename T>
     struct serialize_impl<OSerializeStream, std::vector<T> > {
         static void run(OSerializeStream& ostr, std::vector<T>& s) {
-            serializa_iterator(ostr, s.begin(), s.end());
+            serialize_iterator(ostr, s.begin(), s.end());
         }
     };
 

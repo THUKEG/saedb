@@ -59,7 +59,7 @@ TEST(SerializationTest, BasicTypes) {
         std::ifstream fin("char-star.bin", std::fstream::binary);
         ISerializeStream decoder(&fin);
         decoder >> b;
-        ASSERT_TRUE(memcmp(a, b, sizeof(a)) == 0);
+        ASSERT_TRUE(memcmp(a, b, strlen(a)) == 0);
     }
 
     string s("source");
@@ -75,7 +75,7 @@ TEST(SerializationTest, BasicTypes) {
         std::ifstream fin("string.bin", std::fstream::binary);
         ISerializeStream decoder(&fin);
         decoder >> t;
-        ASSERT_TRUE(memcmp(s.c_str(), t.c_str(), sizeof(s.c_str())) == 0);
+        ASSERT_TRUE(memcmp(s.c_str(), t.c_str(), s.size()) == 0);
     }
 
     char c[] = "hello world";
