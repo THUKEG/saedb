@@ -2,8 +2,6 @@
 
 namespace sae{
 namespace threading {
-
-
 void Worker::operator()()
 {
     std::function<void()> task;
@@ -42,6 +40,16 @@ ThreadPool::ThreadPool(size_t threads)
         workers.push_back(std::thread(Worker(*this)));
 }
 
+size_t ThreadPool::size() {
+    return workers.size();
+}
+
+void ThreadPool::join() {
+    // join them
+    for(size_t i = 0;i<workers.size();++i)
+        workers[i].join();
+}
+
 // the destructor joins all threads
 ThreadPool::~ThreadPool()
 {
@@ -52,10 +60,7 @@ ThreadPool::~ThreadPool()
     }
 
     condition.notify_all();
-
-    // join them
-    for(size_t i = 0;i<workers.size();++i)
-        workers[i].join();
+    join();
 }
 
 // add new work item to the pool

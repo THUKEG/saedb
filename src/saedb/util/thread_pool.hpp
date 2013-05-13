@@ -30,8 +30,16 @@ private:
 class ThreadPool {
 public:
     ThreadPool(size_t);
+
     template<class F>
     void launch(F f);
+
+    // get num of all working thread
+    size_t size();
+
+    // wait for all threads done
+    void join();
+
     ~ThreadPool();
 private:
     friend class Worker;

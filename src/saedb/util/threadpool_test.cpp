@@ -23,6 +23,8 @@ TEST(ThreadPoolTest, RunAll) {
             printf("work: %d\n", i);
         });
     }
+
+    ASSERT_EQ(pool.size(), 4);
 }
 
 
