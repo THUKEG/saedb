@@ -1,4 +1,5 @@
 #include "thread_pool.hpp"
+#include <iostream>
 
 namespace sae{
 namespace threading {
@@ -38,6 +39,10 @@ ThreadPool::ThreadPool(size_t threads)
 {
     for(size_t i = 0;i<threads;++i)
         workers.push_back(std::thread(Worker(*this)));
+}
+
+ThreadPool::ThreadPool(const ThreadPool& other) {
+    std::cout << "call copy constructor" << std::endl;
 }
 
 size_t ThreadPool::size() {

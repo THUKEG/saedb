@@ -31,6 +31,8 @@ class ThreadPool {
 public:
     ThreadPool(size_t);
 
+    ThreadPool(const ThreadPool&);
+
     template<class F>
     void launch(F f);
 

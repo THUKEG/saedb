@@ -12,4 +12,4 @@ file(GLOB SAE_SOURCES
     )
 
 add_library(saedb ${SAE_SOURCES})
-target_link_libraries(saedb mgraph)
+target_link_libraries(saedb mgraph thread_pool)

@@ -6,12 +6,14 @@
 #include <mutex>
 #include <string>
 #include <map>
+#include <functional>
 
 #include "iengine.hpp"
 #include "context.hpp"
 #include "aggregator/aggregator.hpp"
 
 #include "graph_basic_types.hpp"
+#include "util/thread_pool.hpp"
 
 namespace saedb
 {
@@ -67,7 +69,14 @@ namespace saedb
 
         template <typename MemberFunction>
         void runSynchronous(MemberFunction func){
-            ( (this)->*(func) )();
+            if (threads_.size() <= 1) {
+                ((this)->*(func))();
+            } else {
+                for (size_t i = 0; i < threads_.size(); ++i) {
+                    threads_.launch(std::bind(func, *this));
+                }
+            }
+            threads_.join();
         }
         void executeInits();
         void executeGathers();
@@ -99,6 +108,7 @@ namespace saedb
         std::vector<message_type>           messages_;
         std::vector<int>                    active_superstep_;
         std::vector<int>                    active_minorstep_;
+        sae::threading::ThreadPool          threads_;
         context_type* context;
     };
 
@@ -109,7 +119,7 @@ namespace saedb
      **/
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::SynchronousEngine(graph_type& graph):
-    iteration_counter_(0), max_iterations_(5), graph_(graph) {
+    iteration_counter_(0), max_iterations_(5), graph_(graph), threads_(5) {
         vertex_programs_.resize(graph.num_local_vertices());
         gather_accum_.resize(graph.num_local_vertices());
         has_msg_.resize(graph.num_local_vertices(), 0);

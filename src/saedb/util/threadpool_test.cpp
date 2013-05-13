@@ -1,6 +1,7 @@
 #include "thread_pool.cpp"
 #include "test/testharness.hpp"
 #include <thread>
+#include <functional>
 
 using namespace std;
 using namespace sae::threading;
@@ -15,6 +16,13 @@ struct ThreadPoolTest {
     }
 };
 
+class Run {
+    public:
+        void print() {
+            cout << "Run::print" << endl;
+        }
+};
+
 TEST(ThreadPoolTest, RunAll) {
     ThreadPool pool(4);
 
@@ -25,6 +33,13 @@ TEST(ThreadPoolTest, RunAll) {
     }
 
     ASSERT_EQ(pool.size(), 4);
+}
+
+TEST(ThreadPoolTest, MemberFunction) {
+    {
+        Run a;
+        bind(&Run::print, a)();
+    }
 }
 
 
