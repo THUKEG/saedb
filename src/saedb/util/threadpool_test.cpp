@@ -32,14 +32,21 @@ TEST(ThreadPoolTest, RunAll) {
         });
     }
 
+    pool.join();
+
     ASSERT_EQ(pool.size(), 4);
 }
 
 TEST(ThreadPoolTest, MemberFunction) {
     {
         Run a;
-        bind(&Run::print, a)();
+        bind(&Run::print, &a)();
     }
+}
+
+TEST(ThreadPoolTest, Join) {
+    ThreadPool p(4);
+    p.join();
 }
 
 

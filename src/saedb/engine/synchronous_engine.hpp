@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <functional>
+#include <atomic>
 
 #include "iengine.hpp"
 #include "context.hpp"
@@ -73,7 +74,7 @@ namespace saedb
                 ((this)->*(func))();
             } else {
                 for (size_t i = 0; i < threads_.size(); ++i) {
-                    threads_.launch(std::bind(func, *this));
+                    threads_.launch(std::bind(func, this));
                 }
             }
             threads_.join();
@@ -110,6 +111,7 @@ namespace saedb
         std::vector<int>                    active_minorstep_;
         sae::threading::ThreadPool          threads_;
         context_type* context;
+        std::atomic<lvid_type> shared_lvid_counter_;
     };
 
 
@@ -119,7 +121,7 @@ namespace saedb
      **/
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::SynchronousEngine(graph_type& graph):
-    iteration_counter_(0), max_iterations_(5), graph_(graph), threads_(5) {
+    iteration_counter_(0), max_iterations_(5), graph_(graph), threads_(2),shared_lvid_counter_(5) {
         vertex_programs_.resize(graph.num_local_vertices());
         gather_accum_.resize(graph.num_local_vertices());
         has_msg_.resize(graph.num_local_vertices(), 0);
@@ -351,7 +353,7 @@ namespace saedb
     template <typename algorithm_t>
     typename SynchronousEngine<algorithm_t>::aggregator_type*
     SynchronousEngine<algorithm_t>::get_aggregator(){
-    	return aggregator;
+        return aggregator;
     }
 }
 #endif

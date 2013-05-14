@@ -14,16 +14,23 @@ void Worker::operator()()
 
             // look for a work item
             while(!pool.stop && pool.tasks.empty())
-            { // if there are none wait for notification
+            {
+                if(pool.is_wait_for_join && pool.task_done == pool.task_to_do)
+                {
+                    pool.wait_for_join.notify_one();
+                }
+                // if there are none wait for notification
                 pool.condition.wait(lock);
             }
 
             if(pool.stop && pool.tasks.empty()) // exit if the pool is stopped
-                return;
+                break;
+
 
             // get the task from the queue
             task = pool.tasks.front();
             pool.tasks.pop_front();
+            pool.task_done++;
 
         }   // release lock
 
@@ -35,14 +42,10 @@ void Worker::operator()()
 
 // the constructor just launches some amount of workers
 ThreadPool::ThreadPool(size_t threads)
-    :   stop(false)
+    :stop(false), task_to_do(0), task_done(0), is_wait_for_join(false)
 {
     for(size_t i = 0;i<threads;++i)
         workers.push_back(std::thread(Worker(*this)));
-}
-
-ThreadPool::ThreadPool(const ThreadPool& other) {
-    std::cout << "call copy constructor" << std::endl;
 }
 
 size_t ThreadPool::size() {
@@ -50,9 +53,16 @@ size_t ThreadPool::size() {
 }
 
 void ThreadPool::join() {
-    // join them
-    for(size_t i = 0;i<workers.size();++i)
-        workers[i].join();
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex);
+        is_wait_for_join = true;
+        while (true) {
+            if (task_done == task_to_do)
+                break;
+            wait_for_join.wait(lock);
+        }
+        is_wait_for_join = false;
+    }
 }
 
 // the destructor joins all threads
@@ -65,18 +75,23 @@ ThreadPool::~ThreadPool()
     }
 
     condition.notify_all();
-    join();
+    // join them
+    for(size_t i = 0;i<workers.size();++i)
+    {
+        workers[i].join();
+    }
+
 }
 
 // add new work item to the pool
-template<class F>
-void ThreadPool::launch(F f)
+void ThreadPool::launch(std::function<void()> f)
 {
     { // acquire lock
         std::unique_lock<std::mutex> lock(queue_mutex);
 
         // add the task
-        tasks.push_back(std::function<void()>(f));
+        tasks.push_back(f);
+        task_to_do++;
     } // release lock
 
     // wake up one thread

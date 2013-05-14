@@ -33,8 +33,7 @@ public:
 
     ThreadPool(const ThreadPool&);
 
-    template<class F>
-    void launch(F f);
+    void launch(std::function<void()> f);
 
     // get num of all working thread
     size_t size();
@@ -52,10 +51,18 @@ private:
     // the task queue
     std::deque< std::function<void()> > tasks;
 
+    size_t task_to_do;
+
+    size_t task_done;
+
     // synchronization
     std::mutex queue_mutex;
     std::condition_variable condition;
+
+    // join thread
+    std::condition_variable wait_for_join;
     bool stop;
+    bool is_wait_for_join;
 };
 
 }}
