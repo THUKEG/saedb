@@ -136,6 +136,7 @@ void Heap::pop() {
  * fetch the top element from the heap
  */
 pair<double, int> Heap::top() {
+	//printf("Heap top %lf(%d)\t", ranked_array[0].first, ranked_array[0].second);
 	return ranked_array[0];
 }
 
