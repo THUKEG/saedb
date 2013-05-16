@@ -71,9 +71,9 @@ public:
 		//if ( 0.5<= (1 - weight)){
 			edge_data.cutted = true;
 			edge.data() = edge_data;
-			printf("%d <- %d, cut = %d\n", edge.target().id(), edge.source().id(),edge_data.cutted);
+//			printf("%d <- %d, cut = %d\n", edge.target().id(), edge.source().id(),edge_data.cutted);
 		}else{
-			printf("%d <- %d not cut\n", edge.target().id(), edge.source().id());
+//			printf("%d <- %d not cut\n", edge.target().id(), edge.source().id());
 		}
 	}
 };
@@ -90,7 +90,7 @@ public:
 	}
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
 		vertex.data().active = true;
-		std::cout << "vertex = "<< vertex.id() <<" is activated" << std::endl;
+//		std::cout << "vertex = "<< vertex.id() <<" is activated" << std::endl;
 	}
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
 		return saedb::IN_EDGES;
@@ -116,7 +116,7 @@ public:
 	}
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
 		vertex.data().signaled = true;
-		std::cout << "vertex = "<< vertex.id() <<" is signaled" << std::endl;
+//		std::cout << "vertex = "<< vertex.id() <<" is signaled" << std::endl;
 	}
 	edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
 		return saedb::IN_EDGES;
@@ -240,12 +240,12 @@ vector<pair<int, double> > inf_max2(graph_type graph, int ss_cnt, int R){
 				// if node is in the activated node collection, the marginal is set as 0
 				//                printf("current node = %d\n", i);
 
-				std::cout<< "vertex id:" << graph.vertex(i).id() <<std::endl;
+//				std::cout<< "vertex id:" << graph.vertex(i).id() <<std::endl;
 				if (graph.vertex(i).data().active) {
 					continue;
 				}
 				marginal[i] += dfs2(dfs2_engine, clear_engine, i);
-				std::cout<< "marginal value = " << marginal[i] <<std::endl;
+//				std::cout<< "marginal value = " << marginal[i] <<std::endl;
 
 			}
 
@@ -270,20 +270,19 @@ vector<pair<int, double> > inf_max2(graph_type graph, int ss_cnt, int R){
 			}
 			marginal[i] = 0;
 		}
-		std::cout<< "current selected seed = " << seed<< "marginal= "<< max_marginal<< std::endl;
+//		std::cout<< "current selected seed = " << seed<< "marginal= "<< max_marginal<< std::endl;
 		seed_list.push_back(seed);
 		greedy_s.push_back(make_pair( seed, max_marginal));
-		std::cout<< "current selected seed = " << greedy_s[ss-1].first<< "marginal= "<< greedy_s[ss-1].second<< std::endl;
+//		std::cout<< "current selected seed = " << greedy_s[ss-1].first<< "marginal= "<< greedy_s[ss-1].second<< std::endl;
 
 	}
 
-	printf("strange !\n");
 	for (int i = 0; i < ss_cnt; i++)
 	{
 		if(i!= 0){
 			greedy_s[i].second += greedy_s[i-1].second;
 		}
-		printf("id = %d, active number = %lf\n", greedy_s[i].first, greedy_s[i].second);
+//		printf("id = %d, active number = %lf\n", greedy_s[i].first, greedy_s[i].second);
 
 	}
 

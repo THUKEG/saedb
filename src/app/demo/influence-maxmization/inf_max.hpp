@@ -62,7 +62,7 @@ public:
 
 	void apply(icontext_type& context, vertex_type& vertex, const gather_type& total){
 		vertex.data().actived = true;
-		std::cout << "vertex = "<< vertex.id() << " is activated"<< std::endl;
+//		std::cout << "vertex = "<< vertex.id() << " is activated"<< std::endl;
 	}
 
 	saedb::edge_dir_type scatter_edges(icontext_type& context, const vertex_type& vertex) const{
@@ -150,11 +150,11 @@ double simulate(saedb::IEngine<Simulate> *engine, saedb::IEngine<Clear> *clear_e
 		active_node_counter = engine->map_reduce_vertices<ActiveNode>(ActiveNodeAggregator);
 		//result += active_node_counter.num - seedset.size();
 		result += active_node_counter.num ;
-		std::cout << " result = " << result << std::endl;
+//		std::cout << " result = " << result << std::endl;
 	}
 
 	// clean
-	printf("result = %lf, round = %d, result/round = %lf\n", result, round, result /(double)round);
+//	printf("result = %lf, round = %d, result/round = %lf\n", result, round, result /(double)round);
 	return result / (double)round;
 }
 
@@ -183,18 +183,18 @@ vector<pair<int, double>> inf_max(graph_type g, int ss_cnt, int round){
 	std::priority_queue<std::pair<double, std::pair<int,int>>> q;
 	std::vector<uint32_t> seed_list;
 
-	printf("Initialize the marginal influence for each node\n");
+//	printf("Initialize the marginal influence for each node\n");
 	// calculate the influenced number of nodes by each node, and store into q
 	for (int i = 0; i < n; i++) {
 		std::pair<int, int> tp = std::make_pair(i, 1);
 		seed_list.push_back(i);
 		double val = simulate(engine, clear_engine, seed_list, round);
-		std::cout << "vertex=" << i << ", marginal=" << val << std::endl;
+//		std::cout << "vertex=" << i << ", marginal=" << val << std::endl;
 
 		q.push(make_pair(val, tp));
 		seed_list.clear();
 	}
-	std::cout << "Simulating all nodes done..." << std::endl;
+//	std::cout << "Simulating all nodes done..." << std::endl;
 	double ret = 0;
 	// try ss_cnt seeds
 	seed_list.clear();
@@ -209,13 +209,13 @@ vector<pair<int, double>> inf_max(graph_type g, int ss_cnt, int round){
 				//printf("result= %lf\n", ret);
 				seed_list.push_back(tp.second.first);
 				greedy_s.push_back(make_pair(seed_list[ss-1], ret));
-				printf("ss = %d, node id= %d, second = %lf, marginal = %lf\n", ss, greedy_s[ss-1].first, greedy_s[ss-1].second,tp.first);
+//				printf("ss = %d, node id= %d, second = %lf, marginal = %lf\n", ss, greedy_s[ss-1].first, greedy_s[ss-1].second,tp.first);
 				break;
 			} else {
 				seed_list.push_back(tp.second.first);
-				for (int i = 0 ; i < seed_list.size() ; i++){
-					printf("===seeds contains %d\n", seed_list[i]);
-				}
+//				for (int i = 0 ; i < seed_list.size() ; i++){
+//					printf("===seeds contains %d\n", seed_list[i]);
+//				}
 				double val = simulate(engine, clear_engine, seed_list, round);
 				seed_list.pop_back();
 				tp.second.second = ss;
