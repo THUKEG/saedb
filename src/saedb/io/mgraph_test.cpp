@@ -25,6 +25,16 @@ void test_create() {
     builder.AddVertex(10, VData{0.6});
     builder.AddVertex(30, VData{0.7});
 
+    DataTypeAccessor* vd = builder.CreateType("VData");
+    std::cout << "Building type : " << vd->getTypeName() << std::endl;
+    vd->appendField("pagerank", DOUBLE_T);
+    builder.SaveDataType(vd);
+
+    DataTypeAccessor* ed = builder.CreateType("EData");
+    std::cout << "Building type : " << ed->getTypeName() << std::endl;
+    ed->appendField("type", INT_T);
+    builder.SaveDataType(ed);
+
     builder.Save("test_graph");
 }
 
@@ -32,9 +42,15 @@ void test_load(const char* graph_name) {
     MappedGraph* g = MappedGraph::Open(graph_name);
     cout << "loaded, n: " << g->VertexCount() << ", m:" << g->EdgeCount() << endl;
 
+    auto* vtype = g->DataType("VData");
     for (auto vs = g->Vertices(); vs->Alive(); vs->Next()) {
-        VData* vd = (VData*) vs->Data();
-        cout << vs->Id() << ": " << vd->pagerank << endl;
+        void* vd = vs->Data();
+        auto* pagerank_val = vtype->getFieldAccessor(vd, "pagerank");
+        if (!pagerank_val) {
+            cout << "ERROR: can not find the field pagerank" << endl;
+            return;
+        }
+        cout << vs->Id() << ": " << pagerank_val->getValue<double>() << endl;
 
         cout << "In Edges:" << endl;
         for (auto ei = vs->InEdges(); ei->Alive(); ei->Next()) {
@@ -50,6 +66,7 @@ void test_load(const char* graph_name) {
     cout << endl;
     cout << "Forward Edges:" << endl;
 
+    auto etype = g->DataType("EData");
     for (auto es = g->ForwardEdges(); es->Alive(); es->Next()) {
         EData* ed = (EData*) es->Data();
         cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << ed->type << endl;
@@ -63,6 +80,22 @@ void test_load(const char* graph_name) {
 
     g->Close();
     delete g;
+    delete vtype;
+}
+
+void test_show_meta_information(const char* graph_name) {
+    MappedGraph* g = MappedGraph::Open(graph_name);
+    cout << "loaded, n: " << g->VertexCount() << ", m:" << g->EdgeCount() << endl;
+
+    std::vector<DataTypeAccessor*> dataTypes = g->DataTypes();
+    for (auto p : dataTypes) {
+        cout << "struct " << p->getTypeName() << " :" << endl;
+        auto fields = p->getAllFields();
+        for (auto f : fields) {
+            cout << "\tname:" << f->field_name << " offset:" << f->offset << " size:" << f->size << endl;
+        }
+        cout << endl;
+    }
 }
 
 /**************************************************
@@ -116,4 +149,5 @@ int main(int argc, const char * argv[]) {
     if (argc == 1 || (argc > 1 && argv[1][0] == 'c')) test_create();
     if (argc == 3 && argv[1][0] == 'l') test_load(argv[2]);
     if (argc == 1 || (argc > 1 && argv[1][0] == 'f')) test_filter();
+    if (argc == 3 && argv[1][0] == 's') test_show_meta_information(argv[2]);
 }

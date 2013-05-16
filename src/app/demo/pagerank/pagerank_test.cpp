@@ -5,22 +5,43 @@
 #include "test/testharness.hpp"
 
 using namespace std;
+using namespace sae::io;
 
 class Empty {};
+
+struct VData {
+    double pagerank;
+};
+
+struct EData {
+    int type;
+};
+
 
 struct PageRankTest {
     string filepath;
 
     PageRankTest() {
         filepath = saedb::test::TempFileName();
-        sae::io::GraphBuilder<int, double, Empty> b;
-        b.AddEdge(0, 10, Empty());
-        b.AddEdge(10, 20, Empty());
-        b.AddEdge(20, 30, Empty());
-        b.AddVertex(0, 1);
-        b.AddVertex(10, 1);
-        b.AddVertex(20, 1);
-        b.AddVertex(30, 1);
+        sae::io::GraphBuilder<int, VData, EData> b;
+        b.AddEdge(0, 10, EData{0});
+        b.AddEdge(10, 20, EData{0});
+        b.AddEdge(20, 30, EData{0});
+        b.AddVertex(0,  VData{1});
+        b.AddVertex(10, VData{1});
+        b.AddVertex(20, VData{1});
+        b.AddVertex(30, VData{1});
+
+        DataTypeAccessor* vd = b.CreateType("VData");
+        std::cout << "Building type : " << vd->getTypeName() << std::endl;
+        vd->appendField("pagerank", DOUBLE_T);
+        b.SaveDataType(vd);
+
+        DataTypeAccessor* ed = b.CreateType("EData");
+        std::cout << "Building type : " << ed->getTypeName() << std::endl;
+        ed->appendField("type", INT_T);
+        b.SaveDataType(ed);
+
         b.Save(filepath.c_str());
     }
 
