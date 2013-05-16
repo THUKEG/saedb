@@ -6,12 +6,15 @@
 #include <mutex>
 #include <string>
 #include <map>
+#include <functional>
+#include <atomic>
 
 #include "iengine.hpp"
 #include "context.hpp"
 #include "aggregator/aggregator.hpp"
 
 #include "graph_basic_types.hpp"
+#include "util/thread_pool.hpp"
 
 namespace saedb
 {
@@ -67,7 +70,14 @@ namespace saedb
 
         template <typename MemberFunction>
         void runSynchronous(MemberFunction func){
-            ( (this)->*(func) )();
+            if (threads_.size() <= 1) {
+                ((this)->*(func))();
+            } else {
+                for (size_t i = 0; i < threads_.size(); ++i) {
+                    threads_.launch(std::bind(func, this));
+                }
+            }
+            threads_.join();
         }
         void executeInits();
         void executeGathers();
@@ -99,7 +109,9 @@ namespace saedb
         std::vector<message_type>           messages_;
         std::vector<int>                    active_superstep_;
         std::vector<int>                    active_minorstep_;
+        sae::threading::ThreadPool          threads_;
         context_type* context;
+        std::atomic<lvid_type> shared_lvid_counter_;
     };
 
 
@@ -109,7 +121,7 @@ namespace saedb
      **/
     template <typename algorithm_t>
     SynchronousEngine<algorithm_t>::SynchronousEngine(graph_type& graph):
-    iteration_counter_(0), max_iterations_(5), graph_(graph) {
+    iteration_counter_(0), max_iterations_(5), graph_(graph), threads_(4), shared_lvid_counter_(0) {
         vertex_programs_.resize(graph.num_local_vertices());
         gather_accum_.resize(graph.num_local_vertices());
         has_msg_.resize(graph.num_local_vertices(), 0);
@@ -123,6 +135,7 @@ namespace saedb
 
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::start(){
+        shared_lvid_counter_  = ATOMIC_VAR_INIT(0);
         runSynchronous( &SynchronousEngine::executeInits);
 
         aggregator->start();
@@ -135,8 +148,13 @@ namespace saedb
             if(num_active_vertices_ == 0){
                 break;
             }
+            shared_lvid_counter_  = ATOMIC_VAR_INIT(0);
             runSynchronous( &SynchronousEngine::executeGathers);
+
+            shared_lvid_counter_  = ATOMIC_VAR_INIT(0);
             runSynchronous( &SynchronousEngine::executeApplys);
+
+            shared_lvid_counter_  = ATOMIC_VAR_INIT(0);
             runSynchronous( &SynchronousEngine::executeScatters);
 
             // probe the aggregator
@@ -148,8 +166,9 @@ namespace saedb
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::executeInits (){
         context_type context(*this, graph_);
-        lvid_type vid = 0;
+        lvid_type vid;
         while (true) {
+            vid = shared_lvid_counter_.fetch_add((lvid_type)1);
             if ( vid >= graph_.num_local_vertices() ){
                 break;
             }
@@ -164,7 +183,13 @@ namespace saedb
     void SynchronousEngine<algorithm_t>::executeGathers (){
         // todo, how to get list of vertex ids to iterate?
         context_type context(*this, graph_);
-        for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
+        lvid_type vid;
+        while (true) {
+            vid = shared_lvid_counter_.fetch_add((lvid_type)1);
+            if ( vid >= graph_.num_local_vertices() ){
+                break;
+            }
+
             if (!active_superstep_[vid]) {
                 continue;
             }
@@ -204,7 +229,12 @@ namespace saedb
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::executeScatters (){
         context_type context(*this, graph_);
-        for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
+        lvid_type vid;
+        while (true) {
+            vid = shared_lvid_counter_.fetch_add((lvid_type)1);
+            if ( vid >= graph_.num_local_vertices() ){
+                break;
+            }
             if (!active_superstep_[vid]) {
                 continue;
             }
@@ -232,7 +262,12 @@ namespace saedb
     void SynchronousEngine<algorithm_t>::
     executeApplys (){
         context_type context(*this, graph_);
-        for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
+        lvid_type vid;
+        while (true) {
+            vid = shared_lvid_counter_.fetch_add((lvid_type)1);
+            if ( vid >= graph_.num_local_vertices() ){
+                break;
+            }
             if (!active_superstep_[vid]) {
                 continue;
             }
@@ -341,7 +376,7 @@ namespace saedb
     template <typename algorithm_t>
     typename SynchronousEngine<algorithm_t>::aggregator_type*
     SynchronousEngine<algorithm_t>::get_aggregator(){
-    	return aggregator;
+        return aggregator;
     }
 }
 #endif
