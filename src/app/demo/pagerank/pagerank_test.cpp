@@ -3,6 +3,7 @@
 
 #include "pagerank.hpp"
 #include "test/testharness.hpp"
+#include "gflags/gflags.h"
 
 using namespace std;
 using namespace sae::io;
@@ -17,6 +18,7 @@ struct EData {
     int type;
 };
 
+DEFINE_bool(printall, true, "Print the values for all vertices.");
 
 struct PageRankTest {
     string filepath;
@@ -58,8 +60,10 @@ TEST(PageRankTest, PageRank) {
     engine->start();
 
     // for debug purpose, print out all
-    for (auto i = 0; i < graph.num_local_vertices(); i ++) {
-        cerr << "v[" << i << "]: " << graph.vertex(i).data() << endl;
+    if (FLAGS_printall) {
+        for (auto i = 0; i < graph.num_local_vertices(); i ++) {
+            cerr << "v[" << i << "]: " << graph.vertex(i).data() << endl;
+        }
     }
 
     // compare with known answers
@@ -71,7 +75,8 @@ TEST(PageRankTest, PageRank) {
     delete engine;
 }
 
-int main(){
+int main(int argc, char** argv) {
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
     saedb::test::RunAllTests();
 }
 

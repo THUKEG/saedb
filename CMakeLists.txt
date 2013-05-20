@@ -20,6 +20,11 @@ endif()
 # add external dependencies
 add_all_subdirectories ("${SAE_SOURCE_DIR}/external")
 
-# add sub projects
+# add includes for gflags
+include_directories ("${gflags_BINARY_DIR}/include")
+
+# add the core lib
 add_subdirectory (src/saedb)
+
+# add applications
 add_subdirectory (src/app)
