@@ -1,0 +1,85 @@
+/* Generated from config.h.in during configuration using CMake. */
+
+// ---------------------------------------------------------------------------
+// Meta-information
+
+// Name of package.
+#define PACKAGE @PROJECT_NAME@
+
+// Define to the full name of this package.
+#define PACKAGE_NAME @PACKAGE_NAME@
+
+// Define to the full name and version of this package.
+#define PACKAGE_STRING @PACKAGE_STRING@
+
+// Define to the one symbol short name of this package.
+#define PACKAGE_TARNAME @PACKAGE_TARNAME@
+
+// Define to the version of this package.
+#define PACKAGE_VERSION @PACKAGE_VERSION@
+
+// Version number of package.
+#define VERSION PACKAGE_VERSION
+
+// Define to the address where bug reports for this package should be sent.
+#define PACKAGE_BUGREPORT @PACKAGE_BUGREPORT@
+
+// ---------------------------------------------------------------------------
+// Namespace for gflags symbols.
+#define GFLAGS_NAMESPACE @GFLAGS_NAMESPACE@
+
+// ---------------------------------------------------------------------------
+// Available system headers
+
+// Whether sources are compiled on a Windows system
+#define WINDOWS (defined(_WIN32) || defined(WIN32) || defined(_WINDOWS))
+
+// Define to 1 if you have the <fnmatch.h> header file.
+#define HAVE_FNMATCH_H @HAVE_FNMATCH_H@
+
+// Define to 1 if you have the <inttypes.h> header file.
+#define HAVE_INTTYPES_H @HAVE_INTTYPES_H@
+
+// Define to 1 if you have the <unistd.h> header file.
+#define HAVE_UNISTD_H @HAVE_UNISTD_H@
+
+// Define to 1 if you have the <sys/stat.h> header file.
+#define HAVE_SYS_STAT_H @HAVE_SYS_STAT_H@
+
+// Define to 1 if you have the strtoll function.
+#define HAVE_STRTOLL @HAVE_STRTOLL@
+
+// Define to 1 if you have the strtoq function.
+#define HAVE_STRTOQ @HAVE_STRTOQ@
+
+// Define to 1 if you have the <pthread.h> header file.
+#define HAVE_PTHREAD @HAVE_PTHREAD@
+
+// gcc requires this to get PRId64, etc.
+#if HAVE_INTTYPES_H && !defined(__STDC_FORMAT_MACROS)
+#  define __STDC_FORMAT_MACROS 1
+#endif
+
+// ---------------------------------------------------------------------------
+// Path separator
+#ifndef PATH_SEPARATOR
+#  define PATH_SEPARATOR  '/'
+#endif
+
+// ---------------------------------------------------------------------------
+// Windows-specific definitions
+#if !defined(GFLAGS_DLL_DECL)
+#  if defined(_MSC_VER)
+#    if defined(GFLAGS_DLL_EXPORT)
+#      define GFLAGS_DLL_DECL __declspec(dllexport)
+#    else
+#      define GFLAGS_DLL_DECL __declspec(dllimport)
+#    endif
+#  else
+#    define GFLAGS_DLL_DECL
+#  endif
+#endif
+
+#if defined( __MINGW32__) || defined(__MINGW64__)
+#  include "windows/port.h"
+#endif

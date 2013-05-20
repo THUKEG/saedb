@@ -17,6 +17,9 @@ if (HAS_CPP11)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
+# add external dependencies
+add_all_subdirectories ("${SAE_SOURCE_DIR}/external")
+
 # add sub projects
 add_subdirectory (src/saedb)
 add_subdirectory (src/app)
