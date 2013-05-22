@@ -17,6 +17,14 @@ if (HAS_CPP11)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
-# add sub projects
+# add external dependencies
+add_all_subdirectories ("${SAE_SOURCE_DIR}/external")
+
+# add includes for gflags
+include_directories ("${gflags_BINARY_DIR}/include")
+
+# add the core lib
 add_subdirectory (src/saedb)
+
+# add applications
 add_subdirectory (src/app)
