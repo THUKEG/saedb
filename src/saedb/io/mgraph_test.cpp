@@ -69,13 +69,13 @@ void test_load(const char* graph_name) {
     auto etype = g->DataType("EData");
     for (auto es = g->ForwardEdges(); es->Alive(); es->Next()) {
         EData* ed = (EData*) es->Data();
-        cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << ed->type << endl;
+        cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << etype->getFieldAccessor(ed, "type")->getValue<int>()  << endl;
     }
 
     cout << "Backward Edges:" << endl;
     for (auto es = g->BackwardEdges(); es->Alive(); es->Next()) {
         EData* ed = (EData*) es->Data();
-        cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << ed->type << endl;
+        cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << etype->getFieldAccessor(ed, "type")->getValue<int>() << endl;
     }
 
     g->Close();

@@ -30,12 +30,11 @@ namespace sae {
         typedef unique_ptr<DataTypeAccessor> DataTypePtr;
 
         struct VertexIterator {
-            virtual vid_t Id() = 0;
+            virtual vid_t GlobalId() = 0;
             virtual void* Data() = 0;
             virtual void Next() = 0;
             virtual void MoveTo(vid_t) = 0;
             virtual bool Alive() = 0;
-            virtual vid_t Count() = 0;
             virtual eid_t InEdgeCount() = 0;
             virtual eid_t OutEdgeCount() = 0;
             virtual EdgeIteratorPtr InEdges() = 0;
@@ -46,7 +45,7 @@ namespace sae {
         };
 
         struct EdgeIterator {
-            virtual eid_t Id() = 0;
+            virtual eid_t GlobalId() = 0;
             virtual vid_t SourceId() = 0;
             virtual vid_t TargetId() = 0;
             virtual VertexIteratorPtr Source() = 0;
@@ -86,22 +85,31 @@ namespace sae {
             /**
              * Obtain an iterator for edges, sorted by sources.
              */
-            virtual EdgeIteratorPtr ForwardEdges() = 0;
+            //virtual EdgeIteratorPtr ForwardEdges() = 0;
 
             /**
              * Obtain an iterator for edges, sorted by targets.
              */
-            virtual EdgeIteratorPtr BackwardEdges() = 0;
+            //virtual EdgeIteratorPtr BackwardEdges() = 0;
+
+            /*
+                Obtain an iterator for edges.
+            */
+            virtual EdgeIteratorPtr Edges() = 0;
 
             /**
              * get data type accessor by name
              */
-            virtual DataTypeAccessor* DataType(const char * name) = 0;
+            virtual DataTypeAccessor* VertexDataType(const char * name) = 0;
+
+            virtual DataTypeAccessor* EdgeDataType(const char* name) = 0;
 
             /**
              * Get all meta information about all data types
              */
-            virtual std::vector<DataTypeAccessor*> DataTypes() = 0;
+            virtual std::vector<DataTypeAccessor*> VertexDataTypes() = 0;
+
+            virtual std::vector<DataTypeAccessor*> EdgeDataTypes() = 0;
 
             /**
              * Force sync the mapped files with disk.
@@ -128,7 +136,7 @@ namespace sae {
         };
 
         struct MappedGraphWriter : public GraphWriter {
-            static MappedGraphWriter* Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_size, uint32_t edge_data_size, uint32_t type_count, uint32_t type_total_size);
+            static MappedGraphWriter* Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t vertex_type_total_size, uint32_t edge_type_total_size, uint32_t* vertex_type_count, uint32_t* edge_type_count, uint32_t* vertex_data_size, uint32_t* edge_data_size);
         };
     }
 }
