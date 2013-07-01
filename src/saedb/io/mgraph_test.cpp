@@ -13,28 +13,42 @@ struct EData {
     int type;
 };
 
+struct VData2 {
+    int number;
+};
+
 void test_create() {
-    sae::io::GraphBuilder<int, VData, EData> builder;
-
-    builder.AddEdge(0, 10, EData{10});
-    builder.AddEdge(10, 20, EData{20});
-    builder.AddEdge(20, 30, EData{30});
-    builder.AddEdge(30, 40, EData{40});
-
-    builder.AddVertex(0, VData{0.5});
-    builder.AddVertex(10, VData{0.6});
-    builder.AddVertex(30, VData{0.7});
+    sae::io::GraphBuilder<int> builder;
 
     DataTypeAccessor* vd = builder.CreateType("VData");
     std::cout << "Building type : " << vd->getTypeName() << std::endl;
     vd->appendField("pagerank", DOUBLE_T);
-    builder.SaveDataType(vd);
+    builder.SaveVertexDataType(vd, sizeof(VData));
+
+    DataTypeAccessor* vd2 = builder.CreateType("VData2");
+    std::cout << "Building type : " << vd2->getTypeName() << std::endl;
+    vd2->appendField("number", INT_T);
+    builder.SaveVertexDataType(vd2, sizeof(VData2));
 
     DataTypeAccessor* ed = builder.CreateType("EData");
     std::cout << "Building type : " << ed->getTypeName() << std::endl;
     ed->appendField("type", INT_T);
-    builder.SaveDataType(ed);
+    builder.SaveEdgeDataType(ed, sizeof(EData));
 
+    std::cout << "Adding Vertices..." << std::endl;
+    builder.AddVertex(0, "VData", new VData{0.5});
+    builder.AddVertex(20, "VData", new VData{0.4});
+    builder.AddVertex(10, "VData", new VData{0.6});
+    builder.AddVertex(30, "VData2", new VData2{7});
+    builder.AddVertex(40, "VData2", new VData2{8});
+
+    std::cout << "Adding Edges..." << std::endl;
+    builder.AddEdge(0, 10, "EData", new EData{10});
+    builder.AddEdge(10, 20, "EData", new EData{20});
+    builder.AddEdge(20, 30, "EData", new EData{30});
+    builder.AddEdge(30, 40, "EData", new EData{40});
+
+    std::cout << "Saving the graph..." << std::endl;
     builder.Save("test_graph");
 }
 
@@ -42,15 +56,16 @@ void test_load(const char* graph_name) {
     MappedGraph* g = MappedGraph::Open(graph_name);
     cout << "loaded, n: " << g->VertexCount() << ", m:" << g->EdgeCount() << endl;
 
-    auto* vtype = g->DataType("VData");
-    for (auto vs = g->Vertices(); vs->Alive(); vs->Next()) {
+    auto* vtype = g->VertexDataType("VData");
+    auto* vtype2 = g->VertexDataType("VData2");
+    for (auto vs = g->VerticesOfType("VData"); vs->Alive(); vs->NextOfType()) {
         void* vd = vs->Data();
         auto* pagerank_val = vtype->getFieldAccessor(vd, "pagerank");
         if (!pagerank_val) {
             cout << "ERROR: can not find the field pagerank" << endl;
             return;
         }
-        cout << vs->Id() << ": " << pagerank_val->getValue<double>() << endl;
+        cout << vs->GlobalId() << ": " << pagerank_val->getValue<double>() << endl;
 
         cout << "In Edges:" << endl;
         for (auto ei = vs->InEdges(); ei->Alive(); ei->Next()) {
@@ -62,20 +77,29 @@ void test_load(const char* graph_name) {
             cout << "\t" << "[" << ei->SourceId() << "," << ei->TargetId() << "]" << ": " << ((EData*)ei->Data())->type << endl;
         }
     }
+    for (auto vs = g->VerticesOfType("VData2"); vs->Alive(); vs->NextOfType()) {
+        void* vd = vs->Data();
+        auto* number = vtype2->getFieldAccessor(vd, "number");
+        if (!number) {
+            cout << "ERROR: can not find the field number" << endl;
+            return;
+        }
+        cout << vs->GlobalId() << ": " << number->getValue<int>() << endl;
+    }
 
     cout << endl;
     cout << "Forward Edges:" << endl;
 
-    auto etype = g->DataType("EData");
+    auto etype = g->EdgeDataType("EData");
     for (auto es = g->ForwardEdges(); es->Alive(); es->Next()) {
         EData* ed = (EData*) es->Data();
-        cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << ed->type << endl;
+        cout << "\t" << es->GlobalId() << "[" << es->Source()->GlobalId() << "," << es->Target()->GlobalId() << "]" << ": " << etype->getFieldAccessor(ed, "type")->getValue<int>()  << endl;
     }
 
     cout << "Backward Edges:" << endl;
     for (auto es = g->BackwardEdges(); es->Alive(); es->Next()) {
         EData* ed = (EData*) es->Data();
-        cout << "\t" << es->Id() << "[" << es->Source()->Id() << "," << es->Target()->Id() << "]" << ": " << ed->type << endl;
+        cout << "\t" << es->GlobalId() << "[" << es->Source()->GlobalId() << "," << es->Target()->GlobalId() << "]" << ": " << etype->getFieldAccessor(ed, "type")->getValue<int>() << endl;
     }
 
     g->Close();
@@ -87,7 +111,17 @@ void test_show_meta_information(const char* graph_name) {
     MappedGraph* g = MappedGraph::Open(graph_name);
     cout << "loaded, n: " << g->VertexCount() << ", m:" << g->EdgeCount() << endl;
 
-    std::vector<DataTypeAccessor*> dataTypes = g->DataTypes();
+    std::vector<DataTypeAccessor*> dataTypes = g->VertexDataTypes();
+    for (auto p : dataTypes) {
+        cout << "struct " << p->getTypeName() << " :" << endl;
+        auto fields = p->getAllFields();
+        for (auto f : fields) {
+            cout << "\tname:" << f->field_name << " offset:" << f->offset << " size:" << f->size << endl;
+        }
+        cout << endl;
+    }
+
+    dataTypes = g->EdgeDataTypes();
     for (auto p : dataTypes) {
         cout << "struct " << p->getTypeName() << " :" << endl;
         auto fields = p->getAllFields();
@@ -128,6 +162,7 @@ struct FilterQuery : public IFilterQuery<vertex_data_type, edge_data_type, VData
 };
 
 void test_filter(){
+    /*
     std::cout << "Test filter" << std::endl;
     std::string graph_path = "test_graph";
 
@@ -136,13 +171,14 @@ void test_filter(){
     from_graph.load_format(graph_path);
 
     // This is the target graph builder
-    sae::io::GraphBuilder<saedb::vertex_id_type, vertex_data_type, edge_data_type> builder;
+    sae::io::GraphBuilder<saedb::vertex_id_type> builder;
 
     FilterQuery query;
     //from_graph.filter(builder, vertex_predicate, vertex_transform, edge_transform);
     from_graph.filter(builder, query);
     // now builder has the needed vertex and edge data to build graph.
     builder.Save("test_graph_transformed");
+    */
 }
 
 int main(int argc, const char * argv[]) {
