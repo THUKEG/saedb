@@ -69,7 +69,7 @@ namespace io {
     {
         virtual void AddVertex(vkey_t key, const char* data_type_name, void* data) {
             int data_type_rank = -1;
-            for (int i=0, size = vertex_data_types; i<size; i++) {
+            for (int i=0, size = vertex_data_types.size(); i<size; i++) {
                 if (strcmp(vertex_data_types[i].data_type_accessor->getTypeName(), data_type_name) == 0) {
                     data_type_rank = i;
                     break;
@@ -82,12 +82,12 @@ namespace io {
             auto id = map(key);
             auto local_id = vertex_data_types[data_type_rank].count ++;
 
-            vertices.push_back(vertex_with_data(id, local_id, data_type_rank, data));
+            vertices[id] = vertex_with_data(id, local_id, data_type_rank, data);
         }
 
         virtual void AddEdge(vkey_t source, vkey_t target, const char* data_type_name, void* data) {
             int data_type_rank = -1;
-            for (int i=0, size = edge_data_types; i<size; i++) {
+            for (int i=0, size = edge_data_types.size(); i<size; i++) {
                 if (strcmp(edge_data_types[i].data_type_accessor->getTypeName(), data_type_name) == 0) {
                     data_type_rank = i;
                     break;
@@ -203,13 +203,13 @@ namespace io {
             auto it = vid_map.find(key);
             if (it == vid_map.end()) {
                 result = vertices.size();
-
-                vertices.resize(result + 1);
-
+                vertices.push_back(vertex_with_data(0, 0, 0, NULL));
                 vid_map.insert(make_pair(key, result));
             } else {
                 result = it->second;
             }
+
+            return result;
         }
     };
 

@@ -52,7 +52,6 @@ namespace sae {
             virtual VertexIteratorPtr Target() = 0;
             virtual void* Data() = 0;
             virtual void Next() = 0;
-            virtual void MoveTo(eid_t) = 0;
             virtual bool Alive() = 0;
             virtual eid_t Count() = 0;
             virtual EdgeIteratorPtr Clone() = 0;
@@ -85,12 +84,12 @@ namespace sae {
             /**
              * Obtain an iterator for edges, sorted by sources.
              */
-            //virtual EdgeIteratorPtr ForwardEdges() = 0;
+            virtual EdgeIteratorPtr ForwardEdges() = 0;
 
             /**
              * Obtain an iterator for edges, sorted by targets.
              */
-            //virtual EdgeIteratorPtr BackwardEdges() = 0;
+            virtual EdgeIteratorPtr BackwardEdges() = 0;
 
             /*
                 Obtain an iterator for edges.

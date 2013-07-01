@@ -49,13 +49,13 @@ namespace saedb
         size_t num_in_edges(const vertex_id_type vid) const {
             auto ei = graph->Vertices();
             ei->MoveTo(vid);
-            return ei->InEdges()->Count();
+            return ei->InEdgeCount();
         }
 
         size_t num_out_edges(const vertex_id_type vid) const {
             auto ei = graph->Vertices();
             ei->MoveTo(vid);
-            return ei->OutEdges()->Count();
+            return ei->OutEdgeCount();
         }
 
         void load_mgraph(const std::string& graph_name) {
@@ -92,7 +92,9 @@ namespace saedb
         void filter(graph_builder_t& builder,
                     filter_qeury_t query){
             // slow implementation
-            for (auto ei = graph->ForwardEdges(); ei->Alive();ei->Next()) {
+            // TODO adjust to new API
+            /*
+            for (auto ei = graph->Edges(); ei->Alive();ei->Next()) {
                 vertex_data_type* source = (vertex_data_type*)(ei->Source()->Data());
                 vertex_data_type* target = (vertex_data_type*)(ei->Target()->Data());
                 if (query.vertex_predicate(source) && query.vertex_predicate(target)) {
@@ -104,6 +106,7 @@ namespace saedb
                     builder.AddEdge(ei->SourceId(), ei->TargetId(), nedge);
                 }
             }
+            */
         }
 
 
@@ -113,15 +116,16 @@ namespace saedb
             vertex_type(sae::io::VertexIteratorPtr&& vi) : vi(std::move(vi)) { }
 
             bool operator==(vertex_type& v) const {
-                return vi->Id() == v->vi->Id();
+                return vi->GlobalId() == v->vi->GlobalId();
             }
 
-            const vertex_data_type& data() const {
-                return *((vertex_data_type *) vi->Data());
+            // return pointer to data
+            const void* data() const {
+                return vi->Data();
             }
 
-            vertex_data_type& data() {
-                return *((vertex_data_type *) vi->Data());
+            void* data() {
+                return vi->Data();
             }
 
             size_t num_in_edges() const {
@@ -133,7 +137,7 @@ namespace saedb
             }
 
             vertex_id_type id() const {
-                return vi->Id();
+                return vi->GlobalId();
             }
 
             sae::io::EdgeIteratorPtr in_edges() {
@@ -164,12 +168,12 @@ namespace saedb
                 return vertex_type(std::move(ei->Target()));
             }
 
-            const edge_data_type& data() const {
-                return *(edge_data_type*) ei->Data();
+            const void* data() const {
+                return ei->Data();
             }
 
-            edge_data_type& data() {
-                return *(edge_data_type*) ei->Data();
+            void* data() {
+                return ei->Data();
             }
         };
 
