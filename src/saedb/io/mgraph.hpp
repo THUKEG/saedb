@@ -33,6 +33,7 @@ namespace sae {
             virtual vid_t GlobalId() = 0;
             virtual void* Data() = 0;
             virtual void Next() = 0;
+            virtual void NextOfType() = 0;
             virtual void MoveTo(vid_t) = 0;
             virtual bool Alive() = 0;
             virtual eid_t InEdgeCount() = 0;
@@ -80,6 +81,8 @@ namespace sae {
              * Obtain an iterator for vertices.
              */
             virtual VertexIteratorPtr Vertices() = 0;
+
+            virtual VertexIteratorPtr VerticesOfType(const char*) = 0;
 
             /**
              * Obtain an iterator for edges, sorted by sources.

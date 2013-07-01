@@ -13,6 +13,10 @@ struct EData {
     int type;
 };
 
+struct VData2 {
+    int number;
+};
+
 void test_create() {
     sae::io::GraphBuilder<int> builder;
 
@@ -20,6 +24,11 @@ void test_create() {
     std::cout << "Building type : " << vd->getTypeName() << std::endl;
     vd->appendField("pagerank", DOUBLE_T);
     builder.SaveVertexDataType(vd, sizeof(VData));
+
+    DataTypeAccessor* vd2 = builder.CreateType("VData2");
+    std::cout << "Building type : " << vd2->getTypeName() << std::endl;
+    vd2->appendField("number", INT_T);
+    builder.SaveVertexDataType(vd2, sizeof(VData2));
 
     DataTypeAccessor* ed = builder.CreateType("EData");
     std::cout << "Building type : " << ed->getTypeName() << std::endl;
@@ -30,8 +39,8 @@ void test_create() {
     builder.AddVertex(0, "VData", new VData{0.5});
     builder.AddVertex(20, "VData", new VData{0.4});
     builder.AddVertex(10, "VData", new VData{0.6});
-    builder.AddVertex(30, "VData", new VData{0.7});
-    builder.AddVertex(40, "VData", new VData{0.8});
+    builder.AddVertex(30, "VData2", new VData2{7});
+    builder.AddVertex(40, "VData2", new VData2{8});
 
     std::cout << "Adding Edges..." << std::endl;
     builder.AddEdge(0, 10, "EData", new EData{10});
@@ -48,7 +57,8 @@ void test_load(const char* graph_name) {
     cout << "loaded, n: " << g->VertexCount() << ", m:" << g->EdgeCount() << endl;
 
     auto* vtype = g->VertexDataType("VData");
-    for (auto vs = g->Vertices(); vs->Alive(); vs->Next()) {
+    auto* vtype2 = g->VertexDataType("VData2");
+    for (auto vs = g->VerticesOfType("VData"); vs->Alive(); vs->NextOfType()) {
         void* vd = vs->Data();
         auto* pagerank_val = vtype->getFieldAccessor(vd, "pagerank");
         if (!pagerank_val) {
@@ -66,6 +76,15 @@ void test_load(const char* graph_name) {
         for (auto ei = vs->OutEdges(); ei->Alive(); ei->Next()) {
             cout << "\t" << "[" << ei->SourceId() << "," << ei->TargetId() << "]" << ": " << ((EData*)ei->Data())->type << endl;
         }
+    }
+    for (auto vs = g->VerticesOfType("VData2"); vs->Alive(); vs->NextOfType()) {
+        void* vd = vs->Data();
+        auto* number = vtype2->getFieldAccessor(vd, "number");
+        if (!number) {
+            cout << "ERROR: can not find the field number" << endl;
+            return;
+        }
+        cout << vs->GlobalId() << ": " << number->getValue<int>() << endl;
     }
 
     cout << endl;
