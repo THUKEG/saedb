@@ -46,7 +46,6 @@ namespace custom_serialization_impl {
         static void run(ISerializeStream& istr, char des[length]) {
             size_t len;
             istr >> len;
-            des = new char[len];
             istr.read(reinterpret_cast<char*>(des), len);
         }
     };

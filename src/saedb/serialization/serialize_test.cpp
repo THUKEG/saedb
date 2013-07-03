@@ -79,7 +79,7 @@ TEST(SerializationTest, BasicTypes) {
     }
 
     char c[] = "hello world";
-    char d[0];
+    char d[12];
     {
         std::ofstream fout("char-array.bin", std::fstream::binary);
         OSerializeStream encoder(&fout);
