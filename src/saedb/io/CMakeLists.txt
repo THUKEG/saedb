@@ -18,6 +18,7 @@ set(MGRAPH_LIBRARY_SOURCES
     "type_info.cpp"
     "type_info.hpp"
     "../graph.hpp"
+    "../serialization/serialization_includes.hpp"
     )
 
 add_library(mmap_file ${MMAP_FILE_SOURCES})

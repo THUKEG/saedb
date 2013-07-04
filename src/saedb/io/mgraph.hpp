@@ -12,6 +12,7 @@
  */
 
 #include <cstdint>
+#include <cstring>
 #include <memory>
 #include "graph_builder.hpp"
 
@@ -31,7 +32,7 @@ namespace sae {
 
         struct VertexIterator {
             virtual vid_t GlobalId() = 0;
-            virtual void* Data() = 0;
+            virtual std::string Data() = 0;
             virtual void Next() = 0;
             virtual void NextOfType() = 0;
             virtual void MoveTo(vid_t) = 0;
@@ -51,7 +52,7 @@ namespace sae {
             virtual vid_t TargetId() = 0;
             virtual VertexIteratorPtr Source() = 0;
             virtual VertexIteratorPtr Target() = 0;
-            virtual void* Data() = 0;
+            virtual std::string Data() = 0;
             virtual void Next() = 0;
             virtual bool Alive() = 0;
             virtual eid_t Count() = 0;

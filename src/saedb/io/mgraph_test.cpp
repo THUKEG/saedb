@@ -1,6 +1,9 @@
 #include <iostream>
-#include "../graph.hpp"
+#include <sstream>
+#include <cstring>
 #include "../ifilterquery.hpp"
+#include "../graph.hpp"
+#include "../serialization/serialization_includes.hpp"
 
 using namespace std;
 using namespace sae::io;
@@ -36,17 +39,17 @@ void test_create() {
     builder.SaveEdgeDataType(ed, sizeof(EData));
 
     std::cout << "Adding Vertices..." << std::endl;
-    builder.AddVertex(0, "VData", new VData{0.5});
-    builder.AddVertex(20, "VData", new VData{0.4});
-    builder.AddVertex(10, "VData", new VData{0.6});
-    builder.AddVertex(30, "VData2", new VData2{7});
-    builder.AddVertex(40, "VData2", new VData2{8});
+    builder.AddVertex(0, "VData", double(0.5));
+    builder.AddVertex(20, "VData", double(0.4));
+    builder.AddVertex(10, "VData", double(0.6));
+    builder.AddVertex(30, "VData2", VData2{7});
+    builder.AddVertex(40, "VData2", VData2{8});
 
     std::cout << "Adding Edges..." << std::endl;
-    builder.AddEdge(0, 10, "EData", new EData{10});
-    builder.AddEdge(10, 20, "EData", new EData{20});
-    builder.AddEdge(20, 30, "EData", new EData{30});
-    builder.AddEdge(30, 40, "EData", new EData{40});
+    builder.AddEdge(0, 10, "EData", EData{10});
+    builder.AddEdge(10, 20, "EData", EData{20});
+    builder.AddEdge(20, 30, "EData", EData{30});
+    builder.AddEdge(30, 40, "EData", EData{40});
 
     std::cout << "Saving the graph..." << std::endl;
     builder.Save("test_graph");
@@ -59,27 +62,38 @@ void test_load(const char* graph_name) {
     auto* vtype = g->VertexDataType("VData");
     auto* vtype2 = g->VertexDataType("VData2");
     for (auto vs = g->VerticesOfType("VData"); vs->Alive(); vs->NextOfType()) {
-        void* vd = vs->Data();
-        auto* pagerank_val = vtype->getFieldAccessor(vd, "pagerank");
-        if (!pagerank_val) {
-            cout << "ERROR: can not find the field pagerank" << endl;
-            return;
+        /*std::string code = vs->Data();
+        for (int i=0; i<code.size(); i++) {
+            std::cout << (int)code[i];
         }
-        cout << vs->GlobalId() << ": " << pagerank_val->getValue<double>() << endl;
+        std::cout << std::endl;*/
+        double vd = sae::serialization::convert_from_string<double>(vs->Data());
+ //       auto* pagerank_val = vtype->getFieldAccessor(&vd, "pagerank");
+   //     if (!pagerank_val) {
+     //       cout << "ERROR: can not find the field pagerank" << endl;
+       //     return;
+        //}
+        cout << vs->GlobalId() << ": " << vd << endl;
 
         cout << "In Edges:" << endl;
         for (auto ei = vs->InEdges(); ei->Alive(); ei->Next()) {
-            cout << "\t" << "[" << ei->SourceId() << "," << ei->TargetId() << "]" << ": " << ((EData*)ei->Data())->type << endl;
+            cout << "\t" << "[" << ei->SourceId() << "," << ei->TargetId() << "]" << ": " << (sae::serialization::convert_from_string<EData>(ei->Data())).type << endl;
         }
 
         cout << "Out Edges:" << endl;
         for (auto ei = vs->OutEdges(); ei->Alive(); ei->Next()) {
-            cout << "\t" << "[" << ei->SourceId() << "," << ei->TargetId() << "]" << ": " << ((EData*)ei->Data())->type << endl;
+            cout << "\t" << "[" << ei->SourceId() << "," << ei->TargetId() << "]" << ": " << (sae::serialization::convert_from_string<EData>(ei->Data())).type << endl;
         }
     }
     for (auto vs = g->VerticesOfType("VData2"); vs->Alive(); vs->NextOfType()) {
-        void* vd = vs->Data();
-        auto* number = vtype2->getFieldAccessor(vd, "number");
+        /*std::string code = vs->Data();
+        for (int i=0; i<code.size(); i++) {
+            std::cout << (int)code[i];
+        }
+        std::cout << std::endl;*/
+
+        auto vd = sae::serialization::convert_from_string<VData2>(vs->Data());
+        auto* number = vtype2->getFieldAccessor(&vd, "number");
         if (!number) {
             cout << "ERROR: can not find the field number" << endl;
             return;
@@ -92,14 +106,14 @@ void test_load(const char* graph_name) {
 
     auto etype = g->EdgeDataType("EData");
     for (auto es = g->ForwardEdges(); es->Alive(); es->Next()) {
-        EData* ed = (EData*) es->Data();
-        cout << "\t" << es->GlobalId() << "[" << es->Source()->GlobalId() << "," << es->Target()->GlobalId() << "]" << ": " << etype->getFieldAccessor(ed, "type")->getValue<int>()  << endl;
+        EData ed = sae::serialization::convert_from_string<EData>(es->Data());
+        cout << "\t" << es->GlobalId() << "[" << es->Source()->GlobalId() << "," << es->Target()->GlobalId() << "]" << ": " << etype->getFieldAccessor(&ed, "type")->getValue<int>()  << endl;
     }
 
     cout << "Backward Edges:" << endl;
     for (auto es = g->BackwardEdges(); es->Alive(); es->Next()) {
-        EData* ed = (EData*) es->Data();
-        cout << "\t" << es->GlobalId() << "[" << es->Source()->GlobalId() << "," << es->Target()->GlobalId() << "]" << ": " << etype->getFieldAccessor(ed, "type")->getValue<int>() << endl;
+        EData ed = sae::serialization::convert_from_string<EData>(es->Data());
+        cout << "\t" << es->GlobalId() << "[" << es->Source()->GlobalId() << "," << es->Target()->GlobalId() << "]" << ": " << etype->getFieldAccessor(&ed, "type")->getValue<int>() << endl;
     }
 
     g->Close();

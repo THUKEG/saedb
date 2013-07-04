@@ -121,11 +121,11 @@ namespace saedb
 
             // return pointer to data
             const void* data() const {
-                return vi->Data();
+                //return vi->Data(); TODO 
             }
 
             void* data() {
-                return vi->Data();
+                //return vi->Data(); TODO
             }
 
             size_t num_in_edges() const {

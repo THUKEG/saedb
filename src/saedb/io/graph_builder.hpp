@@ -4,6 +4,10 @@
 #include <map>
 #include <vector>
 #include <utility>
+#include <sstream>
+#include <cstring>
+
+#include "../serialization/serialization_includes.hpp"
 
 #include "type_info.hpp"
 
@@ -27,9 +31,9 @@ namespace io {
         vid_t target;
         eid_t global_id;
         eid_t local_id;
-        void* data;
+        std::string data;
         uint32_t type_name;
-        edge_with_data(vid_t source, vid_t target, eid_t global_id, eid_t local_id, void* data, uint32_t type_name) :
+        edge_with_data(vid_t source, vid_t target, eid_t global_id, eid_t local_id, std::string data, uint32_t type_name) :
             source(source), target(target), global_id(global_id), local_id(local_id), data(data), type_name(type_name) {}
     };
 
@@ -37,8 +41,8 @@ namespace io {
         vid_t global_id;
         vid_t local_id;
         uint32_t type_name;
-        void* data;
-        vertex_with_data(vid_t global_id, vid_t local_id, uint32_t type_name, void* data) :
+        std::string data;
+        vertex_with_data(vid_t global_id, vid_t local_id, uint32_t type_name, std::string data) :
             global_id(global_id), local_id(local_id), type_name(type_name), data(data) {
         }
     };
@@ -54,8 +58,8 @@ namespace io {
     };
 
     struct GraphWriter {
-        virtual void AppendVertex(vid_t, vid_t, uint32_t, void*) = 0;
-        virtual void AppendEdge(vid_t, vid_t, eid_t, eid_t, void*, uint32_t) = 0;
+        virtual void AppendVertex(vid_t, vid_t, uint32_t, std::string) = 0;
+        virtual void AppendEdge(vid_t, vid_t, eid_t, eid_t, std::string, uint32_t) = 0;
         virtual void AppendVertexDataType(uint32_t data_size, DataTypeAccessor* accessor, uint32_t count) = 0;
         virtual void AppendEdgeDataType(uint32_t data_size, DataTypeAccessor* accessor, uint32_t count) = 0;
         virtual void Close() = 0;
@@ -67,7 +71,8 @@ namespace io {
     template<typename vkey_t>
     struct GraphBuilder
     {
-        virtual void AddVertex(vkey_t key, const char* data_type_name, void* data) {
+        template <typename T>
+        void AddVertex(vkey_t key, const char* data_type_name, T data) {
             int data_type_rank = -1;
             for (int i=0, size = vertex_data_types.size(); i<size; i++) {
                 if (strcmp(vertex_data_types[i].data_type_accessor->getTypeName(), data_type_name) == 0) {
@@ -82,10 +87,13 @@ namespace io {
             auto id = map(key);
             auto local_id = vertex_data_types[data_type_rank].count ++;
 
-            vertices[id] = vertex_with_data(id, local_id, data_type_rank, data);
+            std::string code = sae::serialization::convert_to_string(data);
+
+            vertices[id] = vertex_with_data(id, local_id, data_type_rank, code);
         }
 
-        virtual void AddEdge(vkey_t source, vkey_t target, const char* data_type_name, void* data) {
+        template <typename T>
+        void AddEdge(vkey_t source, vkey_t target, const char* data_type_name, T data) {
             int data_type_rank = -1;
             for (int i=0, size = edge_data_types.size(); i<size; i++) {
                 if (strcmp(edge_data_types[i].data_type_accessor->getTypeName(), data_type_name) == 0) {
@@ -102,7 +110,10 @@ namespace io {
             
             eid_t id = edges.size();
             auto local_id = edge_data_types[data_type_rank].count ++;
-            edges.push_back(edge_with_data(sid, tid, id, local_id, data, data_type_rank));
+            
+            std::string code = sae::serialization::convert_to_string(data);
+
+            edges.push_back(edge_with_data(sid, tid, id, local_id, code, data_type_rank));
         }
 
         virtual vid_t VertexCount() {
@@ -203,7 +214,7 @@ namespace io {
             auto it = vid_map.find(key);
             if (it == vid_map.end()) {
                 result = vertices.size();
-                vertices.push_back(vertex_with_data(0, 0, 0, NULL));
+                vertices.push_back(vertex_with_data(0, 0, 0, std::string("")));
                 vid_map.insert(make_pair(key, result));
             } else {
                 result = it->second;
