@@ -14,6 +14,33 @@
 
 #define MAX_EDGE_TYPE 5
 
+struct DataTypeInfoItem {
+    uint32_t count;
+    std::string type_name;
+    DataTypeInfoItem(uint32_t count = 0, std::string type_name = std::string("")) :
+        count(count), type_name(type_name) {}
+};
+
+namespace sae {
+    namespace serialization {
+        namespace custom_serialization_impl {
+            template <>
+            struct serialize_impl<sae::serialization::OSerializeStream, DataTypeInfoItem> {
+                static void run(sae::serialization::OSerializeStream& ostr, DataTypeInfoItem& d) {
+                    ostr << d.count << d.type_name;
+                }
+            };
+
+            template <>
+            struct deserialize_impl<sae::serialization::ISerializeStream, DataTypeInfoItem> {
+                static void run(sae::serialization::ISerializeStream& istr, DataTypeInfoItem& d) {
+                    istr >> d.count >> d.type_name;
+                }
+            };
+        }
+    }
+}
+
 namespace sae {
 namespace io {
 
@@ -51,13 +78,6 @@ struct EdgeListItem {
         global_id(global_id), local_id(local_id), data_type(data_type), source_id(source_id), target_id(target_id) {}
 };
 
-struct DataTypeInfoItem {
-    uint32_t data_size;
-    uint32_t count;
-    DataTypeInfoItem(uint32_t data_size, uint32_t count) :
-        data_size(data_size), count(count) {}
-};
-
 namespace {
 
     const char * concat(const char * a, const char * b) {
@@ -91,8 +111,7 @@ struct GraphData {
     EdgeListItem * forward, * backward;
     VertexListItem * vertex_list;
     EdgeListItem * edge_list;
-    DataTypeInfoItem * vertex_data_type_info, * edge_data_type_info;
-    char * vertex_data_type_accessor, * edge_data_type_accessor;
+    std::vector<DataTypeInfoItem> vertex_data_type_info, edge_data_type_info;
     vid_t ** vertex_type_list;
     EdgeListItem ** edge_type_list;
     std::vector<std::string> * vertex_data;
@@ -101,17 +120,15 @@ struct GraphData {
 
 
 // Evil forward declartion.
-EdgeIteratorPtr CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list, const std::vector<DataTypeAccessor*>&, const std::vector<DataTypeAccessor*>&);
+EdgeIteratorPtr CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list);
 
 
 struct VertexIteratorImpl : public VertexIterator {
     const GraphData& g;
     vid_t global_id;
-    const std::vector<DataTypeAccessor*>& vertex_data_types;
-    const std::vector<DataTypeAccessor*>& edge_data_types;
 
-    VertexIteratorImpl(const GraphData& g, vid_t global_id, const std::vector<DataTypeAccessor*>& vertex_data_types, const std::vector<DataTypeAccessor*>& edge_data_types):
-        g(g), global_id(global_id), vertex_data_types(vertex_data_types), edge_data_types(edge_data_types) {}
+    VertexIteratorImpl(const GraphData& g, vid_t global_id):
+        g(g), global_id(global_id) {}
     
     vid_t GlobalId() {
         return global_id;
@@ -154,24 +171,24 @@ struct VertexIteratorImpl : public VertexIterator {
     }
 
     EdgeIteratorPtr InEdges() {
-        return CreateEdgeIterator(g, g.vertex_list[global_id].bindex, g.vertex_list[global_id + 1].bindex - g.vertex_list[global_id].bindex, g.backward, vertex_data_types, edge_data_types);
+        return CreateEdgeIterator(g, g.vertex_list[global_id].bindex, g.vertex_list[global_id + 1].bindex - g.vertex_list[global_id].bindex, g.backward);
     }
 
     EdgeIteratorPtr OutEdges() {
-        return CreateEdgeIterator(g, g.vertex_list[global_id].findex, g.vertex_list[global_id + 1].findex - g.vertex_list[global_id].findex, g.forward, vertex_data_types, edge_data_types);
+        return CreateEdgeIterator(g, g.vertex_list[global_id].findex, g.vertex_list[global_id + 1].findex - g.vertex_list[global_id].findex, g.forward);
     }
 
     EdgeIteratorPtr OutEdgesOfType(const char* type_name) {
         uint32_t edge_data_type_count = g.meta->edge_data_type_count;
         uint32_t edge_type_rank = -1;
         for (int i=0; i<edge_data_type_count; i++) {
-            if (strcmp(edge_data_types[i]->getTypeName(), type_name) == 0) {
+            if (g.edge_data_type_info[i].type_name == std::string(type_name)) {
                 edge_type_rank = i;
                 break;
             }
         }
         if (edge_type_rank == -1) return nullptr;
-        return CreateEdgeIterator(g, g.vertex_list[global_id].type_index[edge_type_rank], g.vertex_list[global_id + 1].type_index[edge_type_rank] - g.vertex_list[global_id].type_index[edge_type_rank], g.edge_type_list[edge_type_rank], vertex_data_types, edge_data_types);
+        return CreateEdgeIterator(g, g.vertex_list[global_id].type_index[edge_type_rank], g.vertex_list[global_id + 1].type_index[edge_type_rank] - g.vertex_list[global_id].type_index[edge_type_rank], g.edge_type_list[edge_type_rank]);
     }
 
     bool Alive() {
@@ -183,7 +200,7 @@ struct VertexIteratorImpl : public VertexIterator {
     }
 
     VertexIteratorPtr Clone() {
-        auto p = new VertexIteratorImpl(g, global_id, vertex_data_types, edge_data_types);
+        auto p = new VertexIteratorImpl(g, global_id);
         return VertexIteratorPtr(p);
     }
 };
@@ -193,11 +210,9 @@ struct EdgeIteratorImpl : public EdgeIterator {
     const GraphData& g;
     EdgeListItem *list;
     eid_t base, index, count;
-    const std::vector<DataTypeAccessor*>& vertex_data_types;
-    const std::vector<DataTypeAccessor*>& edge_data_types;
 
-    EdgeIteratorImpl(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list, const std::vector<DataTypeAccessor*>& vertex_data_types, const std::vector<DataTypeAccessor*>& edge_data_types) :
-        g(g), list(list), base(base), index(0), count(count), vertex_data_types(vertex_data_types), edge_data_types(edge_data_types) {}
+    EdgeIteratorImpl(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list) :
+        g(g), list(list), base(base), index(0), count(count) {}
 
     eid_t GlobalId() {
         return list[base + index].global_id;
@@ -221,12 +236,12 @@ struct EdgeIteratorImpl : public EdgeIterator {
 
     VertexIteratorPtr Source() {
         vid_t source_id = SourceId();
-        return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, source_id, vertex_data_types, edge_data_types));
+        return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, source_id));
     }
 
     VertexIteratorPtr Target() {
         vid_t target_id = TargetId();
-        return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, target_id, vertex_data_types, edge_data_types));
+        return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, target_id));
     }
 
     std::string Data() {
@@ -246,24 +261,22 @@ struct EdgeIteratorImpl : public EdgeIterator {
     }
 
     EdgeIteratorPtr Clone() {
-        auto p = new EdgeIteratorImpl(g, base, count, list, vertex_data_types, edge_data_types);
+        auto p = new EdgeIteratorImpl(g, base, count, list);
         p->index = index;
         return EdgeIteratorPtr(p);
     }
 };
 
 
-EdgeIteratorPtr CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list, const std::vector<DataTypeAccessor*>& vertex_data_types, const std::vector<DataTypeAccessor*>& edge_data_types) {
-    return EdgeIteratorPtr(new EdgeIteratorImpl(g, base, count, list, vertex_data_types, edge_data_types));
+EdgeIteratorPtr CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list) {
+    return EdgeIteratorPtr(new EdgeIteratorImpl(g, base, count, list));
 }
 
 
 struct MappedGraphImpl : public MappedGraph {
-    unique_ptr<MMapFile> meta_file, forward_file, backward_file, vlist_file, elist_file, vtypeinfo_file, etypeinfo_file, vaccessor_file, eaccessor_file;
+    unique_ptr<MMapFile> meta_file, forward_file, backward_file, vlist_file, elist_file;
     unique_ptr<MMapFile> *vtypelist_file, *etypelist_file, *vdata_file, *edata_file;
     GraphData g;
-    std::vector<DataTypeAccessor*> vertex_data_types;
-    std::vector<DataTypeAccessor*> edge_data_types;
     char* my_prefix;
 
 
@@ -279,24 +292,25 @@ struct MappedGraphImpl : public MappedGraph {
         mg->backward_file.reset(MMapFile::Open(concat(prefix, ".backward")));
         mg->vlist_file.reset(MMapFile::Open(concat(prefix, ".vlist")));
         mg->elist_file.reset(MMapFile::Open(concat(prefix, ".elist")));
-        mg->vtypeinfo_file.reset(MMapFile::Open(concat(prefix, ".vtypeinfo")));
-        mg->etypeinfo_file.reset(MMapFile::Open(concat(prefix, ".etypeinfo")));
-        mg->vaccessor_file.reset(MMapFile::Open(concat(prefix, ".vaccessor")));
-        mg->eaccessor_file.reset(MMapFile::Open(concat(prefix, ".eaccessor")));
 
         mg->g.meta = (GraphHeader*) mg->meta_file->Data();
         mg->g.forward = (EdgeListItem*) mg->forward_file->Data();
         mg->g.backward = (EdgeListItem*) mg->backward_file->Data();
         mg->g.vertex_list = (VertexListItem*) mg->vlist_file->Data();
         mg->g.edge_list = (EdgeListItem*) mg->elist_file->Data();
-        mg->g.vertex_data_type_info = (DataTypeInfoItem*) mg->vtypeinfo_file->Data();
-        mg->g.edge_data_type_info = (DataTypeInfoItem*) mg->etypeinfo_file->Data();
-        mg->g.vertex_data_type_accessor = (char*) mg->vaccessor_file->Data();
-        mg->g.edge_data_type_accessor = (char*) mg->eaccessor_file->Data();
+
+        std::ifstream finv(concat(prefix, ".vtypeinfo"));
+        sae::serialization::ISerializeStream decoderv(&finv);
+        decoderv >> mg->g.vertex_data_type_info;
+        finv.close();
+
+        std::ifstream fine(concat(prefix, ".etypeinfo"));
+        sae::serialization::ISerializeStream decodere(&fine);
+        decodere >> mg->g.edge_data_type_info;
+        fine.close();
 
         uint32_t vertex_data_type_count = mg->g.meta->vertex_data_type_count;
         mg->vtypelist_file = new unique_ptr<MMapFile>[vertex_data_type_count];
-        mg->vdata_file = new unique_ptr<MMapFile>[vertex_data_type_count];
         mg->g.vertex_type_list = new vid_t*[vertex_data_type_count];
         mg->g.vertex_data = new std::vector<std::string>[vertex_data_type_count];
         for (int i=0; i < vertex_data_type_count; i++) {
@@ -311,7 +325,6 @@ struct MappedGraphImpl : public MappedGraph {
 
         uint32_t edge_data_type_count = mg->g.meta->edge_data_type_count;
         mg->etypelist_file = new unique_ptr<MMapFile>[edge_data_type_count];
-        mg->edata_file = new unique_ptr<MMapFile>[edge_data_type_count];
         mg->g.edge_type_list = new EdgeListItem*[edge_data_type_count];
         mg->g.edge_data = new std::vector<std::string>[edge_data_type_count];
         for (int i=0; i<edge_data_type_count; i++) {
@@ -324,32 +337,10 @@ struct MappedGraphImpl : public MappedGraph {
             fin.close();
         }
         
-        DataTypeInfo* start = (DataTypeInfo*) mg->vaccessor_file->Data();
-        for (int i=0; i< vertex_data_type_count; i++) {
-            DataTypeInfo* dti = start;
-            uint32_t fc = dti->field_num;
-            FieldInfo* fi = (FieldInfo*)(start + 1);
-            
-            start = (DataTypeInfo*) (fi + fc);
-            DataTypeAccessor* dt = DataTypeAccessorFactory(dti, fi);
-            mg->vertex_data_types.push_back(dt);
-        }
-
-        start = (DataTypeInfo*) mg->eaccessor_file->Data();
-        for (int i=0; i<edge_data_type_count; i++) {
-            DataTypeInfo* dti = start;
-            uint32_t fc = dti->field_num;
-            FieldInfo* fi = (FieldInfo*) (start + 1);
-
-            start = (DataTypeInfo*) (fi + fc);
-            DataTypeAccessor* dt = DataTypeAccessorFactory(dti, fi);
-            mg->edge_data_types.push_back(dt);
-        }
-
         return mg;
     }
 
-    static MappedGraphImpl* Create(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t vertex_type_total_size, uint32_t edge_type_total_size, uint32_t * vertex_type_count, uint32_t * edge_type_count, uint32_t * vertex_data_size, uint32_t * edge_data_size) {
+    static MappedGraphImpl* Create(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t * vertex_type_count, uint32_t * edge_type_count) {
         MappedGraphImpl* mg = new MappedGraphImpl();
 
         int len = strlen(prefix);
@@ -361,18 +352,15 @@ struct MappedGraphImpl : public MappedGraph {
         mg->backward_file.reset(MMapFile::Create(concat(prefix, ".backward"), sizeof(EdgeListItem) * m));
         mg->vlist_file.reset(MMapFile::Create(concat(prefix, ".vlist"), sizeof(VertexListItem) * (n + 1)));
         mg->elist_file.reset(MMapFile::Create(concat(prefix, ".elist"), sizeof(EdgeListItem) * m));
-        mg->vtypeinfo_file.reset(MMapFile::Create(concat(prefix, ".vtypeinfo"), sizeof(DataTypeInfoItem) * vertex_data_type_count));
-        mg->etypeinfo_file.reset(MMapFile::Create(concat(prefix, ".etypeinfo"), sizeof(DataTypeInfoItem) * edge_data_type_count));
-        mg->vaccessor_file.reset(MMapFile::Create(concat(prefix, ".vaccessor"), vertex_type_total_size));
-        mg->eaccessor_file.reset(MMapFile::Create(concat(prefix, ".eaccessor"), edge_type_total_size));
+
+        mg->g.vertex_data_type_info.resize(vertex_data_type_count);
+        mg->g.edge_data_type_info.resize(edge_data_type_count);
 
         mg->vtypelist_file = new unique_ptr<MMapFile>[vertex_data_type_count];
-        mg->vdata_file = new unique_ptr<MMapFile>[vertex_data_type_count];
         for (int i=0; i<vertex_data_type_count; i++) {
             mg->vtypelist_file[i].reset(MMapFile::Create(concat(prefix, concat(".vtypelist", i)), sizeof(vid_t) * vertex_type_count[i]));
         }
         mg->etypelist_file = new unique_ptr<MMapFile>[edge_data_type_count];
-        mg->edata_file = new unique_ptr<MMapFile>[edge_data_type_count];
         for (int i=0; i<edge_data_type_count; i++) {
             mg->etypelist_file[i].reset(MMapFile::Create(concat(prefix, concat(".etypelist", i)), sizeof(EdgeListItem) * edge_type_count[i]));
         }
@@ -382,10 +370,6 @@ struct MappedGraphImpl : public MappedGraph {
         mg->g.backward = (EdgeListItem*) mg->backward_file->Data();
         mg->g.vertex_list = (VertexListItem*) mg->vlist_file->Data();
         mg->g.edge_list = (EdgeListItem*) mg->elist_file->Data();
-        mg->g.vertex_data_type_info = (DataTypeInfoItem*) mg->vtypeinfo_file->Data();
-        mg->g.edge_data_type_info = (DataTypeInfoItem*) mg->etypeinfo_file->Data();
-        mg->g.vertex_data_type_accessor = (char*) mg->vaccessor_file->Data();
-        mg->g.edge_data_type_accessor = (char*) mg->eaccessor_file->Data();
 
         mg->g.vertex_type_list = new vid_t*[vertex_data_type_count];
         for (int i=0; i<vertex_data_type_count; i++) {
@@ -431,7 +415,7 @@ struct MappedGraphImpl : public MappedGraph {
     vid_t VertexOfTypeCount(const char* type) {
         uint32_t vertex_data_type_count = VertexTypeCount();
         for (int i=0; i<vertex_data_type_count; i++) {
-            if (strcmp(type, vertex_data_types[i]->getTypeName()) == 0) {
+            if (g.vertex_data_type_info[i].type_name == std::string(type)) {
                 return g.vertex_data_type_info[i].count;
             }
         }
@@ -441,7 +425,7 @@ struct MappedGraphImpl : public MappedGraph {
     eid_t EdgeOfTypeCount(const char* type) {
         uint32_t edge_data_type_count = EdgeTypeCount();
         for (int i=0; i<edge_data_type_count; i++) {
-            if (strcmp(type, edge_data_types[i]->getTypeName()) == 0) {
+            if (g.edge_data_type_info[i].type_name == std::string(type)) {
                 return g.edge_data_type_info[i].count;
             }
         }
@@ -449,71 +433,45 @@ struct MappedGraphImpl : public MappedGraph {
     }
 
     VertexIteratorPtr Vertices() {
-        return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, 0, vertex_data_types, edge_data_types));
+        return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, 0));
     }
 
     VertexIteratorPtr VerticesOfType(const char* type) {
         uint32_t vertex_data_type_count = VertexTypeCount();
         uint32_t type_rank = -1;
         for (int i=0; i<vertex_data_type_count; i++) {
-            if (strcmp(type, vertex_data_types[i]->getTypeName()) == 0) {
+            if (g.vertex_data_type_info[i].type_name == std::string(type)) {
                 type_rank = i;
                 break;
             }
         }
         if (type_rank == -1) return nullptr;
-        return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, g.vertex_type_list[type_rank][0], vertex_data_types, edge_data_types));
+        return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, g.vertex_type_list[type_rank][0]));
     }
 
     EdgeIteratorPtr Edges() {
-        return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.edge_list, vertex_data_types, edge_data_types));
+        return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.edge_list));
     }
 
     EdgeIteratorPtr ForwardEdges() {
-        return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.forward, vertex_data_types, edge_data_types));
+        return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.forward));
     }
 
     EdgeIteratorPtr BackwardEdges() {
-        return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.backward, vertex_data_types, edge_data_types));
+        return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.meta->edges, g.backward));
     }
 
     EdgeIteratorPtr EdgesOfType(const char* type_name) {
         uint32_t edge_data_type_count = EdgeTypeCount();
         uint32_t type_rank = -1;
         for (int i=0; i<edge_data_type_count; i++) {
-            if (strcmp(type_name, edge_data_types[i]->getTypeName()) == 0) {
+            if (g.edge_data_type_info[i].type_name == std::string(type_name)) {
                 type_rank = i;
                 break;
             }
         }
         if (type_rank == -1) return nullptr;
-        return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.edge_data_type_info[type_rank].count, g.edge_type_list[type_rank], vertex_data_types, edge_data_types));
-    }
-
-    DataTypeAccessor* VertexDataType(const char* name) {
-        for (auto p: vertex_data_types) {
-            if (strcmp(p->getTypeName(), name) == 0) {
-                return p;
-            }
-        }
-        return nullptr;
-    }
-
-    DataTypeAccessor* EdgeDataType(const char* name) {
-        for (auto p: edge_data_types) {
-            if (strcmp(p->getTypeName(), name) == 0) {
-                return p;
-            }
-        }
-        return nullptr;
-    }
-
-    std::vector<DataTypeAccessor*> VertexDataTypes() {
-        return vertex_data_types;
-    }
-
-    std::vector<DataTypeAccessor*> EdgeDataTypes() {
-        return edge_data_types;
+        return unique_ptr<EdgeIterator>(new EdgeIteratorImpl(g, 0, g.edge_data_type_info[type_rank].count, g.edge_type_list[type_rank]));
     }
 
     void Sync() {
@@ -522,19 +480,6 @@ struct MappedGraphImpl : public MappedGraph {
         backward_file->Sync();
         vlist_file->Sync();
         elist_file->Sync();
-        vtypeinfo_file->Sync();
-        etypeinfo_file->Sync();
-        vaccessor_file->Sync();
-        eaccessor_file->Sync();
-
-        for (int i=0; i<g.meta->vertex_data_type_count; i++) {
-            vtypelist_file[i]->Sync();
-            vdata_file[i]->Sync();
-        }
-        for (int i=0; i<g.meta->edge_data_type_count; i++) {
-            etypelist_file[i]->Sync();
-            edata_file[i]->Sync();
-        }
     }
 
     void Close() {
@@ -545,11 +490,16 @@ struct MappedGraphImpl : public MappedGraph {
         if (backward_file) backward_file->Close();
         if (vlist_file) vlist_file->Close();
         if (elist_file) elist_file->Close();
-        if (vtypeinfo_file) vtypeinfo_file->Close();
-        if (etypeinfo_file) etypeinfo_file->Close();
-        if (vaccessor_file) vaccessor_file->Close();
-        if (eaccessor_file) eaccessor_file->Close();
 
+        std::ofstream foutv(concat(my_prefix, ".vtypeinfo"));
+        sae::serialization::OSerializeStream encoderv(&foutv);
+        encoderv << g.vertex_data_type_info;
+        foutv.close();
+
+        std::ofstream foute(concat(my_prefix, ".etypeinfo"));
+        sae::serialization::OSerializeStream encodere(&foute);
+        encodere << g.edge_data_type_info;
+        foute.close();
 
         for (int i=0; i<vertex_data_type_count; i++) {
             if (vtypelist_file[i]) vtypelist_file[i]->Close();
@@ -577,17 +527,14 @@ MappedGraph* MappedGraph::Open(const char * prefix) {
 struct MappedGraphWriterImpl : public MappedGraphWriter {
     MappedGraphImpl *mg;
     GraphData *g;
-    uint32_t edge_type_file_offset, vertex_type_file_offset;
     uint32_t eti, vti;
 
-    static MappedGraphWriter* Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t vertex_type_total_size, uint32_t edge_type_total_size, uint32_t * vertex_type_count, uint32_t * edge_type_count, uint32_t * vertex_data_size, uint32_t * edge_data_size) {
-        auto mg = MappedGraphImpl::Create(prefix, n, m, vertex_data_type_count, edge_data_type_count, vertex_type_total_size, edge_type_total_size, vertex_type_count, edge_type_count, vertex_data_size, edge_data_size);
+    static MappedGraphWriter* Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t * vertex_type_count, uint32_t * edge_type_count) {
+        auto mg = MappedGraphImpl::Create(prefix, n, m, vertex_data_type_count, edge_data_type_count, vertex_type_count, edge_type_count);
         if (mg) {
             MappedGraphWriterImpl *mgw = new MappedGraphWriterImpl();
             mgw->mg = mg;
             mgw->g = &mg->g;
-            mgw->edge_type_file_offset = 0;
-            mgw->vertex_type_file_offset = 0;
             mgw->eti = 0;
             mgw->vti = 0;
             return mgw;
@@ -609,26 +556,12 @@ struct MappedGraphWriterImpl : public MappedGraphWriter {
         g->edge_data[type_name][local_id] = data;
     }
 
-    void AppendVertexDataType(uint32_t data_size, DataTypeAccessor* accessor, uint32_t count) {
-        g->vertex_data_type_info[vti ++] = DataTypeInfoItem(data_size, count);
-
-        memcpy(g->vertex_data_type_accessor + vertex_type_file_offset, accessor->getTypeName(), sizeof(DataTypeInfo));
-        vertex_type_file_offset += sizeof(DataTypeInfo);
-        for (auto fi: accessor->getAllFields()) {
-            memcpy(g->vertex_data_type_accessor + vertex_type_file_offset, fi, sizeof(FieldInfo));
-            vertex_type_file_offset += sizeof(FieldInfo);
-        }
+    void AppendVertexDataType(std::string type_name, uint32_t count) {
+        g->vertex_data_type_info[vti ++] = DataTypeInfoItem(count, type_name);
     }
 
-    void AppendEdgeDataType(uint32_t data_size, DataTypeAccessor* accessor, uint32_t count) {
-        g->edge_data_type_info[eti ++] = DataTypeInfoItem(data_size, count);
-
-        memcpy(g->edge_data_type_accessor + edge_type_file_offset, accessor->getTypeName(), sizeof(DataTypeInfo));
-        edge_type_file_offset += sizeof(DataTypeInfo);
-        for (auto fi: accessor->getAllFields()) {
-            memcpy(g->edge_data_type_accessor + edge_type_file_offset, fi, sizeof(FieldInfo));
-            edge_type_file_offset += sizeof(FieldInfo);
-        }
+    void AppendEdgeDataType(std::string type_name, uint32_t count) {
+        g->edge_data_type_info[eti ++] = DataTypeInfoItem(count, type_name);
     }
 
     void Close() {
@@ -676,8 +609,8 @@ struct MappedGraphWriterImpl : public MappedGraphWriter {
     }
 };
 
-MappedGraphWriter* MappedGraphWriter::Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t vertex_type_total_size, uint32_t edge_type_total_size, uint32_t * vertex_type_count, uint32_t * edge_type_count, uint32_t * vertex_data_size, uint32_t * edge_data_size) {
-    return MappedGraphWriterImpl::Open(prefix, n, m, vertex_data_type_count, edge_data_type_count, vertex_type_total_size, edge_type_total_size, vertex_type_count, edge_type_count, vertex_data_size, edge_data_size);
+MappedGraphWriter* MappedGraphWriter::Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t * vertex_type_count, uint32_t * edge_type_count) {
+    return MappedGraphWriterImpl::Open(prefix, n, m, vertex_data_type_count, edge_data_type_count, vertex_type_count, edge_type_count);
 }
 
 } // io

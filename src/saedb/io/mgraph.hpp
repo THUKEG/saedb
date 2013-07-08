@@ -101,20 +101,6 @@ namespace sae {
             virtual EdgeIteratorPtr Edges() = 0;
 
             /**
-             * get data type accessor by name
-             */
-            virtual DataTypeAccessor* VertexDataType(const char * name) = 0;
-
-            virtual DataTypeAccessor* EdgeDataType(const char* name) = 0;
-
-            /**
-             * Get all meta information about all data types
-             */
-            virtual std::vector<DataTypeAccessor*> VertexDataTypes() = 0;
-
-            virtual std::vector<DataTypeAccessor*> EdgeDataTypes() = 0;
-
-            /**
              * Force sync the mapped files with disk.
              *
              * Note that operating system will sync with disk even you have
@@ -139,7 +125,7 @@ namespace sae {
         };
 
         struct MappedGraphWriter : public GraphWriter {
-            static MappedGraphWriter* Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t vertex_type_total_size, uint32_t edge_type_total_size, uint32_t* vertex_type_count, uint32_t* edge_type_count, uint32_t* vertex_data_size, uint32_t* edge_data_size);
+            static MappedGraphWriter* Open(const char * prefix, vid_t n, eid_t m, uint32_t vertex_data_type_count, uint32_t edge_data_type_count, uint32_t* vertex_type_count, uint32_t* edge_type_count);
         };
     }
 }
