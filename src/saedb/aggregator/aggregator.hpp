@@ -102,6 +102,33 @@ public:
 
         return result;
     }
+    
+    template <typename VertexMapperType>
+    void transform_vertices(VertexMapperType mapfunction){
+        //TODO openmp
+
+        for (int i = 0; i < (int)graph.num_vertices(); i++){
+            vertex_type vertex(graph.vertex(i));
+            mapfunction(*context, vertex);
+        }
+    }
+
+    template <typename EdgeMapperType>
+    void transform_edges(EdgeMapperType mapfunction){
+        //TODO openmp
+
+        for (int i = 0; i < (int)graph.num_local_vertices(); i++){
+            sae::io::EdgeIteratorPtr p = graph.vertex(i).out_edges();
+
+            for (; p->Alive(); p->Next()){
+                sae::io::EdgeIteratorPtr q = p->Clone();
+                edge_type edge(std::move(q));
+
+                mapfunction(*context, edge);
+            }
+        }
+    }
+
 };
 }
 
