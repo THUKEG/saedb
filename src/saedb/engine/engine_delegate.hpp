@@ -25,8 +25,6 @@ namespace saedb
         typedef algorithm_t                                 vertex_program_type;
         typedef typename algorithm_t::gather_type           gather_type;
         typedef typename algorithm_t::message_type          message_type;
-        typedef typename algorithm_t::vertex_data_type      vertex_data_type;
-        typedef typename algorithm_t::edge_data_type        edge_data_type;
         typedef typename algorithm_t::graph_type            graph_type;
         typedef typename graph_type::vertex_type            vertex_type;
         typedef typename graph_type::edge_type              edge_type;

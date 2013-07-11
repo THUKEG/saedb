@@ -17,32 +17,49 @@ struct EData {
     int type;
 };
 
+/*
+ * serialization/deserialization for vertex data
+ */
+namespace sae {
+    namespace serialization {
+        namespace custom_serialization_impl {
+            template <>
+            struct serialize_impl<OSerializeStream, VData> {
+                static void run(OSerializeStream& ostr, VData& d) {
+                    ostr << d.pagerank;
+                }
+            };
+            template <>
+            struct deserialize_impl<ISerializeStream, VData> {
+                static void run(ISerializeStream& istr, VData& d) {
+                    istr >> d.pagerank;
+                }
+            };
+        }
+    }
+}
 
 struct PageRankTest {
     string filepath;
 
     PageRankTest() {
         filepath = saedb::test::TempFileName();
-        sae::io::GraphBuilder<int, VData, EData> b;
-        b.AddEdge(0, 10, EData{0});
-        b.AddEdge(10, 20, EData{0});
-        b.AddEdge(20, 30, EData{0});
-        b.AddVertex(0,  VData{1});
-        b.AddVertex(10, VData{1});
-        b.AddVertex(20, VData{1});
-        b.AddVertex(30, VData{1});
+        sae::io::GraphBuilder<int> b;
+        b.AddVertexDataType("VData");
+        b.AddEdgeDataType("EData");        
 
-        DataTypeAccessor* vd = b.CreateType("VData");
-        std::cout << "Building type : " << vd->getTypeName() << std::endl;
-        vd->appendField("pagerank", DOUBLE_T);
-        b.SaveDataType(vd);
+        b.AddVertex(0,  VData{1}, "VData");
+        b.AddVertex(10, VData{1}, "VData");
+        b.AddVertex(20, VData{1}, "VData");
+        b.AddVertex(30, VData{1}, "VData");
 
-        DataTypeAccessor* ed = b.CreateType("EData");
-        std::cout << "Building type : " << ed->getTypeName() << std::endl;
-        ed->appendField("type", INT_T);
-        b.SaveDataType(ed);
+        b.AddEdge(0, 10,  EData{0}, "EData");
+        b.AddEdge(10, 20, EData{0}, "EData");
+        b.AddEdge(20, 30, EData{0}, "EData");
+
 
         b.Save(filepath.c_str());
+        cout << "pagerank_test:Generating graph data done. " << endl;
     }
 
     ~PageRankTest() {
@@ -51,6 +68,7 @@ struct PageRankTest {
 };
 
 TEST(PageRankTest, PageRank) {
+    cout << "pagerank_test:[PageRank] Start test." << endl;
     graph_type graph;
     graph.load_format(filepath);
     saedb::IEngine<pagerank> *engine = new saedb::EngineDelegate<pagerank>(graph);
@@ -59,15 +77,15 @@ TEST(PageRankTest, PageRank) {
 
     // for debug purpose, print out all
     for (auto i = 0; i < graph.num_local_vertices(); i ++) {
-        cerr << "v[" << i << "]: " << graph.vertex(i).data() << endl;
+        cerr << "v[" << i << "]: " << graph.vertex(i).parse<double>() << endl;
     }
 
     // compare with known answers
     vector<double> results = {0.15, 0.2775, 0.385875, 0.477994};
     for (auto i = 0; i < graph.num_local_vertices(); i ++) {
-        ASSERT_TRUE(abs(results[i] - graph.vertex(i).data()) < TOLERANCE);
+        ASSERT_TRUE(abs(results[i] - graph.vertex(i).parse<double>()) < TOLERANCE);
     }
-
+    cout << "pagerank_test:[PageRank] End test." << endl;
     delete engine;
 }
 

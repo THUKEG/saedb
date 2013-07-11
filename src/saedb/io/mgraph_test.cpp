@@ -146,7 +146,7 @@ void test_show_meta_information(const char* graph_name) {
  **************************************************/
 typedef double vertex_data_type;
 typedef int edge_data_type;
-typedef saedb::sae_graph<vertex_data_type, edge_data_type> graph_type;
+typedef saedb::sae_graph graph_type;
 
 struct FilterQuery : public IFilterQuery<vertex_data_type, edge_data_type, VData, EData>{
     bool vertex_predicate(VData* v){

@@ -23,8 +23,6 @@ namespace saedb
         typedef algorithm_t                                 vertex_program_type;
         typedef typename algorithm_t::gather_type           gather_type;
         typedef typename algorithm_t::message_type          message_type;
-        typedef typename algorithm_t::vertex_data_type      vertex_data_type;
-        typedef typename algorithm_t::edge_data_type        edge_data_type;
         typedef typename algorithm_t::graph_type            graph_type;
         typedef typename graph_type::vertex_type            vertex_type;
         typedef typename graph_type::edge_type              edge_type;
@@ -154,7 +152,7 @@ namespace saedb
                 break;
             }
             auto &vprog = vertex_programs_[vid];
-            vertex_type vertex = graph_.vertex(vid);
+            vertex_type& vertex = graph_.vertex(vid);
             vprog.init(context, vertex, messages_[vid]);
             vid++;
         }
@@ -169,7 +167,7 @@ namespace saedb
                 continue;
             }
             auto &vprog = vertex_programs_[vid];
-            vertex_type vertex(graph_.vertex(vid));
+            vertex_type& vertex = graph_.vertex(vid);
             auto gather_dir = vprog.gather_edges(context, vertex);
 
             bool accum_is_set = false;
@@ -209,7 +207,7 @@ namespace saedb
                 continue;
             }
             auto &vprog = vertex_programs_[vid];
-            vertex_type vertex {graph_.vertex(vid)};
+            vertex_type& vertex  = graph_.vertex(vid);
             auto scatter_dir = vprog.scatter_edges(context, vertex);
 
             if (scatter_dir == IN_EDGES || scatter_dir == ALL_EDGES){
@@ -229,15 +227,14 @@ namespace saedb
     }
 
     template <typename algorithm_t>
-    void SynchronousEngine<algorithm_t>::
-    executeApplys (){
+    void SynchronousEngine<algorithm_t>::executeApplys (){
         context_type context(*this, graph_);
         for (lvid_type vid = 0; vid < graph_.num_local_vertices(); vid++) {
             if (!active_superstep_[vid]) {
                 continue;
             }
             auto &vprog = vertex_programs_[vid];
-            vertex_type vertex(graph_.vertex(vid));
+            vertex_type& vertex = graph_.vertex(vid);
             const auto& accum = gather_accum_[vid];
             vprog.apply(context, vertex, accum);
             // clear gather accum array

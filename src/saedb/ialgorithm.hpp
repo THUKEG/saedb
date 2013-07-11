@@ -12,8 +12,6 @@ namespace saedb
     class IAlgorithm
     {
     public:
-        typedef typename graph_t::vertex_data_type                vertex_data_type;
-        typedef typename graph_t::edge_data_type                  edge_data_type;
         typedef gather_t                                          gather_type;
         typedef graph_t                                           graph_type;
         typedef message_t                                         message_type;
