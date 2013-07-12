@@ -121,10 +121,7 @@ namespace saedb
         struct vertex_type {
             sae::io::VertexIteratorPtr vi;
 
-            std::string raw_data;
-
             vertex_type(sae::io::VertexIteratorPtr&& vi) : vi(std::move(vi)) { 
-                raw_data = vi->Data();
             }
 
             vertex_type() { /*for saving into vector*/ }
@@ -135,23 +132,18 @@ namespace saedb
 
             template<typename T>
             T parse() {
-                std::cout << "graph.hpp(vertex_type: parse): enter." << std::endl;
-                T ret = sae::serialization::convert_from_string<T>(raw_data);
-                std::cout << "graph.hpp(vertex_type: parse): exit." << std::endl;                
+                T ret = sae::serialization::convert_from_string<T>(vi->Data());
                 return ret;
             }
 
             template<typename T>
             void update(T d) {
-                std::cout << "graph.hpp(vertex_type: update): enter." << std::endl;
-                raw_data = sae::serialization::convert_to_string<T>(d);
-                std::cout << "graph.hpp(vertex_type: update): exit." << std::endl;                                
+                vi->Data() = sae::serialization::convert_to_string<T>(d);
             }
 
             /* return the data rank of this vertex */
             std::string data_type_name() {
-                // TODO: user need this to select appropriate data type
-                return "DefaultType";
+                return vi->Typename();
             }
 
             size_t num_in_edges() const {
@@ -182,8 +174,6 @@ namespace saedb
         class edge_type {
         private:
             sae::io::EdgeIteratorPtr ei;
-
-            std::string raw_data;
             
         public:
 
@@ -201,22 +191,18 @@ namespace saedb
 
             template<typename T>
             T parse() {
-                std::cout << "graph.hpp(edge_type: parse): enter." << std::endl;
-                T ret = sae::serialization::convert_from_string<T>(raw_data);
-                std::cout << "graph.hpp(edge_type: parse): exit." << std::endl;                
+                T ret = sae::serialization::convert_from_string<T>(ei->Data());
                 return ret;
             }
 
             template<typename T>
             void update(T d) {
-                std::cout << "graph.hpp(edge_type: update): enter." << std::endl;
-                raw_data = sae::serialization::convert_to_string<T>(d);
-                std::cout << "graph.hpp(edge_type: update): exit." << std::endl;
+                ei->Data() = sae::serialization::convert_to_string<T>(d);
             }
 
             /* return the data rank of this vertex */
             std::string data_type_name() {
-                return "DefaultType";
+                return ei->Typename();
             }
 
         };
@@ -225,6 +211,7 @@ namespace saedb
             if (!v_valid_[vid]) {
                 sae::io::VertexIteratorPtr v = graph->Vertices();
                 v->MoveTo(vid);
+                std::string s = v->Data();
                 vertices_[vid] = vertex_type(std::move(v));
                 v_valid_[vid] = 1;
             }

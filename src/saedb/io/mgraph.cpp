@@ -120,14 +120,14 @@ struct GraphData {
 
 
 // Evil forward declartion.
-EdgeIteratorPtr CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list);
+EdgeIteratorPtr CreateEdgeIterator(GraphData& g, eid_t base, eid_t count, EdgeListItem* list);
 
 
 struct VertexIteratorImpl : public VertexIterator {
-    const GraphData& g;
+    GraphData& g;
     vid_t global_id;
 
-    VertexIteratorImpl(const GraphData& g, vid_t global_id):
+    VertexIteratorImpl(GraphData& g, vid_t global_id):
         g(g), global_id(global_id) {}
     
     vid_t GlobalId() {
@@ -142,7 +142,11 @@ struct VertexIteratorImpl : public VertexIterator {
         return g.vertex_list[global_id].data_type;
     }
 
-    std::string Data() {
+    std::string Typename() {
+        return g.vertex_data_type_info[DataTypeId()].type_name;
+    }
+
+    std::string& Data() {
         return g.vertex_data[DataTypeId()][LocalId()];
     }
 
@@ -207,11 +211,11 @@ struct VertexIteratorImpl : public VertexIterator {
 
 
 struct EdgeIteratorImpl : public EdgeIterator {
-    const GraphData& g;
+    GraphData& g;
     EdgeListItem *list;
     eid_t base, index, count;
 
-    EdgeIteratorImpl(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list) :
+    EdgeIteratorImpl(GraphData& g, eid_t base, eid_t count, EdgeListItem* list) :
         g(g), list(list), base(base), index(0), count(count) {}
 
     eid_t GlobalId() {
@@ -234,6 +238,10 @@ struct EdgeIteratorImpl : public EdgeIterator {
         return list[base + index].data_type;
     }
 
+    std::string Typename() {
+        return g.edge_data_type_info[DataTypeId()].type_name;
+    }
+
     VertexIteratorPtr Source() {
         vid_t source_id = SourceId();
         return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, source_id));
@@ -244,7 +252,7 @@ struct EdgeIteratorImpl : public EdgeIterator {
         return unique_ptr<VertexIterator>(new VertexIteratorImpl(g, target_id));
     }
 
-    std::string Data() {
+    std::string& Data() {
         return g.edge_data[DataTypeId()][LocalId()];
     }
 
@@ -268,7 +276,7 @@ struct EdgeIteratorImpl : public EdgeIterator {
 };
 
 
-EdgeIteratorPtr CreateEdgeIterator(const GraphData& g, eid_t base, eid_t count, EdgeListItem* list) {
+EdgeIteratorPtr CreateEdgeIterator(GraphData& g, eid_t base, eid_t count, EdgeListItem* list) {
     return EdgeIteratorPtr(new EdgeIteratorImpl(g, base, count, list));
 }
 
@@ -548,7 +556,7 @@ struct MappedGraphWriterImpl : public MappedGraphWriter {
         g->vertex_data[type_name][local_id] = data;
     }
 
-    void AppendEdge(vid_t source, vid_t target, eid_t global_id, eid_t local_id, std::string data, uint32_t type_name) {
+    void AppendEdge(vid_t source, vid_t target, eid_t global_id, eid_t local_id, uint32_t type_name, std::string data) {
         g->forward[global_id] = 
             g->backward[global_id] =
                 g->edge_list[global_id] = 

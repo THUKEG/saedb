@@ -8,6 +8,15 @@ double TOLERANCE = 1.0E-2;
 typedef double vertex_data_type;
 typedef double edge_data_type;
 typedef float message_data_type;
+
+struct VData {
+    double pagerank;
+};
+
+struct EData {
+    int type;
+};
+
 typedef saedb::sae_graph graph_type;
 
 class pagerank:

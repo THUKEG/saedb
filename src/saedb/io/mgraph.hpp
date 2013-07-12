@@ -32,11 +32,12 @@ namespace sae {
 
         struct VertexIterator {
             virtual vid_t GlobalId() = 0;
-            virtual std::string Data() = 0;
+            virtual std::string& Data() = 0;
             virtual void Next() = 0;
             virtual void NextOfType() = 0;
             virtual void MoveTo(vid_t) = 0;
             virtual bool Alive() = 0;
+            virtual std::string Typename() = 0;
             virtual eid_t InEdgeCount() = 0;
             virtual eid_t OutEdgeCount() = 0;
             virtual EdgeIteratorPtr InEdges() = 0;
@@ -52,9 +53,10 @@ namespace sae {
             virtual vid_t TargetId() = 0;
             virtual VertexIteratorPtr Source() = 0;
             virtual VertexIteratorPtr Target() = 0;
-            virtual std::string Data() = 0;
+            virtual std::string& Data() = 0;
             virtual void Next() = 0;
             virtual bool Alive() = 0;
+            virtual std::string Typename() = 0;
             virtual eid_t Count() = 0;
             virtual EdgeIteratorPtr Clone() = 0;
             EdgeIterator(){}

@@ -58,7 +58,7 @@ namespace io {
 
     struct GraphWriter {
         virtual void AppendVertex(vid_t, vid_t, uint32_t, std::string) = 0;
-        virtual void AppendEdge(vid_t, vid_t, eid_t, eid_t, std::string, uint32_t) = 0;
+        virtual void AppendEdge(vid_t, vid_t, eid_t, eid_t, uint32_t, std::string) = 0;
         virtual void AppendVertexDataType(std::string, uint32_t count) = 0;
         virtual void AppendEdgeDataType(std::string, uint32_t count) = 0;
         virtual void Close() = 0;
@@ -155,7 +155,7 @@ namespace io {
                     writer->AppendVertex(v.global_id, v.local_id, v.type_name, v.data);
                 }
                 for (auto& e: edges) {
-                    writer->AppendEdge(e.source, e.target, e.global_id, e.local_id, e.data, e.type_name);
+                    writer->AppendEdge(e.source, e.target, e.global_id, e.local_id, e.type_name, e.data);
                 }
                 writer->Close();
 

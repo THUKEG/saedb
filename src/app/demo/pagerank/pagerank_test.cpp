@@ -7,37 +7,9 @@
 using namespace std;
 using namespace sae::io;
 
-class Empty {};
-
-struct VData {
-    double pagerank;
-};
-
-struct EData {
-    int type;
-};
-
 /*
  * serialization/deserialization for vertex data
  */
-namespace sae {
-    namespace serialization {
-        namespace custom_serialization_impl {
-            template <>
-            struct serialize_impl<OSerializeStream, VData> {
-                static void run(OSerializeStream& ostr, VData& d) {
-                    ostr << d.pagerank;
-                }
-            };
-            template <>
-            struct deserialize_impl<ISerializeStream, VData> {
-                static void run(ISerializeStream& istr, VData& d) {
-                    istr >> d.pagerank;
-                }
-            };
-        }
-    }
-}
 
 struct PageRankTest {
     string filepath;
@@ -48,10 +20,10 @@ struct PageRankTest {
         b.AddVertexDataType("VData");
         b.AddEdgeDataType("EData");        
 
-        b.AddVertex(0,  VData{1}, "VData");
-        b.AddVertex(10, VData{1}, "VData");
-        b.AddVertex(20, VData{1}, "VData");
-        b.AddVertex(30, VData{1}, "VData");
+        b.AddVertex(0,  double(1.0), "VData");
+        b.AddVertex(10, double(1.0), "VData");
+        b.AddVertex(20, double(1.0), "VData");
+        b.AddVertex(30, double(1.0), "VData");
 
         b.AddEdge(0, 10,  EData{0}, "EData");
         b.AddEdge(10, 20, EData{0}, "EData");
@@ -77,13 +49,14 @@ TEST(PageRankTest, PageRank) {
 
     // for debug purpose, print out all
     for (auto i = 0; i < graph.num_local_vertices(); i ++) {
-        cerr << "v[" << i << "]: " << graph.vertex(i).parse<double>() << endl;
+        cout << "v[" << i << "]: " << graph.vertex(i).parse<double>() << endl;
     }
 
     // compare with known answers
     vector<double> results = {0.15, 0.2775, 0.385875, 0.477994};
     for (auto i = 0; i < graph.num_local_vertices(); i ++) {
         ASSERT_TRUE(abs(results[i] - graph.vertex(i).parse<double>()) < TOLERANCE);
+        ASSERT_TRUE(graph.vertex(i).data_type_name() == "VData");
     }
     cout << "pagerank_test:[PageRank] End test." << endl;
     delete engine;
