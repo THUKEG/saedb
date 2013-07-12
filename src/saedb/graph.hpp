@@ -136,23 +136,15 @@ namespace saedb
             template<typename T>
             T parse() {
                 std::cout << "graph.hpp(vertex_type: parse): enter." << std::endl;
-                T ret;
-                std::stringstream stream;
-                stream.str(raw_data);
-                ISerializeStream decoder(&stream);
-                decoder >> ret;
+                T ret = sae::serialization::convert_from_string<T>(raw_data);
                 std::cout << "graph.hpp(vertex_type: parse): exit." << std::endl;                
                 return ret;
             }
 
             template<typename T>
             void update(T d) {
-                std::cout << "graph.hpp(vertex_type: update): enter." << std::endl;                
-                std::stringstream s;
-                s.str("");
-                OSerializeStream encoder(&s);
-                encoder << d;
-                raw_data = s.str();
+                std::cout << "graph.hpp(vertex_type: update): enter." << std::endl;
+                raw_data = sae::serialization::convert_to_string<T>(d);
                 std::cout << "graph.hpp(vertex_type: update): exit." << std::endl;                                
             }
 
@@ -209,12 +201,8 @@ namespace saedb
 
             template<typename T>
             T parse() {
-                std::cout << "graph.hpp(edge_type: parse): enter." << std::endl;                
-                T ret;
-                std::stringstream stream;
-                stream.str(raw_data);
-                ISerializeStream decoder(&stream);
-                decoder >> ret;
+                std::cout << "graph.hpp(edge_type: parse): enter." << std::endl;
+                T ret = sae::serialization::convert_from_string<T>(raw_data);
                 std::cout << "graph.hpp(edge_type: parse): exit." << std::endl;                
                 return ret;
             }
@@ -222,11 +210,7 @@ namespace saedb
             template<typename T>
             void update(T d) {
                 std::cout << "graph.hpp(edge_type: update): enter." << std::endl;
-                std::stringstream s;
-                s.str("");
-                OSerializeStream encoder(&s);
-                encoder << d;
-                raw_data = s.str();
+                raw_data = sae::serialization::convert_to_string<T>(d);
                 std::cout << "graph.hpp(edge_type: update): exit." << std::endl;
             }
 
