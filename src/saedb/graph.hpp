@@ -146,6 +146,10 @@ namespace saedb
                 return vi->Typename();
             }
 
+            uint32_t data_type_id() {
+                return vi->DataTypeId();
+            }
+
             size_t num_in_edges() const {
                 return vi->InEdgeCount();
             }
@@ -203,6 +207,10 @@ namespace saedb
             /* return the data rank of this vertex */
             std::string data_type_name() {
                 return ei->Typename();
+            }
+
+            uint32_t data_type_id() {
+                return ei->DataTypeId();
             }
 
         };

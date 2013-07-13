@@ -33,6 +33,7 @@ namespace sae {
         struct VertexIterator {
             virtual vid_t GlobalId() = 0;
             virtual std::string& Data() = 0;
+            virtual uint32_t DataTypeId() = 0;
             virtual void Next() = 0;
             virtual void NextOfType() = 0;
             virtual void MoveTo(vid_t) = 0;
@@ -54,6 +55,7 @@ namespace sae {
             virtual VertexIteratorPtr Source() = 0;
             virtual VertexIteratorPtr Target() = 0;
             virtual std::string& Data() = 0;
+            virtual uint32_t DataTypeId() = 0;
             virtual void Next() = 0;
             virtual bool Alive() = 0;
             virtual std::string Typename() = 0;
