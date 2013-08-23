@@ -1,34 +1,41 @@
 project(inf-max)
 
-file(GLOB INFMAX_SOURCES
+file(GLOB LAZYFORWARDINFMAX_SOURCES
     "*.hpp"
     "Heap.cpp"
     "mgraph.cpp"
     "graph_builder.cpp"
-    "inf_max.cpp"
+    "LazyForwardInfMax.hpp"
+    "LazyForwardInfMaxTest.cpp"
     )
 
-file(GLOB INFMAX2_SOURCES
+file(GLOB RANDOMGRAPHINFMAX_SOURCES
     "*.hpp"
-    "inf_max2.cpp"
+    "RandomGraphInfMax.hpp"
     "mgraph.cpp"
     "graph_builder.cpp"
     "Heap.cpp"
+    "RandomGraphInfMaxTest.cpp"
     )
 
-file(GLOB INFMAX3_SOURCES
+file(GLOB DEGREEDISCOUNTINFMAX_SOURCES
     "*.hpp"
-    "inf_max3.cpp"
+    "DegreeDiscountInfMax.hpp"
     "mgraph.cpp"
     "graph_builder.cpp"
     "Heap.cpp"
+    "DegreeDiscountInfMaxTest.cpp"
     )
 
 
 
-add_executable(inf-max ${INFMAX_SOURCES})
-add_executable(inf-max2 ${INFMAX2_SOURCES})
-add_executable(inf-max3 ${INFMAX3_SOURCES})
-target_link_libraries(inf-max saedb)
-target_link_libraries(inf-max2 saedb)
-target_link_libraries(inf-max3 saedb)
+add_executable(lazyforwardinfmax-test ${LAZYFORWARDINFMAX_SOURCES})
+add_executable(randomgraphinfmax-test ${RANDOMGRAPHINFMAX_SOURCES})
+add_executable(degreediscountinfmax-test ${DEGREEDISCOUNTINFMAX_SOURCES})
+target_link_libraries(lazyforwardinfmax-test saedb sae_test)
+target_link_libraries(randomgraphinfmax-test saedb sae_test)
+target_link_libraries(degreediscountinfmax-test saedb sae_test)
+
+add_test(NAME lazyforward COMMAND lazyforwardinfmax-test)
+add_test(NAME randomgraph COMMAND randomgraphinfmax-test)
+add_test(NAME degreediscount COMMAND degreediscountinfmax-test)
