@@ -1,29 +1,14 @@
-saedb
-=====
+SAE
+===
 
-Engine
-
-Directory Structure
-===================
-
-Directories are structured like follows:
-
-	src
-	|-- app
-	|   |-- basic
-	|   `-- demo
-	|       `-- pagerank
-	`-- saedb
-		`-- sae_include.hpp
-
-Please add your applications to the `app` directory with corresponding `CMakeLists.txt`.
+The Social Analytic Engine.
 
 Build
 =====
 
-This project requires a C++11 capable compilation environment, such as g++ 4.7, clang 3.2 or VS 2012.
+This project requires a C++11 capable compilation environment, such as g++ 4.8 or clang 3.3.
 
-Please install `cmake` to generate your project files. The default is `Makefile`.
+Please install `cmake` to generate your project files. The default generator is `Makefile`.
 
 To build the project, go to the root of this project, execute the following commands:
 
@@ -32,7 +17,10 @@ To build the project, go to the root of this project, execute the following comm
 	cmake ..
 	make
 
-And sample applications should appear in the `build` directory.
+Then you can do some testing with:
+
+	ctest
+
 
 Developer's Guide
 =================

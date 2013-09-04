@@ -1,0 +1,12 @@
+package zrpc;
+
+message Request {
+	required string method = 1;
+	optional bytes param = 2;
+}
+
+message Response {
+	optional int32 time_elapsed = 1;
+	optional bytes data = 2;
+	optional int32 response_code = 3;
+}
