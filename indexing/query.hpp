@@ -47,7 +47,7 @@ struct TermQuery : public Query {
     virtual bool next(QueryItem& item);
 
 private:
-    PostingList::iterator it, end;
+    PostingList::const_iterator it, end;
     int occurence;
 };
 

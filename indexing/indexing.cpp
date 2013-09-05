@@ -5,7 +5,7 @@
 using namespace std;
 using namespace indexing;
 
-int WordMap::id(const std::string word) {
+int WordMap::id(const std::string& word) {
     auto wi = find(word);
     if (wi != end()) {
         return wi->second;
@@ -16,7 +16,7 @@ int WordMap::id(const std::string word) {
     }
 }
 
-int WordMap::findId(const std::string word) const {
+int WordMap::findId(const std::string& word) const {
     auto wi = find(word);
     if (wi != end()) {
         return wi->second;
@@ -25,7 +25,6 @@ int WordMap::findId(const std::string word) const {
 }
 
 void Index::addSingle(int doc, int field, TokenStream* stream, double avg_len) {
-    //unique_ptr<TokenStream> stream(ArnetAnalyzer::tokenStream(value));
     unordered_map<int, vector<short>> word_position;
     int position = 0;
     Token token;
@@ -42,7 +41,7 @@ void Index::addSingle(int doc, int field, TokenStream* stream, double avg_len) {
         // insert a new posting item
         Term term{word, field};
         double score = bm25(positions.size(), totalTokens, avg_len);
-        (*this)[term].insert(PostingItem{doc, positions, score});
+        (*this)[term].emplace_back(doc, score, std::move(positions));
     }
 }
 
@@ -73,6 +72,10 @@ Index Index::build(DocumentCollection docs) {
 }
 
 void Index::optimize() {
-    // currently nothing to do.
+    // sort and pack PostingLists
+    for (auto& p : (*this)) {
+        p.second.shrink_to_fit();
+        sort(p.second.begin(), p.second.end());
+    }
 }
 
