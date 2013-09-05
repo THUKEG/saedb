@@ -10,7 +10,6 @@
 
 #include "mmap_file.hpp"
 #include "mgraph.hpp"
-#include "type_info.hpp"
 
 #define MAX_EDGE_TYPE 5
 
