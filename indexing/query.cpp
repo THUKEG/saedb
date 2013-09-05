@@ -85,13 +85,14 @@ OrQuery::OrQuery(std::unique_ptr<Query> leftOp, std::unique_ptr<Query> rightOp, 
 // TermQuery
 
 TermQuery::TermQuery(const Index& index, Term &term, int occur) {
-    if (index.find(term) != index.end())
+    auto iit = index.find(term);
+    if (iit != index.end())
     {
-        it = index.find(term)->second.begin();
-        end = index.find(term)->second.end();
+        it = iit->second.begin();
+        end = iit->second.end();
     }
     else
-        it = end = index.begin()->second.end();
+        it = end;
     occurence = occur;
 }
 

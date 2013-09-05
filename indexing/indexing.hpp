@@ -40,8 +40,12 @@ const float BM25_B = 0.75;
 
 struct PostingItem {
     int docId;
-    std::vector<short> positions;
     double score;
+    std::vector<short> positions;
+
+    PostingItem(int docId, double score, std::vector<short>&& positions)
+        : docId(docId), score(score), positions(positions) {
+    }
 
     bool operator<(const indexing::PostingItem& x) const
     {
@@ -50,7 +54,7 @@ struct PostingItem {
 
 };
 
-struct PostingList : public std::set<PostingItem> {
+struct PostingList : public std::vector<PostingItem> {
 };
 
 struct Field {
@@ -66,8 +70,8 @@ struct DocumentCollection : public std::map<int, Document> {
 };
 
 struct WordMap : public std::unordered_map<std::string, int> {
-    int id(const std::string word);
-    int findId(const std::string word) const;
+    int id(const std::string& word);
+    int findId(const std::string& word) const;
 };
 
 struct Index : public std::unordered_map<Term, PostingList> {
