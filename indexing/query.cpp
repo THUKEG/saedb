@@ -108,6 +108,18 @@ bool TermQuery::next(QueryItem& item) {
 
 
 // Query Analyzers
+
+std::unique_ptr<Query> TryCreateTermQuery(const std::string& term_string, const Index& index)
+{
+    int term_id = index.word_map.findId(term_string);
+    if (term_id == -1) return NULL;
+    int occurence = index.find(Term{term_id, 0})->second.size();
+    int field_id = 0;
+    Term term{term_id, field_id};
+    std::unique_ptr<Query> p (new TermQuery(index, term, occurence));
+    return p;
+}
+
 std::unique_ptr<Query> StandardQueryAnalyzer::BuildOrQueryTree(std::vector<std::unique_ptr<Query>>& queries, int start, int end)
 {
     if (start > end)
@@ -150,17 +162,6 @@ std::unique_ptr<Query> StandardQueryAnalyzer::MergeWithAndQuery(std::unique_ptr<
         return std::move(std::unique_ptr<Query>(new AndQuery(std::move(left), std::move(right))));
 }
 
-std::unique_ptr<Query> StandardQueryAnalyzer::TryCreateTermQuery(const std::string& term_string, const Index& index)
-{
-    int term_id = index.word_map.findId(term_string);
-    if (term_id == -1) return NULL;
-    int occurence = index.find(Term{term_id, 0})->second.size();
-    int field_id = 0;
-    Term term{term_id, field_id};
-    std::unique_ptr<Query> p (new TermQuery(index, term, occurence));
-    return p;
-}
-
 vector<string> split(string s, char c) {
     int last = 0;
     vector<string> v;
@@ -174,21 +175,21 @@ vector<string> split(string s, char c) {
     return v;
 }
 
-std::vector<std::unique_ptr<Query>> buildTermQueries(const std::unique_ptr<TokenStream>& stream, const Index& index, StandardQueryAnalyzer& analyzer) {
+std::vector<std::unique_ptr<Query>> buildTermQueries(TokenStream* stream, const Index& index, StandardQueryAnalyzer& analyzer) {
     std::vector<std::unique_ptr<Query>> queries;
     Token token;
-    // building AND query
+
     queries.clear();
     while (stream->next(token))
     {
-        std::unique_ptr<Query> p = analyzer.TryCreateTermQuery(token.getTermText(), index);
+        std::unique_ptr<Query> p = TryCreateTermQuery(token.getTermText(), index);
         if (p != NULL)
             queries.push_back(std::move(p));
     }
     return queries;
 }
 
-std::unique_ptr<Query> buildQuery(const std::unique_ptr<TokenStream>& stream, const Index& index) {
+std::unique_ptr<Query> StandardQueryAnalyzer::buildQuery(TokenStream* stream, const Index& index) {
     StandardQueryAnalyzer analyzer;
     std::vector<std::unique_ptr<Query>> queries;
     std::vector<Token> tokens;
@@ -211,6 +212,10 @@ std::unique_ptr<Query> buildQuery(const std::unique_ptr<TokenStream>& stream, co
         return orQueryTree;
     else
         return NULL;
+}
+
+std::unique_ptr<Query> buildQuery(TokenStream* stream, const Index& index) {
+    return StandardQueryAnalyzer().buildQuery(stream, index);
 }
 
 } // namespace indexing

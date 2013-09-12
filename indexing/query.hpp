@@ -51,22 +51,27 @@ private:
     int occurence;
 };
 
+std::unique_ptr<Query> TryCreateTermQuery(const std::string& term, const Index& index);
+
 
 // Query Analyzers
 
 struct QueryAnalyzer {
+    virtual ~QueryAnalyzer() {}
+    virtual std::unique_ptr<Query> buildQuery(TokenStream*, const Index&) = 0;
 };
 
 struct StandardQueryAnalyzer : public QueryAnalyzer
 {
-    std::unique_ptr<Query> TryCreateTermQuery(const std::string& term, const Index& index);
+    std::unique_ptr<Query> buildQuery(TokenStream* stream, const Index& index);
+
+protected:
     std::unique_ptr<Query> BuildOrQueryTree(std::vector<std::unique_ptr<Query>>& queries, int start, int end);
     std::unique_ptr<Query> BuildAndQueryTree(std::vector<std::unique_ptr<Query>>& queries, int start, int end);
     std::unique_ptr<Query> MergeWithOrQuery(std::unique_ptr<Query>& left, std::unique_ptr<Query>& right);
     std::unique_ptr<Query> MergeWithAndQuery(std::unique_ptr<Query>& left, std::unique_ptr<Query>& right);
 };
 
-// handy method for building the query tree
-std::unique_ptr<Query> buildQuery(const std::unique_ptr<TokenStream>& stream, const Index& index);
+std::unique_ptr<Query> buildQuery(TokenStream* stream, const Index& index);
 
 } // namespace indexing
