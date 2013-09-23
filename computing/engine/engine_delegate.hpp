@@ -107,7 +107,7 @@ namespace saedb
 
     template <typename algorithm_t>
     void EngineDelegate<algorithm_t>::
-    signalVertex(vertex_id_type vid, const message_type& msg = message_type()){
+    signalVertex(vertex_id_type vid, const message_type& msg){
         engine->signalVertex(vid, msg);
     }
 

@@ -10,8 +10,6 @@
 
 #include "serialization/serialization.hpp"
 
-#include "type_info.hpp"
-
 namespace sae {
 namespace io {
 
@@ -154,7 +152,6 @@ namespace io {
 
                 GraphWriter* writer = CreateMemoryMappedGraphWriter(prefix, vertices.size(), edges.size(), vertex_data_types.size(), edge_data_types.size(), vertex_type_count, edge_type_count);
 
-                printf("here\n");
                 if (!writer) return false;
                 for (auto data_type: vertex_data_types) {
                     writer->AppendVertexDataType(data_type.type_name, data_type.count);
@@ -173,7 +170,11 @@ namespace io {
                 delete writer;
                 delete [] vertex_type_count;
                 delete [] edge_type_count;
+
+                return true;
             }
+
+            return false;
         }
 
         virtual void AddVertexDataType(const char* type_name) {
