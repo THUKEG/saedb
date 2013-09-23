@@ -12,8 +12,8 @@ struct SearchResult : public std::vector<QueryItem> {
 struct Searcher {
     Searcher(const Index& index) : index(index) {
     }
-	
-    SearchResult search(const std::unique_ptr<TokenStream>& stream) {
+
+    SearchResult search(TokenStream* stream) {
         SearchResult result;
         auto q = buildQuery(stream, index);
         if (q) {

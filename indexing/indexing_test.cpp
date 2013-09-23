@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <cmath>
 #include "search.hpp"
-#include "analyzer.hpp"
 #include "testing/testharness.hpp"
 
 using namespace indexing;
@@ -35,7 +34,7 @@ TEST(SearchTest, IndexAndSearch) {
     Searcher searcher(index);
     string query = "project develop";
     std::unique_ptr<TokenStream> stream (ArnetAnalyzer::tokenStream(query));
-    SearchResult result = searcher.search(stream);
+    SearchResult result = searcher.search(stream.get());
     sort(result.begin(), result.end());
     ASSERT_TRUE(result.size() == 2);
     ASSERT_TRUE(result[0].docId == 3);

@@ -15,8 +15,6 @@ file(GLOB MGRAPH_LIBRARY_SOURCES
     "mgraph.hpp"
     "mgraph.cpp"
     "mmap_file.hpp"
-    "type_info.cpp"
-    "type_info.hpp"
     "serialization/serialization.hpp"
     )
 
@@ -30,4 +28,3 @@ target_link_libraries(mgraph mmap_file)
 
 add_executable(mgraph_test mgraph_test.cpp)
 target_link_libraries(mgraph_test mgraph)
-add_executable(type_info_test type_info_test.cpp type_info.cpp)

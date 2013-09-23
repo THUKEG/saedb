@@ -45,7 +45,7 @@ namespace saedb
         void signalVertices(const std::vector<vertex_id_type>& vids);
 
         // signal a specific vertex with a message, update vertex data.
-        void signalVertex(vertex_id_type vid, const message_type& msg);
+        void signalVertex(vertex_id_type vid, const message_type& msg = message_type());
         void signalAll();
         void start();
         ~SynchronousEngine();
@@ -282,7 +282,7 @@ namespace saedb
 
     template <typename algorithm_t>
     void SynchronousEngine<algorithm_t>::
-    signalVertex(vertex_id_type vid, const message_type& msg = message_type()){
+    signalVertex(vertex_id_type vid, const message_type& msg){
         active_superstep_[vid] = 1;
         active_minorstep_[vid] = 1;
         has_msg_[vid] = 1;
