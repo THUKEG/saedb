@@ -15,6 +15,12 @@ if (HAS_CPP11)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
+# use libc++ on Mac OS X
+# by default clang++ will use libstdc++ w/o c++11 support
+if (APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif ()
+
 # add includes for all
 include_directories ("${CMAKE_CURRENT_SOURCE_DIR}")
 
