@@ -1,7 +1,11 @@
 #include <algorithm>
 #include <cmath>
-#include "search.hpp"
+#include <fstream>
+
 #include "testing/testharness.hpp"
+#include "serialization/serialization.hpp"
+#include "indexing.hpp"
+#include "search.hpp"
 
 using namespace indexing;
 using namespace std;
@@ -30,8 +34,29 @@ protected:
 };
 
 TEST(SearchTest, IndexAndSearch) {
-    Index index = Index::build(dc);
-    Searcher searcher(index);
+    // This test will first build index, then save it,
+    // then load it and use it for search.
+
+    {
+        // build index
+        Index index = Index::build(dc);
+
+        // save index
+        ofstream fout("input.bin",std::fstream::binary);
+        sae::serialization::OSerializeStream ostr(&fout);
+        ostr << index;
+        fout.close();
+    }
+
+    Index index2;
+    {
+        std::ifstream fin("input.bin",std::fstream::binary);
+        sae::serialization::ISerializeStream istr(&fin);
+        istr >> index2;
+        fin.close();
+    }
+
+    Searcher searcher(index2);
     string query = "project develop";
     std::unique_ptr<TokenStream> stream (ArnetAnalyzer::tokenStream(query));
     SearchResult result = searcher.search(stream.get());
