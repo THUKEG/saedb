@@ -25,7 +25,7 @@ namespace sae {
         namespace custom_serialization_impl {
             template <>
             struct serialize_impl<sae::serialization::OSerializeStream, DataTypeInfoItem> {
-                static void run(sae::serialization::OSerializeStream& ostr, DataTypeInfoItem& d) {
+                static void run(sae::serialization::OSerializeStream& ostr, const DataTypeInfoItem& d) {
                     ostr << d.count << d.type_name;
                 }
             };

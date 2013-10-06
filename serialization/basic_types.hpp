@@ -30,11 +30,11 @@ namespace custom_serialization_impl {
 
     template <>
     struct serialize_impl<OSerializeStream, char*> {
-        static void run(OSerializeStream& ostr, char* source) {
+        static void run(OSerializeStream& ostr, const char * source) {
             size_t len = strlen(source);
             len++;
             ostr << len;
-            ostr.write(reinterpret_cast<char*>(source), len);
+            ostr.write(source, len);
         }
     };
 
@@ -46,13 +46,14 @@ namespace custom_serialization_impl {
         static void run(ISerializeStream& istr, char des[length]) {
             size_t len;
             istr >> len;
+            // TODO assert len == length
             istr.read(reinterpret_cast<char*>(des), len);
         }
     };
 
     template <size_t length>
     struct serialize_impl<OSerializeStream, char[length]> {
-        static void run(OSerializeStream& ostr, char source[length]) {
+        static void run(OSerializeStream& ostr, const char source[length]) {
             size_t len = length;
             ostr << len;
             ostr.write(reinterpret_cast<const char*>(source), len);
@@ -69,16 +70,18 @@ namespace custom_serialization_impl {
             size_t len;
             istr >> len;
             des.resize(len);
-            istr.read(const_cast<char*>(des.c_str()), len);
+            // Writing to string's buffer is undefined behavior.
+            // It's guranteed to be continous, though.
+            istr.read(const_cast<char*>(des.data()), len);
         }
     };
 
     template <>
     struct serialize_impl<OSerializeStream, std::string> {
-        static void run(OSerializeStream& ostr, std::string& source) {
+        static void run(OSerializeStream& ostr, const std::string& source) {
             size_t len = source.length();
             ostr << len;
-            ostr.write(reinterpret_cast<const char*>(source.c_str()), len);
+            ostr.write(source.c_str(), len);
         }
     };
 }

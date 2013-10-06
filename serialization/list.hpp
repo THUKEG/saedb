@@ -11,7 +11,7 @@ namespace serialization{
 namespace custom_serialization_impl{
     template<typename T>
     struct serialize_impl<OSerializeStream, std::list<T>> {
-        static void run(OSerializeStream& ostr, std::list<T>& s) {
+        static void run(OSerializeStream& ostr, const std::list<T>& s) {
             serialize_iterator(ostr, s.begin(), s.end());
         }
     };
@@ -20,7 +20,7 @@ namespace custom_serialization_impl{
     struct deserialize_impl<ISerializeStream, std::list<T>> {
         static void run(ISerializeStream& istr, std::list<T>& s) {
             s.clear();
-            deserialize_iterator<T>(istr, std::inserter(s, s.end()));
+            deserialize_iterator<T>(istr, std::back_inserter(s));
         }
     };
 }

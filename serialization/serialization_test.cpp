@@ -171,7 +171,7 @@ namespace custom_serialization_impl{
 
     template <>
     struct serialize_impl<OSerializeStream, Data> {
-        static void run(OSerializeStream& ostr, Data& d) {
+        static void run(OSerializeStream& ostr, const Data& d) {
             ostr << d.i << d.j;
         }
     };
@@ -224,33 +224,6 @@ TEST(SerializationTest, StringStream) {
         ASSERT_EQ(a.j[t], b.j[t]);
     }
 }
-
-struct data_type {
-    int count;
-    std::string name;
-    data_type(int count = 0, std::string name = std::string("")) :
-        count(count), name(name) {}
-};
-/*
-TEST(SerializationTest, DataType) {
-    std::vector<data_type> a;
-    a.push_back(data_type(10, std::string("Kimiyoung")));
-    ofstream fout("data_type.bin", fstream::binary);
-    OSerializeStream encoder(&fout);
-    encoder << a;
-    fout.close();
-
-    std::vector<data_type> b;
-    ifstream fin("data_type.bin", fstream::binary);
-    ISerializeStream decoder(&fin);
-    decoder >> b;
-    fin.close();
-
-    ASSERT_EQ(a.size(), b.size());
-    ASSERT_EQ(a[0].count, b[0].count);
-    ASSERT_TRUE(a[0].name == b[0].name);
-}
-*/
 
 int main(){
     return ::saedb::test::RunAllTests();

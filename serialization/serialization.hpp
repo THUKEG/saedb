@@ -6,5 +6,6 @@
 
 #include "list.hpp"
 #include "vector.hpp"
-
+#include "map.hpp"
+#include "set.hpp"
 #include "iterator.hpp"

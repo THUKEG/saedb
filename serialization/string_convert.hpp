@@ -18,14 +18,12 @@ namespace sae {
         }
 
         template <typename T>
-        std::string convert_to_string(T t) {
+        std::string convert_to_string(const T& t) {
             std::stringstream stream;
-            stream.str("");
             OSerializeStream encoder(&stream);
             encoder << t;
-            std::string s = stream.str();
 
-            return s;
+            return stream.str();
         }
     }
 }
