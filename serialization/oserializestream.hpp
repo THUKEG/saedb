@@ -37,11 +37,11 @@ namespace custom_serialization_impl {
 
     template <typename stream_t, typename T>
     struct serialize_impl {
-        static void run(stream_t& ostr, T& t) {
+        static void run(stream_t& ostr, const T& t) {
             if (std::is_pod<T>::value) {
-                ostr.write(reinterpret_cast<char*>(&t), sizeof(T));
+                ostr.write(reinterpret_cast<const char*>(&t), sizeof(T));
             } else {
-
+                // TODO throw exception here.
             }
         }
     };
@@ -49,8 +49,8 @@ namespace custom_serialization_impl {
 }
 
 template <typename T>
-OSerializeStream& operator<<(OSerializeStream& ostream, T& t) {
-    custom_serialization_impl::serialize_impl< OSerializeStream, T >::run(ostream, t);
+OSerializeStream& operator<<(OSerializeStream& ostream, const T& t) {
+    custom_serialization_impl::serialize_impl<OSerializeStream, T>::run(ostream, t);
     return ostream;
 }
 
