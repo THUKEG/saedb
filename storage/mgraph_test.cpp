@@ -26,7 +26,7 @@ namespace sae {
         namespace custom_serialization_impl {
             template <>
             struct serialize_impl<OSerializeStream, VData2> {
-                static void run(OSerializeStream& ostr, VData2& d) {
+                static void run(OSerializeStream& ostr, const VData2& d) {
                     ostr << d.number << d.name;
                 }
             };

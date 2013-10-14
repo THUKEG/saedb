@@ -11,7 +11,7 @@ namespace serialization{
         size_t len = std::distance(begin, end);
         ostr << len;
 
-        for(;begin!=end;begin++) {
+        for(; begin!=end; begin++) {
             ostr << (*begin);
         }
     }

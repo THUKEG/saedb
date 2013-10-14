@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <memory>
 #include "analyzer.hpp"
+#include "serialization/serialization.hpp"
 
 namespace indexing {
 
@@ -42,6 +43,8 @@ struct PostingItem {
     int docId;
     double score;
     std::vector<short> positions;
+
+    PostingItem() = default;
 
     PostingItem(int docId, double score, std::vector<short>&& positions)
         : docId(docId), score(score), positions(positions) {
@@ -91,3 +94,72 @@ inline double bm25(int freq, int total_tokens, double avg_len) {
 }
 
 } // namespace indexing
+
+namespace sae{namespace serialization{ namespace custom_serialization_impl{
+
+    template<>
+    struct serialize_impl<OSerializeStream, indexing::Term>{
+        static void run(OSerializeStream& ostr, const indexing::Term& a){
+                ostr << a.word << a.field;
+        }
+    };
+
+    template <>
+    struct deserialize_impl<ISerializeStream, indexing::Term>{
+            static void run(ISerializeStream& istr, indexing::Term& a){
+                    istr>> a.word >> a.field;
+            }
+    };
+
+    template<>
+    struct serialize_impl<OSerializeStream, indexing::PostingItem>{
+        static void run(OSerializeStream& ostr, const indexing::PostingItem& p){
+            ostr << p.docId << p.positions << p.score;
+        }
+    };
+
+    template<>
+    struct deserialize_impl<ISerializeStream, indexing::PostingItem>{
+        static void run(ISerializeStream& istr, indexing::PostingItem& p){
+            istr >> p.docId >> p.positions >> p.score;
+        }
+    };
+
+
+    template<>
+    struct serialize_impl<OSerializeStream,indexing::Index>{
+        static void run(OSerializeStream& ostr, const indexing::Index& i){
+            const std::unordered_map<indexing::Term, indexing::PostingList>* index = &i;
+            const std::unordered_map<std::string, int>* wm = &(i.word_map);
+            ostr << (*index) << (*wm);
+        }
+    };
+
+    template<>
+    struct deserialize_impl<ISerializeStream,indexing::Index>{
+         static void run(ISerializeStream& istr, indexing::Index& i){
+             std::unordered_map<indexing::Term, indexing::PostingList>* index = &i;
+             std::unordered_map<std::string, int>* wm = &(i.word_map);
+             istr >> (*index);
+             istr >> (*wm);
+        }
+    };
+
+
+    template<>
+    struct serialize_impl<OSerializeStream,indexing::PostingList>{
+        static void run(OSerializeStream& ostr, const indexing::PostingList& pl){
+            const std::vector<indexing::PostingItem>* pp = &pl;
+            ostr << (*pp);
+        }
+    };
+
+    template<>
+    struct deserialize_impl<ISerializeStream,indexing::PostingList>{
+        static void run(ISerializeStream& istr,indexing::PostingList& pl){
+            std::vector<indexing::PostingItem>* pp = &pl;
+            istr >> (*pp);
+        }
+    };
+
+}}}
