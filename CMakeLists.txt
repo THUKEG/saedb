@@ -45,6 +45,7 @@ add_subdirectory (storage)
 add_subdirectory (serialization)
 add_subdirectory (zrpc)
 add_subdirectory (computing)
+add_subdirectory (streaming)
 
 # add toolkits
 add_all_subdirectories ("${CMAKE_CURRENT_SOURCE_DIR}/toolkit")
