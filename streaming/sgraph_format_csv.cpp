@@ -10,7 +10,8 @@
 #include "glog/logging.h"
 #include "sgraph.hpp"
 
-DEFINE_int32(csv_n, 0, "number of vertices");
+DEFINE_int64(csv_n, 0, "number of vertices");
+DEFINE_int64(csv_m, 0, "number of edges (optional)");
 
 namespace sae {
 namespace streaming {
@@ -22,7 +23,7 @@ struct CSV : public StreamingGraph {
     }
 
     void process(const Trigger<Graph>& onGraph, const Trigger<Vertex>& onVertex, const Trigger<Edge>& onEdge) {
-        onGraph(Graph{FLAGS_csv_n, 0});
+        onGraph(Graph{FLAGS_csv_n, FLAGS_csv_m});
         for (vid_t i = 0; i < FLAGS_csv_n; i++) {
             onVertex(Vertex{i, 0, ""});
         }

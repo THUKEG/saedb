@@ -59,11 +59,11 @@ void SinglePassRun(Context<Program>& context, StreamingGraph* g) {
         context.vertices.resize(g.n);
         graph = g;
     }, [&](const Vertex& v) {
-        LOG_EVERY_N(INFO, 10000) << "Processing vertex " << v.id << ", Progress: " << google::COUNTER << "/" << graph.n;
+        LOG_EVERY_N(INFO, graph.n / 100) << "Processing vertex " << v.id << ", Progress: " << google::COUNTER << "/" << graph.n;
         DLOG(INFO) << "Processing vertex: " << v.id;
         context.vertices[v.id].init(context, v);
     }, [&](const Edge& e) {
-        LOG_EVERY_N(INFO, 100000) << "Processing edge " << e.id << ", Progress: " << google::COUNTER << "/" << graph.m;
+        LOG_EVERY_N(INFO, graph.m == 0 ? 100000 : graph.m / 100) << "Processing edge " << e.id << ", Progress: " << google::COUNTER << "/" << graph.m;
         DLOG(INFO) << "Processing edge: " << e.id;
         context.vertices[e.source].edge(context, e.source, e);
         context.vertices[e.target].edge(context, e.target, e);
