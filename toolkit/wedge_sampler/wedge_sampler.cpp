@@ -12,6 +12,7 @@ using namespace sae::streaming;
 DEFINE_int32(threshold, 10, "wedge sample threshold; vertex with edges above this threshold will be counted by sampling.");
 DEFINE_double(ratio, 0.3, "wedge sampling ratio");
 DEFINE_double(sample_max, 50000, "maximum wedge samples");
+DEFINE_int32(threads, 4, "parallel threads");
 
 struct WedgeSampler {
     eid_t triangles, wedges;
@@ -74,8 +75,13 @@ struct WedgeSampler {
 int sgraph_main(StreamingGraph* g) {
     Context<WedgeSampler> context;
     SinglePassRun(context, g);
-    context.run("finalize", &WedgeSampler::finalize);
-    context.run("count", &WedgeSampler::count, context);
+    if (FLAGS_threads <= 1) {
+        context.run("finalize", &WedgeSampler::finalize);
+        context.run("count", &WedgeSampler::count, context);
+    } else {
+        context.run_parallel("finalize", FLAGS_threads, &WedgeSampler::finalize);
+        context.run_parallel("count", FLAGS_threads, &WedgeSampler::count, context);
+    }
     context.output(cout);
     return 0;
 }

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <functional>
 #include <typeinfo>
+#include <thread>
 
 #include "glog/logging.h"
 
@@ -26,14 +27,53 @@ struct Context {
     int iteration;
     std::vector<Program> vertices;
 
-    // Handy helper for running through
-    template <typename M, typename ...Args>
+    // Handy helper for running through all vertices.
+    // The function will be binded to the vertex program with provided args.
+    // You can optionally pass std::placeholders::_1 as an argument to receive the vertex id.
+    // std::placeholders::_2 is used for referring to the vertex.
+    template<typename M, typename... Args>
     void run(std::string job_name, M m, Args&&... args) {
         LOG(INFO) << "Started running " << job_name;
+        auto func = std::bind(m, std::placeholders::_2, std::forward<Args>(args)...);
         for (vid_t i = 0; i < vertices.size(); i++) {
             LOG_EVERY_N(INFO, vertices.size() / 100) << "Running " << job_name << " Progress: " << google::COUNTER << "/" << vertices.size();
             DLOG(INFO) << "Vertex " << i << " running " << job_name;
-            (vertices[i].*m)(std::forward<Args>(args)...);
+            func(i, vertices[i]);
+        }
+        LOG(INFO) << "Finished " << job_name;
+    }
+
+    // Exactly the same with `run`, except that it runs parallelly.
+    template<typename M, typename... Args>
+    void run_parallel(std::string job_name, size_t threads, M m, Args&&... args) {
+        if (threads > vertices.size()) {
+            threads = vertices.size();
+        }
+        auto func = std::bind(m, std::placeholders::_2, std::forward<Args>(args)...);
+        LOG(INFO) << "Started running " << job_name << " with " << threads << " threads.";
+
+        vid_t progress_interval = vertices.size() / 100;
+        std::atomic<vid_t> counter;
+        auto worker = [&](vid_t begin, vid_t end) {
+            for (vid_t i = begin; i < end; i++) {
+                if (counter.load() % progress_interval == 0) {
+                    LOG(INFO) << "Running " << job_name << " Progress: " << counter.load() << "/" << vertices.size();
+                }
+                DLOG(INFO) << "Vertex " << i << " running " << job_name;
+                func(i, vertices[i]);
+                counter++;
+            }
+        };
+
+        std::vector<std::thread> pool;
+        vid_t shard_size = vertices.size() / threads;
+        for (size_t i = 0; i < threads; i++) {
+            vid_t begin = shard_size * i;
+            vid_t end = std::min(vid_t(shard_size * (i + 1)), vid_t(vertices.size()));
+            pool.emplace_back(std::thread(worker, begin, end));
+        }
+        for (auto& t : pool) {
+            t.join();
         }
         LOG(INFO) << "Finished " << job_name;
     }
