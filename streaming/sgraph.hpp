@@ -53,14 +53,6 @@ struct Edge {
     }
 };
 
-
-struct GraphVisitor {
-    virtual ~GraphVisitor() {}
-    virtual void onGraph(Graph) {}
-    virtual void onVertex(Vertex) {}
-    virtual void onEdge(Edge) {}
-};
-
 // Implementations should guarantee that the callbacks are in the specific order: graph, vertex, edge.
 struct StreamingGraph {
     virtual ~StreamingGraph() {};
