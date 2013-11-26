@@ -73,8 +73,8 @@ struct WedgeSampler {
 int sgraph_main(StreamingGraph* g) {
     Context<WedgeSampler> context;
     SinglePassRun(context, g);
-    context.run(&WedgeSampler::finalize);
-    context.run(&WedgeSampler::count, context);
+    context.run("finalize", &WedgeSampler::finalize);
+    context.run("count", &WedgeSampler::count, context);
     context.output(cout);
     return 0;
 }
