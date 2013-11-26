@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <memory>
 #include "streaming.hpp"
 
 using namespace std;
