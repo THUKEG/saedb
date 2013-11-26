@@ -1,9 +1,10 @@
 #pragma once
 
-#include <iostream>
+#include <atomic>
 #include <functional>
-#include <typeinfo>
+#include <iostream>
 #include <thread>
+#include <typeinfo>
 
 #include "glog/logging.h"
 
