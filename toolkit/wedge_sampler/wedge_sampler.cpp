@@ -11,6 +11,7 @@ using namespace sae::streaming;
 
 DEFINE_int32(threshold, 10, "wedge sample threshold; vertex with edges above this threshold will be counted by sampling.");
 DEFINE_double(ratio, 0.3, "wedge sampling ratio");
+DEFINE_double(sample_max, 50000, "maximum wedge samples");
 
 struct WedgeSampler {
     eid_t triangles, wedges;
@@ -49,10 +50,10 @@ struct WedgeSampler {
             }
             DLOG(INFO) << "Direct counting, triangles=" << triangles;
         } else {
-            eid_t sample_size = wedges * FLAGS_ratio;
+            eid_t sample_size = min(eid_t(wedges * FLAGS_ratio), eid_t(FLAGS_sample_max));  // int may overflow
             eid_t tri = 0;
             std::uniform_int_distribution<int> dist(0, edges.size() - 1);
-            for (eid_t i = 0; i < sample_size; i++) {
+            for (int i = 0; i < sample_size; i++) {
                 vid_t s = dist(gen) , t = dist(gen);
                 auto& es = context.vertices[edges[s]].edges;
                 if (std::binary_search(es.begin(), es.end(), edges[t])) {
