@@ -57,9 +57,10 @@ struct WedgeSampler {
             for (int i = 0; i < sample_size; i++) {
                 vid_t s = dist(gen) , t = dist(gen);
                 auto& es = context.vertices[edges[s]].edges;
-                if (std::binary_search(es.begin(), es.end(), edges[t])) {
-                    tri++;
-                }
+                auto& et = context.vertices[edges[t]].edges;
+                bool is_tri = es.size() < et.size() ? std::binary_search(es.begin(), es.end(), edges[t]) :
+                                                      std::binary_search(et.begin(), et.end(), edges[s]);
+                tri += is_tri ? 1 : 0;
             }
             triangles = tri * wedges / sample_size;
             DLOG(INFO) << "Sampling, sample_size=" << sample_size << ", triangles=" << triangles;
