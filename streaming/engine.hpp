@@ -56,6 +56,7 @@ struct Context {
         vid_t progress_interval = vertices.size() / 100;
         std::atomic<vid_t> counter;
         auto worker = [&](vid_t begin, vid_t end) {
+            LOG(INFO) << "Worker started: " << begin << ", " << end;
             for (vid_t i = begin; i < end; i++) {
                 if (counter.load() % progress_interval == 0) {
                     LOG(INFO) << "Running " << job_name << " Progress: " << counter.load() << "/" << vertices.size();
@@ -64,6 +65,7 @@ struct Context {
                 func(i, vertices[i]);
                 counter++;
             }
+            LOG(INFO) << "Worker finished: " << begin << ", " << end;
         };
 
         std::vector<std::thread> pool;
