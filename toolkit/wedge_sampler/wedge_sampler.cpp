@@ -43,10 +43,11 @@ struct WedgeSampler {
         triangles = 0;
         if (edges.size() <= FLAGS_threshold) {
             // direct
-            for (int i = 0; i < edges.size(); i++) {
-                auto& es = context.vertices[i].edges;
+            auto cur = edges.begin(), end = edges.end();
+            while (cur != end) {
+                auto& es = context.vertices[*cur++].edges;
                 std::vector<vid_t> intersection;
-                std::set_intersection(es.begin(), es.end(), edges.begin(), edges.end(), std::back_inserter(intersection));
+                std::set_intersection(es.begin(), es.end(), cur, end, std::back_inserter(intersection));
                 triangles += intersection.size();
             }
             DLOG(INFO) << "Direct counting, triangles=" << triangles;
@@ -56,13 +57,17 @@ struct WedgeSampler {
             std::uniform_int_distribution<int> dist(0, edges.size() - 1);
             for (int i = 0; i < sample_size; i++) {
                 vid_t s = dist(gen) , t = dist(gen);
+                if (s == t) {
+                    sample_size--;
+                    continue;
+                }
                 auto& es = context.vertices[edges[s]].edges;
                 auto& et = context.vertices[edges[t]].edges;
                 bool is_tri = es.size() < et.size() ? std::binary_search(es.begin(), es.end(), edges[t]) :
                                                       std::binary_search(et.begin(), et.end(), edges[s]);
                 tri += is_tri ? 1 : 0;
             }
-            triangles = tri * wedges / sample_size;
+            triangles = sample_size > 0 ? tri * wedges / sample_size : 0;
             DLOG(INFO) << "Sampling, sample_size=" << sample_size << ", triangles=" << triangles;
         }
     }
