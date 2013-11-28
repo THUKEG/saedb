@@ -36,8 +36,8 @@ struct WedgeSampler {
     }
 
     void count(const Context<WedgeSampler>& context) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
+        thread_local std::random_device rd;
+        thread_local std::mt19937 gen(rd());
 
         wedges = edges.size() * (edges.size() - 1) / 2;
         triangles = 0;
