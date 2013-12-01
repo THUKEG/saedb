@@ -41,8 +41,8 @@ struct WedgeSampler {
 
         wedges = edges.size() * (edges.size() - 1) / 2;
         triangles = 0;
-        if (edges.size() <= FLAGS_threshold) {
-            // direct
+        if (FLAGS_threshold > 0 && edges.size() <= FLAGS_threshold) {
+            // direct counting
             auto cur = edges.begin(), end = edges.end();
             while (cur != end) {
                 auto& es = context.vertices[*cur++].edges;
@@ -52,7 +52,11 @@ struct WedgeSampler {
             }
             DLOG(INFO) << "Direct counting, triangles=" << triangles;
         } else {
-            eid_t sample_size = min(eid_t(wedges * FLAGS_ratio), eid_t(FLAGS_sample_max));  // int may overflow
+            // sampling
+            eid_t sample_size = wedges * FLAGS_ratio;
+            if (FLAGS_sample_max > 0 && sample_size > FLAGS_sample_max) {
+                sample_size = FLAGS_sample_max;
+            }
             eid_t tri = 0;
             std::uniform_int_distribution<int> dist(0, edges.size() - 1);
             for (int i = 0; i < sample_size; i++) {
@@ -79,6 +83,8 @@ struct WedgeSampler {
 };
 
 int sgraph_main(StreamingGraph* g) {
+    LOG_IF(INFO, FLAGS_threshold <= 0) << "Not using sampling.";
+    LOG_IF(INFO, FLAGS_sample_max <= 0) << "Not restricting sample_size.";
     Context<WedgeSampler> context;
     SinglePassRun(context, g);
     if (FLAGS_threads <= 1) {
