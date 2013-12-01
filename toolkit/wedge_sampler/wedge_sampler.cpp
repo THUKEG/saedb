@@ -76,9 +76,8 @@ struct WedgeSampler {
         }
     }
 
-    std::ostream& output(const Context<WedgeSampler>& context, vid_t id, std::ostream& os) const {
-        os << triangles << " " << wedges;
-        return os;
+    void output(const Context<WedgeSampler>& context, vid_t id, std::ostream& os) const {
+        os << id << " " << triangles << " " << wedges << "\n";
     }
 };
 
@@ -94,6 +93,6 @@ int sgraph_main(StreamingGraph* g) {
         context.run_parallel("finalize", FLAGS_threads, &WedgeSampler::finalize);
         context.run_parallel("count", FLAGS_threads, &WedgeSampler::count, context);
     }
-    context.output(cout);
+    Output(context, cout);
     return 0;
 }

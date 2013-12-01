@@ -21,15 +21,14 @@ struct InOutEdgeCounter {
         }
     }
 
-    std::ostream& output(const Context<InOutEdgeCounter>& context, vid_t id, std::ostream& os) const {
-        os << in_edges << " " << out_edges;
-        return os;
+    void output(const Context<InOutEdgeCounter>& context, vid_t id, std::ostream& os) const {
+        os << id << " " << in_edges << " " << out_edges << "\n";
     }
 };
 
 int sgraph_main(StreamingGraph* g) {
     Context<InOutEdgeCounter> context;
     SinglePassRun(context, g);
-    context.output(cout);
+    Output(context, cout);
     return 0;
 }

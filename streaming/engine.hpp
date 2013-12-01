@@ -25,6 +25,8 @@ inline std::ostream& operator<<(std::ostream& stream, const std::function<std::o
 
 template<class Program>
 struct Context {
+    typedef Program UserProgram;
+
     int iteration;
     std::vector<Program> vertices;
 
@@ -45,6 +47,7 @@ struct Context {
     }
 
     // Exactly the same with `run`, except that it runs parallelly.
+    // TODO a dynamic scheduler
     template<typename M, typename... Args>
     void run_parallel(std::string job_name, size_t threads, M m, Args&&... args) {
         if (threads > vertices.size()) {
@@ -80,21 +83,12 @@ struct Context {
         }
         LOG(INFO) << "Finished " << job_name;
     }
-
-    std::ostream& output(std::ostream& os) {
-        LOG(INFO) << "Outputting";
-        for (vid_t i = 0; i < vertices.size(); i++) {
-            os << i << "\t";
-            vertices[i].output(*this, i, os);
-            os << "\n";
-        }
-        return os;
-    }
 };
 
-template<class Program>
-void SinglePassRun(Context<Program>& context, StreamingGraph* g) {
-    LOG(INFO) << "Single Pass Runner for " << typeid(Program).name();
+template<class ProgramContext>
+void SinglePassRun(ProgramContext& context, StreamingGraph* g) {
+    std::string job_name = typeid(typename ProgramContext::UserProgram).name();
+    LOG(INFO) << "Single Pass Runner for " << job_name << " started.";
     Graph graph;
     g->process([&](const Graph& g) {
         CHECK(g.n > 0) << "Vertices number must be positive.";
@@ -112,7 +106,12 @@ void SinglePassRun(Context<Program>& context, StreamingGraph* g) {
         context.vertices[e.target].edge(context, e.target, e);
     });
 
-    LOG(INFO) << "Single Pass Runner for " << typeid(Program).name() << " successfully finished.";
+    LOG(INFO) << "Single Pass Runner for " << job_name << " finished.";
+}
+
+template<class ProgramContext>
+void Output(ProgramContext& context, std::ostream& os) {
+    context.run("output", &ProgramContext::UserProgram::output, context, std::placeholders::_1, std::ref(os));
 }
 
 }}
