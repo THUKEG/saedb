@@ -1,6 +1,6 @@
 project(streaming)
 
-file(GLOB STREAMING_SOURCES "*.hpp" "sgraph.cpp" "sgraph_format_*.cpp")
+file(GLOB STREAMING_SOURCES "streaming.hpp" "engine.*" "sgraph.*" "sgraph_format_*.cpp")
 add_library(streaming ${STREAMING_SOURCES})
 target_link_libraries(streaming gflags google-glog)
 

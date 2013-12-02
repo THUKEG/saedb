@@ -7,9 +7,14 @@
 #include <typeinfo>
 
 #include "glog/logging.h"
+#include "sgraph.hpp"
 
 namespace sae {
 namespace streaming {
+
+// Aliasing placeholders for better readability.
+extern decltype(std::placeholders::_1)& _vertex_id;
+extern decltype(std::placeholders::_2)& _vertex_program;
 
 enum EdgeType {
     NO_EDGES = 0,
@@ -32,12 +37,12 @@ struct Context {
 
     // Handy helper for running through all vertices.
     // The function will be binded to the vertex program with provided args.
-    // You can optionally pass std::placeholders::_1 as an argument to receive the vertex id.
-    // std::placeholders::_2 is used for referring to the vertex.
+    // You can optionally pass _vertex_id as an argument to receive the vertex id.
+    // _vertex_program is used for referring to the vertex.
     template<typename M, typename... Args>
     void run(std::string job_name, M m, Args&&... args) {
         LOG(INFO) << "Started running " << job_name;
-        auto func = std::bind(m, std::placeholders::_2, std::forward<Args>(args)...);
+        auto func = std::bind(m, _vertex_program, std::forward<Args>(args)...);
         for (vid_t i = 0; i < vertices.size(); i++) {
             LOG_EVERY_N(INFO, vertices.size() / 100) << "Running " << job_name << " Progress: " << google::COUNTER << "/" << vertices.size();
             DLOG(INFO) << "Vertex " << i << " running " << job_name;
@@ -53,7 +58,7 @@ struct Context {
         if (threads > vertices.size()) {
             threads = vertices.size();
         }
-        auto func = std::bind(m, std::placeholders::_2, std::forward<Args>(args)...);
+        auto func = std::bind(m, _vertex_program, std::forward<Args>(args)...);
         LOG(INFO) << "Started running " << job_name << " with " << threads << " threads.";
 
         vid_t progress_interval = vertices.size() / 100;
@@ -111,7 +116,7 @@ void SinglePassRun(ProgramContext& context, StreamingGraph* g) {
 
 template<class ProgramContext>
 void Output(ProgramContext& context, std::ostream& os) {
-    context.run("output", &ProgramContext::UserProgram::output, context, std::placeholders::_1, std::ref(os));
+    context.run("output", &ProgramContext::UserProgram::output, std::ref(context), _vertex_id, std::ref(os));
 }
 
 }}
