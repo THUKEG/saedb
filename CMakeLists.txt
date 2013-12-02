@@ -4,6 +4,8 @@ include (SubDirList)
 
 enable_testing()
 
+project(SAE)
+
 # binary output path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${SAE_BINARY_DIR}")
 
