@@ -7,6 +7,7 @@
 #include <vector>
 #include <functional>
 #include <map>
+#include <iostream>
 
 #include "trigger.hpp"
 
@@ -23,6 +24,11 @@ struct Graph {
     vid_t m;
 };
 
+inline std::ostream& operator<<(std::ostream& os, const Graph& g) {
+    os << "graph{n=" << g.n << ", m=" << g.m << "}";
+    return os;
+}
+
 struct Vertex {
     vid_t id;
     tid_t type;
@@ -36,6 +42,11 @@ struct Vertex {
         return id == v.id;
     }
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Vertex& v) {
+    os << "vertex{id=" << v.id << ", type=" << int(v.type) << ", data=" << v.data << "}";
+    return os;
+}
 
 struct Edge {
     eid_t id;
@@ -51,7 +62,13 @@ struct Edge {
     bool operator==(const Edge& e) const {
         return id == e.id;
     }
+
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Edge& e) {
+    os << "edge{id=" << e.id << ", source=" << e.source << ", target=" << e.target << ", type=" << int(e.type) << ", data=" << e.data << "}";
+    return os;
+}
 
 // Implementations should guarantee that the callbacks are in the specific order: graph, vertex, edge.
 struct StreamingGraph {
