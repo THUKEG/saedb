@@ -1,0 +1,23 @@
+#Sep File Format:
+#(component type)[component position](component separaters)[x][start position of valid separated strings]
+#Four component types: l w d, representing line, words and documents  
+#For type l, [component position],[x] and [start position of valid separated strings] must be omitted; for others, they must be mentioned.
+#For type l, only one kind of "string separater" is permitted and declared in (component separaters); for others,  multi "character separaters" are permitted and declared in (component #separaters).  
+#
+#For example, the first line of our input document is :
+#id=3258829//title=Network and supply chain system integration for mass customization and sustainable behavior.//year=2012//#conference=Advanced Engineering Informatics//citation=-1//authors=57741|#A. J. C. Trappey,Amy J. C. Trappey,Amy Trappey%19285|P. M. Wognum
+#
+#Since the string separater of the whole line is "//", we wrote l//  
+#
+#Then because the word component is the 2nd components of this line, we wrote 1 after w
+#Because the character separaters for words component are '=', ' ' and '.', so we wrote = . after w1
+#Finally, because the valid separated strings start from the 2nd word "Network", we wrote 1 after w1= .x
+l//
+w1= .x1
+d1=x1
+
+#l#
+#w1= `~!@#$%^&*()-_=+{}[]|\:;"'?/<>,.0123456789x0
+#d0#x0
+
+#The three types must be mentioned in a separater file but the order is arbitrary
