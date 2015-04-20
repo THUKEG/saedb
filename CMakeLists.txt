@@ -4,6 +4,8 @@ include (SubDirList)
 
 enable_testing()
 
+project(SAE)
+
 # binary output path
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${SAE_BINARY_DIR}")
 
@@ -45,6 +47,7 @@ add_subdirectory (storage)
 add_subdirectory (serialization)
 add_subdirectory (zrpc)
 add_subdirectory (computing)
+add_subdirectory (streaming)
 
 # add toolkits
 add_all_subdirectories ("${CMAKE_CURRENT_SOURCE_DIR}/toolkit")
